@@ -1,0 +1,7 @@
+{
+  "job_id": "12a61361-a095-4dc3-8df8-5703a7eccafc",
+  "state": "error",
+  "position": 0,
+  "elapsed": 11,
+  "message": "모델의 수정 구간을 원문에 정확히 적용할 수 없어 보류했습니다."
+}

@@ -91,3 +91,5 @@ Project-authored code is provided under the MIT license. Bundled third-party fil
 The visitor-facing website is GitHub Pages. A separate HTTPS API accepts bounded synthetic jobs; the GPU server pulls those jobs outward over HTTPS using a private worker token. It does not expose Ollama or its SSH/admin interface through the website. GitHub Pages receives no worker credentials. Public anonymous requests still consume GPU resources, so queue and rate limits are enforced.
 
 Run `python build_pages.py` after frontend changes to update the static `docs/` site. GitHub Pages uses `main:/docs`; set the backend API and exact allowed frontend origin together. QR codes point to the GitHub Pages URL. A custom domain can later be attached to Pages through verified DNS ownership.
+
+Compatible Unicode typography (full-width digits/letters, compatibility units and Windows line endings) is normalized at the web ingress boundary. Detection, source-anchored edits and clinical checks use the normalized representation; the original input is kept in private session memory. Hidden control characters and active HTML/script content remain rejected.

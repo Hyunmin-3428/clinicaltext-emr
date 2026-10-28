@@ -1,0 +1,18 @@
+{
+  "scope": "authored synthetic examples, not held-out validation",
+  "cases": [
+    {
+      "case": "surrogate",
+      "request_state": "done",
+      "release_state": "REVIEW_READY",
+      "passed": 12,
+      "failed": 0,
+      "unknown": 0,
+      "residual": 0,
+      "model_calls": 6,
+      "seconds": 30,
+      "output": "중년 성인의 교육기관 종사자는 2023년 3월 10일 본원에서 충수절제술을 시행받았다. 수술 3일 후에도 발열은 없었고, F/U CT에서 특이 소견은 없었다. 과거력상 2018년 장거리 운동 완주 후 무릎 통증이 있었으며, 부친이 52세에 심근경색으로 사망하였다.",
+      "reasons": []
+    }
+  ]
+}

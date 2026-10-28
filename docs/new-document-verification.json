@@ -1,0 +1,16 @@
+{
+  "public_url": "https://hyunmin-3428.github.io/clinicaltext-emr/",
+  "input_scope": "author-created synthetic TXT with full-width numbers/letters, compatible symbols and Windows line endings",
+  "file_upload_verified_in_browser": true,
+  "compatibility_input_accepted": true,
+  "normalization": "NFKC and line-ending normalization before detection and clinical verification",
+  "deidentification_executed": true,
+  "clinical_preserved_rows": 10,
+  "review_needed_rows": 1,
+  "residual_review_candidates": 1,
+  "clinical_date_preserved": "2024년 5월 2일",
+  "elapsed_time_preserved": "수술 2일 후",
+  "drug_dose_route_preserved": "cefazolin 1 g IV 투여",
+  "export_state": "HELD",
+  "limitation": "Unregistered custom source and an unresolved model/privacy review item; no claim of complete validation or release approval."
+}
