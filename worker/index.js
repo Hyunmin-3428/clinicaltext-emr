@@ -9,11 +9,32 @@ function exact(value,fields){if(!value||typeof value!=='object'||Array.isArray(v
 async function session(request,env){const token=request.headers.get('Authorization')||'';if(!/^Bearer [a-f0-9-]{36}\.[a-f0-9-]{36}$/.test(token))failure('체험 연결이 만료됐습니다. 새로고침해 주세요.',403);const found=await env.DB.prepare('SELECT id FROM sessions WHERE token_hash=? AND expires>?').bind(await hash(token.slice(7)),now()).first();if(!found)failure('체험 연결이 만료됐습니다. 새로고침해 주세요.',403);return found.id;}
 function agent(request,env){const supplied=request.headers.get('Authorization')||'';if(!env.AGENT_TOKEN||supplied!==`Bearer ${env.AGENT_TOKEN}`)failure('접근할 수 없습니다.',403);}
 async function online(env){const row=await env.DB.prepare("SELECT value FROM control WHERE name='heartbeat'").first();return row&&now()-Number(row.value)<45;}
+async function capabilities(env){const row=await env.DB.prepare("SELECT value FROM control WHERE name='presentation'").first();try{return row?JSON.parse(row.value):{cache_ready:[],live_ready:false};}catch{return{cache_ready:[],live_ready:false};}}
 async function enqueue(env,owner,kind,payload){
   const id=crypto.randomUUID(),stamp=now();
-  const result=await env.DB.prepare(`INSERT INTO jobs(id,owner,kind,payload,state,created) SELECT ?,?,?,?,'queued',? WHERE (SELECT COUNT(*) FROM jobs WHERE state IN ('queued','running'))<8 AND (SELECT COUNT(*) FROM jobs WHERE owner=? AND state IN ('queued','running'))=0 AND (SELECT COUNT(*) FROM jobs WHERE owner=? AND kind='analyze' AND created>?)<8 AND (SELECT COUNT(*) FROM jobs WHERE kind='analyze' AND created>?)<180`).bind(id,owner,kind,JSON.stringify(payload),stamp,owner,owner,stamp-600,stamp-3600).run();
-  if(!result.meta.changes)failure('체험 대기열 또는 요청 한도에 도달했습니다. 잠시 후 다시 시도해 주세요.',429);
-  return reply({job_id:id,state:'queued',position:0},202);
+  let execution='control';
+  if(kind==='analyze'){
+    const purpose=payload.purpose.normalize('NFKC').replace(/\r\n?/g,'\n').trim();payload={...payload,purpose};
+    const record=CATALOG.records.find(r=>r.id===payload.record_id);
+    const known=record&&!payload.custom_note&&(purpose===record.purpose||(record.id==='surrogate'&&CATALOG.purposes.some(p=>p.purpose&&p.purpose===purpose)));
+    const caps=await capabilities(env);
+    if(known){
+      if(!caps.cache_ready?.some(c=>c.record_id===record.id&&c.purpose===purpose))failure('예제 실행 결과를 준비하고 있습니다. 잠시 후 다시 시도해 주세요.',503);
+      execution='cached';
+    }else{
+      execution='live';
+      if(!caps.live_ready)failure('다른 서버 작업을 보호하기 위해 실시간 분석을 잠시 중지했습니다. 기본 예제를 이용해 주세요.',503);
+    }
+  }
+  let sql="INSERT INTO jobs(id,owner,kind,payload,state,created,execution) SELECT ?,?,?,?,'queued',?,? WHERE (SELECT COUNT(*) FROM jobs WHERE owner=? AND state IN ('queued','running'))=0";
+  const values=[id,owner,kind,JSON.stringify(payload),stamp,execution,owner];
+  if(execution==='live'){
+    sql+=" AND (SELECT COUNT(*) FROM jobs WHERE execution='live' AND state IN ('queued','running'))<? AND (SELECT COUNT(*) FROM jobs WHERE owner=? AND execution='live' AND created>?)<? AND (SELECT COUNT(*) FROM jobs WHERE execution='live' AND created>?)<? AND (SELECT COUNT(*) FROM jobs WHERE execution='live' AND created>?)=0";
+    values.push(EVENT_LIMITS.live_pending,owner,stamp-600,EVENT_LIMITS.live_per_session_10min,stamp-3600,EVENT_LIMITS.live_per_hour,stamp-EVENT_LIMITS.live_accept_interval_seconds);
+  }else{sql+=" AND (SELECT COUNT(*) FROM jobs WHERE execution!='live' AND state IN ('queued','running'))<?";values.push(EVENT_LIMITS.fast_pending);}
+  const result=await env.DB.prepare(sql).bind(...values).run();
+  if(!result.meta.changes)failure(execution==='live'?'실시간 체험은 사용자당 10분에 1회, 전체 시간당 12회로 제한합니다. 잠시 후 다시 시도하거나 기본 예제를 이용해 주세요.':'체험 요청이 많거나 이미 처리 중인 요청이 있습니다. 잠시 후 다시 시도해 주세요.',429);
+  return reply({job_id:id,state:'queued',position:0,execution},202);
 }
 async function handle(request,env){
   try{
@@ -21,12 +42,14 @@ async function handle(request,env){
     if(path.startsWith('/internal/')){
       agent(request,env);
       if(request.method==='POST'&&path==='/internal/heartbeat'){
-        await env.DB.prepare("INSERT INTO control(name,value) VALUES('heartbeat',?) ON CONFLICT(name) DO UPDATE SET value=excluded.value").bind(String(now())).run();return reply({ok:true});
+        const info=await body(request,8000);
+        await env.DB.batch([env.DB.prepare("INSERT INTO control(name,value) VALUES('heartbeat',?) ON CONFLICT(name) DO UPDATE SET value=excluded.value").bind(String(now())),env.DB.prepare("INSERT INTO control(name,value) VALUES('presentation',?) ON CONFLICT(name) DO UPDATE SET value=excluded.value").bind(JSON.stringify(info))]);return reply({ok:true});
       }
       if(request.method==='POST'&&path==='/internal/claim'){
         await env.DB.prepare("INSERT INTO control(name,value) VALUES('heartbeat',?) ON CONFLICT(name) DO UPDATE SET value=excluded.value").bind(String(now())).run();
-        await env.DB.prepare("UPDATE jobs SET state='error',result=? WHERE state='running' AND claimed<?").bind(JSON.stringify({message:'서버 처리 시간이 초과됐습니다. 다시 실행해 주세요.'}),now()-1200).run();
-        const job=await env.DB.prepare("UPDATE jobs SET state='running',claimed=? WHERE id=(SELECT id FROM jobs WHERE state='queued' ORDER BY created,id LIMIT 1) AND state='queued' RETURNING id,owner,kind,payload").bind(now()).first();
+        const data=await body(request);const lane=data.lane||'all';if(!['fast','live','all'].includes(lane))failure('Unknown lane');
+        await env.DB.prepare("UPDATE jobs SET state='error',result=? WHERE state='running' AND claimed<?").bind(JSON.stringify({message:'서버 처리 시간이 초과됐습니다. 다시 실행해 주세요.'}),now()-180).run();
+        const job=await env.DB.prepare("UPDATE jobs SET state='running',claimed=? WHERE id=(SELECT id FROM jobs WHERE state='queued' AND (?='all' OR (?='live' AND execution='live') OR (?='fast' AND execution!='live')) ORDER BY CASE WHEN kind IN ('approve','export') THEN 0 ELSE 1 END,created,id LIMIT 1) AND state='queued' RETURNING id,owner,kind,payload,execution").bind(now(),lane,lane,lane).first();
         return reply({job:job?{...job,payload:JSON.parse(job.payload)}:null});
       }
       if(request.method==='POST'&&path==='/internal/complete'){
@@ -44,24 +67,24 @@ async function handle(request,env){
         const stamp=now(),visitor=await hash((env.AGENT_TOKEN||'')+(request.headers.get('CF-Connecting-IP')||'unknown'));
         await env.DB.batch([env.DB.prepare('DELETE FROM jobs WHERE created<?').bind(stamp-7200),env.DB.prepare('DELETE FROM sessions WHERE expires<?').bind(stamp)]);
         const counts=await env.DB.prepare('SELECT COUNT(*) AS total,SUM(CASE WHEN visitor=? AND created>? THEN 1 ELSE 0 END) AS recent FROM sessions').bind(visitor,stamp-600).first();
-        if(counts.total>=128||counts.recent>=40)failure('현재 체험 접속이 많습니다. 잠시 후 다시 시도해 주세요.',429);
+        if(counts.total>=EVENT_LIMITS.max_sessions||counts.recent>=EVENT_LIMITS.bootstrap_per_ip_10min)failure('현재 체험 접속이 많습니다. 잠시 후 다시 시도해 주세요.',429);
         const id=crypto.randomUUID(),token=crypto.randomUUID()+'.'+crypto.randomUUID();
         await env.DB.prepare('INSERT INTO sessions(id,token_hash,visitor,created,expires) VALUES(?,?,?,?,?)').bind(id,await hash(token),visitor,stamp,stamp+7200).run();
-        return reply({...CATALOG,token,scope:'synthetic-only',server_online:await online(env),expires_in:7200});
+        return reply({...CATALOG,token,scope:'synthetic-only',server_online:await online(env),expires_in:7200,event_limits:EVENT_LIMITS,presentation:await capabilities(env)});
       }
       const owner=await session(request,env);
       if(request.method==='GET'&&/^\/api\/jobs\/[a-f0-9-]{36}$/.test(path)){
-        const job=await env.DB.prepare('SELECT id,kind,state,result,created,claimed FROM jobs WHERE id=? AND owner=?').bind(path.split('/').pop(),owner).first();if(!job)failure('요청을 찾을 수 없습니다.',403);
+        const job=await env.DB.prepare('SELECT id,kind,state,result,created,claimed,execution FROM jobs WHERE id=? AND owner=?').bind(path.split('/').pop(),owner).first();if(!job)failure('요청을 찾을 수 없습니다.',403);
         const ahead=await env.DB.prepare("SELECT COUNT(*) AS n FROM jobs WHERE state IN ('queued','running') AND created<?").bind(job.created).first();
         const result=job.result?JSON.parse(job.result):null;
-        return reply({job_id:job.id,state:job.state,position:ahead.n,elapsed:now()-job.created,...(job.state==='done'?(job.kind==='analyze'?{view:result}:{result}):job.state==='error'?{message:result?.message||'처리를 완료하지 못했습니다.'}:{})});
+        return reply({job_id:job.id,state:job.state,execution:job.execution,position:ahead.n,elapsed:now()-job.created,...(job.state==='done'?(job.kind==='analyze'?{view:result}:{result}):job.state==='error'?{message:result?.message||'처리를 완료하지 못했습니다.'}:{})});
       }
       if(request.method==='POST'&&path==='/api/analyze'){
         if(!await online(env))failure('GPU 체험 서버에 연결 중입니다. 잠시 후 다시 시도해 주세요.',503);
         const data=await body(request,24000);
         if(data.custom_note!==undefined){
           exact(data,['record_id','purpose_id','purpose','custom_note']);exact(data.custom_note,['title','text','synthetic_confirmed']);
-          if(typeof data.record_id!=='string'||!/^custom-[a-f0-9-]{36}$/.test(data.record_id)||data.custom_note.synthetic_confirmed!==true||typeof data.custom_note.title!=='string'||!data.custom_note.title.trim()||data.custom_note.title.length>60||typeof data.custom_note.text!=='string'||!data.custom_note.text.trim()||data.custom_note.text.length>4000||new TextEncoder().encode(data.custom_note.text).length>16000)failure('직접 작성한 합성 기록과 입력 범위를 확인해 주세요.');
+          if(typeof data.record_id!=='string'||!/^custom-[a-f0-9-]{36}$/.test(data.record_id)||data.custom_note.synthetic_confirmed!==true||typeof data.custom_note.title!=='string'||!data.custom_note.title.trim()||data.custom_note.title.length>60||typeof data.custom_note.text!=='string'||!data.custom_note.text.trim()||data.custom_note.text.length>EVENT_LIMITS.live_max_chars||new TextEncoder().encode(data.custom_note.text).length>16000)failure('발표용 실시간 체험은 직접 작성한 합성 기록 1,000자 이내로 입력해 주세요.');
         }else{exact(data,['record_id','purpose_id','purpose']);if(!CATALOG.records.some(r=>r.id===data.record_id))failure('기록을 확인해 주세요.');}
         if(!CATALOG.purposes.some(p=>p.id===data.purpose_id)||typeof data.purpose!=='string'||!data.purpose.trim()||data.purpose.length>800)failure('연구 목적을 확인해 주세요.');
         return await enqueue(env,owner,'analyze',data);

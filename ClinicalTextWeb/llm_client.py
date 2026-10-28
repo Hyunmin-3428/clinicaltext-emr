@@ -110,7 +110,7 @@ class StructuredClient:
             if len((common + content).encode("utf-8")) + 256 > 16384 - 4096:
                 raise Denied("LLM_CONTEXT_LIMIT")
             body = {"model": model, "stream": False, "messages": [{"role": "system", "content": common}, {"role": "user", "content": content}],
-                    "format": schema, "keep_alive": "5m", "options": {"temperature": 0, "num_ctx": 16384, "num_predict": 4096}}
+                    "format": schema, "keep_alive": getattr(self,"keep_alive","5m"), "options": {"temperature": 0, "num_ctx": 16384, "num_predict": 4096}}
             if model.lower().startswith("qwen3"):
                 body["think"] = False
         else:
@@ -125,7 +125,7 @@ class StructuredClient:
             started = time.perf_counter()
             req = Request(endpoint, data=json.dumps(body).encode(), headers=headers, method="POST")
             self.calls += 1
-            with build_opener(NoRedirect()).open(req, timeout=600 if cfg.provider == "ollama" else 120) as response:
+            with build_opener(NoRedirect()).open(req, timeout=min(600 if cfg.provider == "ollama" else 120,getattr(self,"request_timeout",600))) as response:
                 raw = response.read(1_000_001)
             if len(raw) > 1_000_000:
                 raise Denied("LLM_RESPONSE_INVALID")

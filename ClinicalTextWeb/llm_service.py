@@ -105,9 +105,12 @@ class LLMWorkflow:
         if config.remote and data.get("synthetic_consent") is not True:
             raise Denied("LLM_REMOTE_CONSENT_REQUIRED")
         source, purpose, checks, phrases = (data[key] for key in ["text", "purpose", "checks", "required_phrases"])
-        candidates = detect_for_research(source)
-        client = self.client_factory(config)
-        prepared = PurposePipeline(client).run(source, purpose, checks, phrases, candidates)
+        provider=getattr(self,'prepared_provider',None)
+        prepared=provider(source,purpose,checks,phrases,config) if provider else None
+        if prepared is None:
+            candidates = detect_for_research(source)
+            client = self.client_factory(config)
+            prepared = PurposePipeline(client).run(source, purpose, checks, phrases, candidates)
         output = prepared["output"]
         validation = prepared["validation"]
         raw_residual = detect(output, detector="hybrid")
@@ -157,7 +160,7 @@ class LLMWorkflow:
                                 "resolved_clinical_date_candidates":len(resolved_dates),
                                 "status": "passed" if not reasons else "review", "scope": "기존 탐지기와 별도 LLM 호출로 잔여 식별정보를 점검했습니다."},
                     "registered_example": registered, "can_approve": not reasons, "state": "HELD" if reasons else "REVIEW_READY", "reasons": reasons,
-                    "llm": {"status": "executed", "model": config.model, "verifier_model": config.verifier_model,
+                    "llm": {"status": "cached" if prepared.get('cached') else "executed", "cached":bool(prepared.get('cached')), "cache_created_at":prepared.get('cache_created_at'),"original_calls":prepared.get('original_calls'), "model": config.model, "verifier_model": config.verifier_model,
                             "provider": config.provider, "calls": prepared["calls"], "attempts": prepared["attempts"], "metrics": prepared["metrics"]},
                     "events": [{"event": "LLM 목적별 조건·가명처리·별도 검증 완료", "time": time.time()}]}
             session.analyses[submitted["release"]] = {"engine": "llm", "view": view, "digest": binding, "input": copy.deepcopy(data),

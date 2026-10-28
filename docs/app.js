@@ -1,7 +1,7 @@
 "use strict";
 const $ = id => document.getElementById(id);
 const cfg = window.CLINICAL_DEMO || {};
-const state = { token:"", records:[], purposes:[], selected:null, current:null, artifact:null, busy:false, generation:0, ready:false };
+const state = { token:"", records:[], purposes:[], selected:null, current:null, artifact:null, busy:false, generation:0, ready:false,limits:null };
 const labels = { passed:"보존", failed:"손상 의심", unknown:"확인 필요", not_present:"해당 없음" };
 function node(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;}
 function message(text="",error=false){$("notice").textContent=text;$("notice").className="message"+(error?" error":"");$("notice").hidden=!text;}
@@ -55,9 +55,9 @@ function renderView(view,elapsed){
   $("phi-count").textContent=`${view.phi_count}개`;
   $("preserve-count").textContent=`${v.passed} / ${total}`;
   $("residual-count").textContent=`${view.privacy.residual_count}개`;
-  if(elapsed!==undefined)$("duration").textContent=`${elapsed.toFixed(1)}초`;
+  if(elapsed!==undefined)$("duration").textContent=view.llm?.cached?'사전 실행 결과':`${elapsed.toFixed(1)}초`;
   const states={REVIEW_READY:["가명처리·검증 완료","success"],HELD:["확인 필요 · 반출 보류","warning"],APPROVED:["검토·승인 완료","success"],EXPORTED:["반출 완료","success"]};
-  const [text,kind]=states[view.state]||["재검사 필요","warning"];status("output-status",text,kind);
+  const [text,kind]=states[view.state]||["재검사 필요","warning"];status("output-status",view.llm?.cached&&view.state==='REVIEW_READY'?'사전 실행 결과 · 검증 완료':text,kind);
   status("release-status",{REVIEW_READY:"승인 대기",HELD:"반출 보류",APPROVED:"승인 완료",EXPORTED:"반출 완료"}[view.state]||"재검사 필요",kind);
   $("validation-rows").replaceChildren();
   for(const r of v.rows){const tr=node("tr"),label=node("td",r.label),pair=node("td"),wrap=node("div",undefined,"evidence-pair");for(const [key,name] of [["source","원문"],["output","변환"]]){const line=node("div");line.append(node("span",name),document.createTextNode(r[key]||"근거 없음"));wrap.append(line);}pair.append(wrap);const verdict=node("td");verdict.append(node("span",labels[r.status]||r.status,"status-tag "+(r.status==="passed"?"success":r.status==="failed"?"error":"warning")));tr.append(label,pair,verdict);$("validation-rows").append(tr);}
@@ -79,7 +79,7 @@ async function processRecord(){
       if(job.state==="done"){renderView(job.view,job.elapsed);message(job.view.can_approve?"가명처리와 검증이 완료됐습니다. 보존 근거를 확인하고 승인해 주세요.":"검토가 필요한 항목이 남아 반출을 보류했습니다.",!job.view.can_approve);break;}
       if(job.state==="error")throw new Error(job.message);
       if(Date.now()>deadline)throw new Error("처리가 오래 걸리고 있습니다. 서버 상황을 확인한 뒤 다시 시도해 주세요.");
-      $("progress-title").textContent=job.state==="queued"?`서버 처리 대기 중 · 앞에 ${job.position}건`:"서버 LLM이 가명처리·검증 중입니다";
+      $("progress-title").textContent=job.execution==='cached'?'사전 실행 예제의 검증 결과를 불러오고 있습니다':job.state==="queued"?`서버 처리 대기 중 · 앞에 ${job.position}건`:"서버 LLM이 가명처리·검증 중입니다";
       $("progress-detail").textContent=job.state==="queued"?"한 번에 하나의 요청을 GPU로 처리합니다.":"진단, 날짜, 경과일과 문맥을 원문에 대조하고 있습니다.";
       await new Promise(resolve=>setTimeout(resolve,1500));
     }
@@ -114,14 +114,14 @@ $("record-search-run").onclick=renderList;$("record-search").oninput=renderList;
 function newActions(){$("new-add").disabled=!$("new-title").value.trim()||!$("new-source").value.trim()||!$("new-synthetic").checked;}
 $("new-record").onclick=()=>$("new-dialog").showModal();$("new-cancel").onclick=()=>$("new-dialog").close();
 for(const id of ["new-title","new-source","new-synthetic"])$(id).oninput=newActions;
-$("new-file").onchange=async()=>{const file=$("new-file").files[0];if(!file)return;try{if(!file.name.toLowerCase().endsWith('.txt')||file.size>16000)throw new Error("16KB 이하의 UTF-8 텍스트(.txt) 파일을 선택해 주세요.");const text=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());if(text.length>4000)throw new Error("기록은 4,000자 이내로 입력해 주세요.");$("new-source").value=text;$("new-title").value=file.name.replace(/\.txt$/i,'').slice(0,60);$("file-message").textContent=file.name;newActions();}catch(e){$("file-message").textContent=e.message;}};
+$("new-file").onchange=async()=>{const file=$("new-file").files[0];if(!file)return;try{if(!file.name.toLowerCase().endsWith('.txt')||file.size>16000)throw new Error("16KB 이하의 UTF-8 텍스트(.txt) 파일을 선택해 주세요.");const text=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());if(text.length>(state.limits?.live_max_chars||4000))throw new Error(`실시간 체험 기록은 ${state.limits?.live_max_chars||4000}자 이내로 입력해 주세요.`);$("new-source").value=text;$("new-title").value=file.name.replace(/\.txt$/i,'').slice(0,60);$("file-message").textContent=file.name;newActions();}catch(e){$("file-message").textContent=e.message;}};
 $("new-add").onclick=()=>{if($("new-add").disabled)return;const record={id:'custom-'+crypto.randomUUID(),category:$("new-title").value.trim(),department:'직접 입력',title:'새 합성 기록',date:new Date().toLocaleDateString('sv-SE'),text:$("new-source").value,purpose:'임상 경과 연구',custom:true};state.records.unshift(record);$("date-from").value='';$("date-to").value='';$("record-search").value='';$("new-dialog").close();selectRecord(record);$("new-title").value='새 외래기록';$("new-source").value='';$("new-synthetic").checked=false;$("new-file").value='';$("file-message").textContent='';newActions();};
 $("share").onclick=()=>$("share-dialog").showModal();
 $("copy-url").onclick=()=>copyText(cfg.publicUrl||location.origin,"체험 주소를 복사했습니다.");
 async function init(){
   if(cfg.githubUrl)$("github").href=cfg.githubUrl;
   $("share-url").textContent=cfg.publicUrl||location.origin;$("share-url").href=cfg.publicUrl||location.origin;
-  try{const result=await api("/api/bootstrap");state.token=result.token;state.records=result.records;state.purposes=result.purposes;state.ready=true;$("purpose-preset").replaceChildren(...result.purposes.map(p=>{const option=node("option",p.label);option.value=p.id;return option;}));const online=result.server_online!==false;$("connection").className="connection "+(online?"online":"offline");$("connection").replaceChildren(node("i"),document.createTextNode(online?"서버 연결됨":"서버 연결 대기"));selectRecord(state.records[0]);if(!online)message("GPU 서버에 연결 중입니다. 잠시 후 새로고침해 주세요.");}
+  try{const result=await api("/api/bootstrap");state.token=result.token;state.limits=result.event_limits||null;$("new-source").maxLength=state.limits?.live_max_chars||4000;state.records=result.records;state.purposes=result.purposes;state.ready=true;$("purpose-preset").replaceChildren(...result.purposes.map(p=>{const option=node("option",p.label);option.value=p.id;return option;}));const online=result.server_online!==false;$("connection").className="connection "+(online?"online":"offline");$("connection").replaceChildren(node("i"),document.createTextNode(online?"서버 연결됨":"서버 연결 대기"));selectRecord(state.records[0]);if(!online)message("GPU 서버에 연결 중입니다. 잠시 후 새로고침해 주세요.");}
   catch(e){$("connection").className="connection offline";$("connection").replaceChildren(node("i"),document.createTextNode("서버 연결 확인 필요"));$("records").replaceChildren(node("p","기록을 불러오지 못했습니다. 새로고침해 다시 연결해 주세요.","loading-text"));message(e.message,true);}
 }
 init();

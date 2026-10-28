@@ -10,9 +10,9 @@ An EMR-style prototype for **research-purpose-specific clinical information pres
 
 ## Experience
 
-1. Select an outpatient, surgical, inpatient or progress note from the simulated chart, or use **새 문서** to type a new synthetic note or import a UTF-8 `.txt` file (4,000 characters / 16 KB). No actual patient records should be entered into this public demo.
+1. Select an outpatient, surgical, inpatient or progress note from the simulated chart, or use **새 문서** to type a new synthetic note or import a UTF-8 `.txt` file (presentation mode: 1,000 characters / 16 KB). No actual patient records should be entered into this public demo.
 2. Choose a research purpose and preservation conditions. For the main example, compare generalizing patient age with retaining exact age for age-stratified research.
-3. Run actual server inference; examine the natural surrogate note and source-grounded preservation evidence.
+3. Use clearly labelled, pre-executed real model results for the six default examples, or bounded live server inference for a new synthetic note; examine the natural surrogate note and source-grounded preservation evidence.
 4. Review and approve an eligible result; download TXT, a real Excel `.xlsx`, or the gateway-signed JSON artifact. Held results cannot be exported.
 
 Actual surgery dates, elapsed days, relevant history years, negation and family/patient roles are checked. Privacy protection can conflict with research utility; unresolved results are held. The same LLM is called separately for processing, clinical checking and privacy checking. Code checks add evidence grounding and selected clinical guards; these are not independent statistical validation models.
@@ -93,3 +93,18 @@ The visitor-facing website is GitHub Pages. A separate HTTPS API accepts bounded
 Run `python build_pages.py` after frontend changes to update the static `docs/` site. GitHub Pages uses `main:/docs`; set the backend API and exact allowed frontend origin together. QR codes point to the GitHub Pages URL. A custom domain can later be attached to Pages through verified DNS ownership.
 
 Compatible Unicode typography (full-width digits/letters, compatibility units and Windows line endings) is normalized at the web ingress boundary. Detection, source-anchored edits and clinical checks use the normalized representation; the original input is kept in private session memory. Hidden control characters and active HTML/script content remain rejected.
+
+## Presentation mode: 50 visitors
+
+`event_limits.json` is the common public queue / GPU agent policy. Six authored example-purpose pairs are precomputed with the real model, version-bound and revalidated on every use. The UI explicitly labels **사전 실행 결과**. A cache miss never falls back to inference. Approvals and signed exports are generated separately for each visitor; cached approvals or expired signatures are not reused.
+
+- 128 visitor sessions and 128 lightweight pending jobs; shared venue Wi-Fi allowed (200 session starts per IP / 10 min, within the global cap).
+- One live GPU inference at a time, at most 2 pending live jobs, minimum 120 seconds between admissions, 1 per visitor / 10 min, 12 total / hour.
+- At most 90 seconds of model-request time per document; a persistent rolling budget permits 600 seconds of model calls per hour. Calls stop when time/budget expires; uncertain unload pauses further live inference.
+- Live notes: 1,000 characters. Use only synthetic records. Live eligibility still does not authorize exporting unregistered custom sources.
+- CPU worker priority is lowered and numerical-library threads limited to one. Only the selected GPU is inspected; foreign processes on it prevent live inference. Other GPUs, jobs and the model daemon are not stopped or restarted.
+- Model weights are unloaded after a live document (30-second keep-alive fallback). Cached viewing, approval and download run in a separate lane and do not load the model.
+
+This is application-level admission and time control, not a physical GPU partition or a guarantee of zero host contention. GPU occupancy is rechecked before each model call. If another job begins between checks, the project cannot preempt or manage it. For an event requiring strict hardware isolation, leave live inference paused and serve the prepared examples only, or reserve a GPU through the server's normal scheduler.
+
+Prepare once, using the same guard and hourly budget: `python warm_event_cache.py --runtime ~/clinicaltext/runtime/sessions`. The deployed worker is `gpu_agent.py`; the optional standalone `demo_server.py` is a development path with separate limits.

@@ -1,0 +1,16 @@
+{
+  "version": "presentation-50-v1",
+  "audience": 50,
+  "max_sessions": 128,
+  "bootstrap_per_ip_10min": 200,
+  "fast_pending": 128,
+  "live_pending": 2,
+  "live_per_session_10min": 1,
+  "live_per_hour": 12,
+  "live_accept_interval_seconds": 120,
+  "live_max_chars": 1000,
+  "live_deadline_seconds": 90,
+  "llm_seconds_per_hour": 600,
+  "budget_window_seconds": 3600,
+  "keep_alive": "30s"
+}
