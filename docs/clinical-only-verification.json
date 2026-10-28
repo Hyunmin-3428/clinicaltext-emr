@@ -1,0 +1,18 @@
+{
+  "scope": "independently authored synthetic clinical-only record with generic research purpose",
+  "request_completed": true,
+  "source": "IUP 38+5주, 출생체중 2.95 kg, 남아.\nNSVD로 출생. 생후 약 25분 기관삽관 후 NICU 전원.",
+  "output": "IUP 38+5주, 출생체중 2.95 kg, 남아.\nNSVD로 출생. 생후 약 25분 기관삽관 후 NICU 전원.",
+  "byte_identical_output": true,
+  "edit_count": 0,
+  "clinical_failed": 0,
+  "clinical_unknown": 0,
+  "privacy_residual": 0,
+  "state": "HELD",
+  "seconds": 13,
+  "model_calls": 3,
+  "reasons": [
+    "LLM으로 처리·검증한 결과입니다. 서버에 등록된 합성 원문이 아니므로 실제 반출은 기관 검토 전까지 보류합니다.",
+    "반출 게이트웨이의 검증 조건을 충족하지 못했습니다."
+  ]
+}

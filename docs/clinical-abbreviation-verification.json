@@ -1,0 +1,135 @@
+{
+  "source_scope": "independently authored synthetic record, not the user screenshot",
+  "request_completed": true,
+  "model_calls": 3,
+  "seconds": 19,
+  "source": "성명: 한도윤.\nIUP 38+5주, 출생체중 2.95 kg, 남아.\nNSVD로 출생. 생후 약 25분 기관삽관 후 NICU 전원.",
+  "output": "성명: <PERSON_1>.\nIUP 38+5주, 출생체중 2.95 kg, 남아.\nNSVD로 출생. 생후 약 25분 기관삽관 후 NICU 전원.",
+  "clinical_failed": 0,
+  "clinical_unknown": 0,
+  "privacy_residual": 0,
+  "state": "HELD",
+  "reasons": [
+    "LLM으로 처리·검증한 결과입니다. 서버에 등록된 합성 원문이 아니므로 실제 반출은 기관 검토 전까지 보류합니다.",
+    "반출 게이트웨이의 검증 조건을 충족하지 못했습니다."
+  ],
+  "evidence_rows": [
+    {
+      "kind": "gestational_age",
+      "label": "재태기간 원문 보존",
+      "source": "IUP 38+5주",
+      "output": "IUP 38+5주",
+      "status": "passed",
+      "detail": "보호 대상 임상 표현의 원문 표기를 대조했습니다."
+    },
+    {
+      "kind": "birth_measurement",
+      "label": "출생체중 보존",
+      "source": "출생체중 2.95 kg",
+      "output": "출생체중 2.95 kg",
+      "status": "passed",
+      "detail": "보호 대상 임상 표현의 원문 표기를 대조했습니다."
+    },
+    {
+      "kind": "clinical_abbreviation",
+      "label": "임상 약어 원문 보존",
+      "source": "NSVD",
+      "output": "NSVD",
+      "status": "passed",
+      "detail": "보호 대상 임상 표현의 원문 표기를 대조했습니다."
+    },
+    {
+      "kind": "clinical_elapsed_time",
+      "label": "생후 경과시간 보존",
+      "source": "생후 약 25분",
+      "output": "생후 약 25분",
+      "status": "passed",
+      "detail": "보호 대상 임상 표현의 원문 표기를 대조했습니다."
+    },
+    {
+      "kind": "clinical_abbreviation",
+      "label": "임상 약어 원문 보존",
+      "source": "NICU",
+      "output": "NICU",
+      "status": "passed",
+      "detail": "보호 대상 임상 표현의 원문 표기를 대조했습니다."
+    },
+    {
+      "kind": "family",
+      "label": "환자·가족 구분",
+      "source": "",
+      "output": "",
+      "status": "not_present",
+      "detail": "원문에서 지원하는 표현이 발견되지 않았습니다."
+    },
+    {
+      "kind": "measurements",
+      "label": "수치·단위",
+      "source": "",
+      "output": "",
+      "status": "not_present",
+      "detail": "원문에서 지원하는 표현이 발견되지 않았습니다."
+    },
+    {
+      "kind": "negation",
+      "label": "부정·불확실성",
+      "source": "",
+      "output": "",
+      "status": "not_present",
+      "detail": "원문에서 지원하는 표현이 발견되지 않았습니다."
+    },
+    {
+      "kind": "time",
+      "label": "임상 날짜·시간 간격",
+      "source": "",
+      "output": "",
+      "status": "not_present",
+      "detail": "원문에서 지원하는 표현이 발견되지 않았습니다."
+    },
+    {
+      "kind": "treatment",
+      "label": "수술·약물·치료",
+      "source": "",
+      "output": "",
+      "status": "not_present",
+      "detail": "원문에서 지원하는 표현이 발견되지 않았습니다."
+    },
+    {
+      "kind": "llm_relation",
+      "label": "재태기간",
+      "source": "IUP 38+5주",
+      "output": "IUP 38+5주",
+      "status": "passed",
+      "detail": "재태기간 정보가 정확히 보존됨."
+    },
+    {
+      "kind": "llm_relation",
+      "label": "출생체중",
+      "source": "출생체중 2.95 kg",
+      "output": "출생체중 2.95 kg",
+      "status": "passed",
+      "detail": "출생체중 정보가 정확히 보존됨."
+    },
+    {
+      "kind": "llm_relation",
+      "label": "분만 방법",
+      "source": "NSVD로 출생",
+      "output": "NSVD로 출생",
+      "status": "passed",
+      "detail": "분만 방법 정보가 정확히 보존됨."
+    },
+    {
+      "kind": "llm_relation",
+      "label": "기관삽관 및 NICU 전원 시간 간격",
+      "source": "생후 약 25분 기관삽관 후 NICU 전원",
+      "output": "생후 약 25분 기관삽관 후 NICU 전원",
+      "status": "passed",
+      "detail": "기관삽관 및 NICU 전원 시간 간격 정보가 정확히 보존됨."
+    }
+  ],
+  "clinical_expressions_unchanged": true,
+  "name_removed": true,
+  "applied_edit_types": [
+    "PERSON"
+  ]
+}

@@ -10,6 +10,13 @@ DIAGNOSIS_PATTERN = (
     r"|neonatal\s+sepsis|hypoxic\s+brain\s+injury)\b"
 )
 
+GESTATIONAL_AGE = r"(?i)\b(?:IUP|GA)\s*[:=]?\s*\d{1,2}\s*(?:\+\s*\d\s*(?:주|w(?:eeks?)?)?|(?:주|w(?:eeks?)?)(?:\s*\+\s*\d\s*(?:일|d(?:ays?)?)?)?)"
+CLINICAL_ABBREVIATION = r"(?<![A-Za-z0-9_])(?:NSVD|NVD|NICU|PICU|ICU|CPR|ECMO|CT|MRI|EEG|GCS)(?![A-Za-z0-9_])"
+CLINICAL_CONTEXT = r"(?i)출생|분만|환기|삽관|소생|전원|도착|신생아|검사|촬영|소견|시행|입실|재원|수술|분만|F/U|delivery|birth|born|resuscit|ventilat|intubat|scan|imaging|admi"
+
+def name_anchored(text, start):
+    return bool(re.search(r"(?i)(?:성명|환자명|이름|patient\s+name|name)\s*[:=]\s*$",text[max(0,start-35):start]))
+
 
 def protected_spans(text):
     spans = []
@@ -22,11 +29,27 @@ def protected_spans(text):
     for kind, pattern in patterns:
         for match in re.finditer(pattern, text):
             spans.append({"start": match.start(), "end": match.end(), "kind": kind})
+    for kind, pattern in [
+        ("gestational_age", GESTATIONAL_AGE),
+        ("birth_measurement", r"(?i)(?:출생\s*체중|birth\s*weight)\s*[:=]?\s*\d+(?:\.\d+)?\s*(?:kg|g)\b"),
+        ("clinical_elapsed_time", r"생후\s*(?:약\s*)?\d+(?:\.\d+)?\s*(?:분|시간|일|주)"),
+    ]:
+        for match in re.finditer(pattern,text):
+            if not name_anchored(text,match.start()):
+                spans.append({"start":match.start(),"end":match.end(),"kind":kind})
+    for match in re.finditer(CLINICAL_ABBREVIATION,text):
+        if name_anchored(text,match.start()):continue
+        # Keep a clinical acronym only in a bounded clinical clause, never as a
+        # global exclusion of a string that may occur in a real name field.
+        around=text[max(0,match.start()-40):min(len(text),match.end()+40)]
+        around=around.replace('\n',' ')
+        if re.search(CLINICAL_CONTEXT,around):
+            spans.append({"start":match.start(),"end":match.end(),"kind":"clinical_abbreviation"})
     return sorted(spans, key=lambda d: d["start"])
 
 
 def guard_checks(source, output):
-    groups = {"measurement": True, "kinship": True, "medical_eponym_context": True, "clinical_diagnosis": True}
+    groups = {kind:True for kind in ["measurement","kinship","medical_eponym_context","clinical_diagnosis","clinical_abbreviation","gestational_age","birth_measurement","clinical_elapsed_time"]}
     protected = Counter((span["kind"], source[span["start"]:span["end"]]) for span in protected_spans(source))
     for (kind, value), count in protected.items():
         if output.count(value) < count:

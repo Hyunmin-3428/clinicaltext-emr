@@ -79,6 +79,13 @@ def pipeline_issue(code, feedback):
     error.feedback = feedback
     return error
 
+def privacy_context_edit(source, match, candidates):
+    """QUASI requires identifying context, rather than permission to paraphrase."""
+    quote=match.group()
+    if re.search(r"(?i)\d{1,3}\s*(?:세|살)|\d{1,3}[- ]year[- ]old|대학교|대학병원|종합병원|마라톤|\b(?:university|marathon|professor)\b|(?:성명|이름|환자명|연락처|병록번호)\s*[:=]",quote):
+        return True
+    return any(s["start"]<match.end() and match.start()<s["end"] and s["type"] in {"PERSON","PS_NAME","ORGANIZATION","ORG","LOCATION","ADDRESS","PHONE","EMAIL","MRN","ID","AGE","EVENT"} and s.get("policy")!="preserve_clinical_date" for s in candidates)
+
 
 def apply_edits(source, plan, detector_candidates):
     validate_schema(plan, PLAN_SCHEMA)
@@ -119,7 +126,9 @@ def apply_edits(source, plan, detector_candidates):
                     continue
                 if edit["type"] != "QUASI" or not (match.start() <= p["start"] and p["end"] <= match.end()) or replacement.count(fragment) < quote.count(fragment):
                     raise pipeline_issue("LLM_CLINICAL_EDIT_DENIED", [{"field":"edits", "quote":fragment,
-                        "reason":"수술 등 임상 사건의 실제 날짜, 경과일, 진단과 수치를 수정하지 마세요. 날짜를 토큰으로 바꾸어도 정보 손실입니다."}])
+                        "reason":"이 구절은 개인정보가 아닌 보호 대상 임상정보입니다. 약어의 풀어쓰기·번역도 하지 말고 날짜·경과일·진단·수치와 함께 원문 그대로 보존하세요."}])
+        if edit["type"]=="QUASI" and not privacy_context_edit(source,match,detector_candidates):
+            raise pipeline_issue("LLM_EDIT_INVALID",[{"field":"edits","quote":quote,"reason":"이 구절에는 일반화할 개인정보 근거가 없습니다. 표현 개선·번역·약어 풀어쓰기는 가명처리가 아니므로 이 편집을 제거하고 원문을 보존하세요."}])
         identity = (edit["type"], quote.casefold())
         if edit["type"] in {"PERSON", "CONTACT", "ID"}:
             # Token spelling and exact-string identity are code responsibilities.

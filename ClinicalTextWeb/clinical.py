@@ -47,6 +47,11 @@ def verify_relations(source, output, checks, purpose, required_phrases):
         required_types.add("time")
     effective = sorted(set(checks) | required_types)
     rows = date_rows(source, output)
+    clinical_labels={"clinical_abbreviation":"임상 약어 원문 보존","gestational_age":"재태기간 원문 보존","birth_measurement":"출생체중 보존","clinical_elapsed_time":"생후 경과시간 보존"}
+    protected_counts=Counter((p["kind"],source[p["start"]:p["end"]]) for p in protected_spans(source) if p["kind"] in clinical_labels)
+    for (kind,value),count in protected_counts.items():
+        preserved=output.count(value)>=count
+        rows.append({"kind":kind,"label":clinical_labels[kind],"source":value,"output":value if preserved else "","status":"passed" if preserved else "failed","detail":"보호 대상 임상 표현의 원문 표기를 대조했습니다." if preserved else "개인정보 처리와 관계없는 임상 표현 변경이 발견되었습니다."})
     if len(re.findall(r"최근|\brecent(?:ly)?\b",output,re.I)) > len(re.findall(r"최근|\brecent(?:ly)?\b",source,re.I)):
         rows.append({"kind":"temporal_addition","label":"시간 의미 추가","source":"","output":"최근",
                      "status":"failed","detail":"원문에 없는 최근이라는 시간 의미가 추가되었습니다."})
