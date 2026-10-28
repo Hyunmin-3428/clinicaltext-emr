@@ -19,7 +19,7 @@
       <aside class="records-panel panel">
         <div class="panel-heading"><h2>기록 목록 <span id="record-count" class="count">—</span></h2><button id="new-record" class="new-record-button">＋ 새 문서</button></div>
         <div class="date-filter"><label for="date-from">기록 조회 기간</label><div><input id="date-from" type="date" value="2023-03-01" aria-label="조회 시작 날짜"><span>—</span><input id="date-to" type="date" value="2023-03-31" aria-label="조회 종료 날짜"></div></div>
-        <div class="record-toolbar"><span>문서명 / 진료과</span><span>작성일</span></div>
+        <div class="record-toolbar"><label for="record-search">서식명</label><input id="record-search" type="search" placeholder="서식명·진료과 검색"><button id="record-search-run" class="secondary">조회</button></div>
         <div id="records" class="record-list" aria-label="합성 진료기록 목록"><p class="loading-text">기록을 불러오고 있습니다.</p></div>
 
       </aside>

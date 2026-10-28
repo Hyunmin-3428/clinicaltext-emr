@@ -31,10 +31,12 @@ function actions(){
   document.querySelectorAll(".record").forEach(x=>x.disabled=state.busy);
 }
 function renderList(){
-  const from=$("date-from").value,to=$("date-to").value;const records=state.records.filter(r=>(!from||r.date>=from)&&(!to||r.date<=to));
+  const from=$("date-from").value,to=$("date-to").value,query=$("record-search").value.trim().toLocaleLowerCase();const records=state.records.filter(r=>(!from||r.date>=from)&&(!to||r.date<=to)&&(!query||`${r.category} ${r.department} ${r.title}`.toLocaleLowerCase().includes(query)));
   $("record-count").textContent=`${records.length}건`;
   $("records").replaceChildren();
-  for(const r of records){const b=node("button",undefined,"record"+(state.selected?.id===r.id?" selected":""));b.type="button";b.setAttribute("aria-pressed",String(state.selected?.id===r.id));b.setAttribute("aria-label",`${r.category} · ${r.department}`);const top=node("div",undefined,"record-top");top.append(node("span",r.category,"record-category"),node("span",r.date.slice(2).replaceAll("-","."),"record-date"));b.append(top,node("div",r.department+" · "+r.title,"record-bottom"));b.onclick=()=>selectRecord(r);$("records").append(b);}
+  const table=node("table",undefined,"record-table"),head=node("thead"),header=node("tr"),body=node("tbody");
+  for(const label of ["","작성일","서식명","진료과"])header.append(node("th",label));head.append(header);table.append(head,body);
+  for(const r of records){const selected=state.selected?.id===r.id,tr=node("tr",undefined,selected?"selected":""),check=node("td",selected?"▣":"□","record-selector"),date=node("td",r.date,"record-date"),title=node("td"),department=node("td",r.department,"record-department");check.setAttribute("aria-hidden","true");const b=node("button",r.category,"record"+(selected?" selected":""));b.type="button";b.title=r.title;b.setAttribute("aria-pressed",String(selected));b.setAttribute("aria-label",`${r.category} · ${r.department}`);b.onclick=()=>selectRecord(r);title.append(b);tr.append(check,date,title,department);body.append(tr);}$("records").append(table);
   if(!records.length)$("records").append(node("p","해당 기간의 기록이 없습니다.","loading-text"));actions();
 }
 function selectRecord(record){
@@ -108,11 +110,12 @@ $("process-open").onclick=()=>$("purpose-dialog").showModal();$("purpose-cancel"
 $("purpose-preset").onchange=choosePurpose;$("purpose").oninput=actions;$("run").onclick=processRecord;$("review").onchange=actions;$("approve").onclick=approve;$("download").onclick=download;
 $("copy").onclick=()=>copyText(state.current.output,"승인된 가명처리 기록을 복사했습니다.");
 $("date-from").onchange=renderList;$("date-to").onchange=renderList;
+$("record-search-run").onclick=renderList;$("record-search").oninput=renderList;
 function newActions(){$("new-add").disabled=!$("new-title").value.trim()||!$("new-source").value.trim()||!$("new-synthetic").checked;}
 $("new-record").onclick=()=>$("new-dialog").showModal();$("new-cancel").onclick=()=>$("new-dialog").close();
 for(const id of ["new-title","new-source","new-synthetic"])$(id).oninput=newActions;
 $("new-file").onchange=async()=>{const file=$("new-file").files[0];if(!file)return;try{if(!file.name.toLowerCase().endsWith('.txt')||file.size>16000)throw new Error("16KB 이하의 UTF-8 텍스트(.txt) 파일을 선택해 주세요.");const text=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());if(text.length>4000)throw new Error("기록은 4,000자 이내로 입력해 주세요.");$("new-source").value=text;$("new-title").value=file.name.replace(/\.txt$/i,'').slice(0,60);$("file-message").textContent=file.name;newActions();}catch(e){$("file-message").textContent=e.message;}};
-$("new-add").onclick=()=>{if($("new-add").disabled)return;const record={id:'custom-'+crypto.randomUUID(),category:$("new-title").value.trim(),department:'직접 입력',title:'새 합성 기록',date:new Date().toLocaleDateString('sv-SE'),text:$("new-source").value,purpose:'임상 경과 연구',custom:true};state.records.unshift(record);$("date-from").value='';$("date-to").value='';$("new-dialog").close();selectRecord(record);$("new-title").value='새 외래기록';$("new-source").value='';$("new-synthetic").checked=false;$("new-file").value='';$("file-message").textContent='';newActions();};
+$("new-add").onclick=()=>{if($("new-add").disabled)return;const record={id:'custom-'+crypto.randomUUID(),category:$("new-title").value.trim(),department:'직접 입력',title:'새 합성 기록',date:new Date().toLocaleDateString('sv-SE'),text:$("new-source").value,purpose:'임상 경과 연구',custom:true};state.records.unshift(record);$("date-from").value='';$("date-to").value='';$("record-search").value='';$("new-dialog").close();selectRecord(record);$("new-title").value='새 외래기록';$("new-source").value='';$("new-synthetic").checked=false;$("new-file").value='';$("file-message").textContent='';newActions();};
 $("share").onclick=()=>$("share-dialog").showModal();
 $("copy-url").onclick=()=>copyText(cfg.publicUrl||location.origin,"체험 주소를 복사했습니다.");
 async function init(){
