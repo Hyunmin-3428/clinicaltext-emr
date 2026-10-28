@@ -51,18 +51,51 @@
     },
     {
       "id": "neonatal",
-      "label": "신생아 기록 · 진단명 보존",
-      "purpose": "신생아 뇌손상과 호흡부전 연구",
+      "label": "신생아 입원초진 · 호흡곤란",
+      "date": "2023-03-06",
+      "category": "입원초진기록",
+      "title": "신생아 빈호흡 입원 평가",
+      "department": "신생아과",
+      "purpose": "신생아 호흡 경과 연구. 임상 날짜, GA와 출생체중, 성별, 생후 경과시간, CPAP·FiO2·SpO2와 호흡수·심박수, 수유량·간격, 증상의 부정, 진단의 의심·배제 필요·호전 여부, 배양 검사 결과의 미확인 또는 음성을 원문대로 보존한다. 원문에 없는 다른 시점의 결과를 추가하지 않는다. 이름과 병록번호는 가명처리한다.",
       "checks": [
+        "measurements",
         "negation",
         "time"
       ],
-      "text": "성명: 김민준.\n■ Dx\n#Hypoxic ischaemic encephalopathy of newborn\n#Respiratory failure of newborn\n#Metabolic acidosis\n■ PI\n생후 1일. No evidence of neonatal sepsis.",
-      "note": "가상 환자의 합성 예제입니다. Respiratory failure와 Metabolic acidosis 등 진단명을 보존합니다.",
-      "category": "입원기록",
-      "department": "신생아중환자실",
+      "text": "[독립 작성한 합성 진료기록]\n성명: 윤가람.\n병록번호: SIM-N3401\n입원일: 2023년 3월 6일\n\n■ C.C\ntachypnea\n\n■ PI\nGA 38+3주, 출생체중 2.84 kg, 남아. 제왕절개로 출생, A/S 8/9.\n생후 2시간부터 빈호흡과 경한 흉부함몰 보여 NICU 입원.\nCPAP 5 cmH2O, FiO2 0.25 적용 후 SpO2 96%로 유지됨.\n기관내삽관 시행하지 않음. 경련 없음.\n\n■ PHx / FHx\n산모 발열 없음. 조기양막파수 없음. 가족력상 선천성 심질환 없음.\n\n■ ROS / PEx\n발열 없음. RR 72/min, HR 148 bpm. 양측 호흡음 대칭적.\n복부 soft, distension 없음.\n\n■ Assessment\n# Transient tachypnea of newborn, suspected\n# Neonatal sepsis, rule out\n\n■ Plan\n호흡수와 산소 요구량 추적하며 호흡보조 감량 여부 평가.\n혈액배양 검사 중으로 결과 미확인. 보호자에게 현재 상태 설명함.",
+      "note": "독립 작성한 가상 신생아의 합성 기록입니다. 실제 환자의 경과를 전사한 자료가 아닙니다."
+    },
+    {
+      "id": "neonatal-course",
+      "label": "신생아 경과 · 호흡보조 감량",
+      "date": "2023-03-07",
+      "category": "입원경과기록",
+      "title": "신생아 호흡 및 수유 경과",
+      "department": "신생아과",
+      "purpose": "신생아 호흡 경과 연구. 임상 날짜, GA와 출생체중, 성별, 생후 경과시간, CPAP·FiO2·SpO2와 호흡수·심박수, 수유량·간격, 증상의 부정, 진단의 의심·배제 필요·호전 여부, 배양 검사 결과의 미확인 또는 음성을 원문대로 보존한다. 원문에 없는 다른 시점의 결과를 추가하지 않는다. 이름과 병록번호는 가명처리한다.",
+      "checks": [
+        "measurements",
+        "negation",
+        "time"
+      ],
+      "text": "[독립 작성한 합성 진료기록]\n성명: 윤가람.\n병록번호: SIM-N3401\n진료일: 2023년 3월 7일\n\n■ Problem list\n# Transient tachypnea of newborn, suspected\n# Neonatal sepsis, rule out\n\n■ S\n생후 1일. 전일보다 호흡수 감소함. 발열 없음. 무호흡 없음.\n\n■ O\nGA 38+3주, 출생체중 2.84 kg, 남아.\nNICU 입원 1일 경과. RR 50/min, HR 140 bpm.\n생후 24시간에 CPAP 중단 후 room air에서 SpO2 97% 유지됨.\n흉부함몰 없음. 양측 호흡음 대칭적.\n혈액배양 검사 중으로 최종 결과 미확인.\n모유 및 분유 20 mL씩 3시간 간격 경구 수유 시작, 구토 없음.\n\n■ Assessment\n호흡곤란 호전 추세이나 감염 여부는 배양 결과 확인 필요.\n\n■ Plan\nroom air 유지하며 호흡 상태와 수유 내약성 관찰.\n배양 결과 추적. 보호자에게 경과 설명함.",
+      "note": "독립 작성한 가상 신생아의 합성 기록입니다. 실제 환자의 경과를 전사한 자료가 아닙니다."
+    },
+    {
+      "id": "neonatal-discharge",
+      "label": "신생아 퇴원요약 · 시간관계",
       "date": "2023-03-09",
-      "title": "신생아 진단과 임상 경과"
+      "category": "퇴원요약지",
+      "title": "신생아 호흡 경과 퇴원요약",
+      "department": "신생아과",
+      "purpose": "신생아 호흡 경과 연구. 임상 날짜, GA와 출생체중, 성별, 생후 경과시간, CPAP·FiO2·SpO2와 호흡수·심박수, 수유량·간격, 증상의 부정, 진단의 의심·배제 필요·호전 여부, 배양 검사 결과의 미확인 또는 음성을 원문대로 보존한다. 원문에 없는 다른 시점의 결과를 추가하지 않는다. 이름과 병록번호는 가명처리한다.",
+      "checks": [
+        "measurements",
+        "negation",
+        "time"
+      ],
+      "text": "[독립 작성한 합성 진료기록]\n성명: 윤가람.\n병록번호: SIM-N3401\n입원일: 2023년 3월 6일\n퇴원일: 2023년 3월 9일\n\n■ Discharge diagnosis\n# Transient tachypnea of newborn, resolved\n\n■ Hospital course\nGA 38+3주, 출생체중 2.84 kg, 남아. 제왕절개로 출생, A/S 8/9.\n생후 2시간부터 빈호흡 관찰되어 NICU 입원.\nCPAP 5 cmH2O, FiO2 0.25 적용 후 호흡 상태 호전됨.\n생후 24시간에 CPAP 중단, 이후 48시간 이상 room air에서 안정적.\n퇴원 시 RR 42/min, HR 132 bpm, SpO2 98%.\n혈액배양 48시간 음성. 발열 없음. 무호흡 및 경련 없음.\n모유 및 분유 35 mL씩 3시간 간격 경구 수유, 구토 없음.\n입원 3일 경과 후 퇴원함.\n\n■ Discharge plan\n퇴원약 없음. 퇴원 7일 후 신생아 외래 추적 예정.\n보호자에게 수유 및 호흡 상태 관찰 사항 설명함.",
+      "note": "독립 작성한 가상 신생아의 합성 기록입니다. 실제 환자의 경과를 전사한 자료가 아닙니다."
     },
     {
       "id": "medication",

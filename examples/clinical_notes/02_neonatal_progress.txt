@@ -1,0 +1,26 @@
+[독립 작성한 합성 진료기록]
+성명: 윤가람.
+병록번호: SIM-N3401
+진료일: 2023년 3월 7일
+
+■ Problem list
+# Transient tachypnea of newborn, suspected
+# Neonatal sepsis, rule out
+
+■ S
+생후 1일. 전일보다 호흡수 감소함. 발열 없음. 무호흡 없음.
+
+■ O
+GA 38+3주, 출생체중 2.84 kg, 남아.
+NICU 입원 1일 경과. RR 50/min, HR 140 bpm.
+생후 24시간에 CPAP 중단 후 room air에서 SpO2 97% 유지됨.
+흉부함몰 없음. 양측 호흡음 대칭적.
+혈액배양 검사 중으로 최종 결과 미확인.
+모유 및 분유 20 mL씩 3시간 간격 경구 수유 시작, 구토 없음.
+
+■ Assessment
+호흡곤란 호전 추세이나 감염 여부는 배양 결과 확인 필요.
+
+■ Plan
+room air 유지하며 호흡 상태와 수유 내약성 관찰.
+배양 결과 추적. 보호자에게 경과 설명함.

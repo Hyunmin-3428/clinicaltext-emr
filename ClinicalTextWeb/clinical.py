@@ -47,7 +47,7 @@ def verify_relations(source, output, checks, purpose, required_phrases):
         required_types.add("time")
     effective = sorted(set(checks) | required_types)
     rows = date_rows(source, output)
-    clinical_labels={"clinical_abbreviation":"임상 약어 원문 보존","gestational_age":"재태기간 원문 보존","birth_measurement":"출생체중 보존","clinical_elapsed_time":"생후 경과시간 보존"}
+    clinical_labels={"clinical_abbreviation":"임상 약어 원문 보존","gestational_age":"재태기간 원문 보존","birth_measurement":"출생체중 보존","clinical_elapsed_time":"생후 경과시간 보존","clinical_sign":"임상 증상·관찰 항목 보존"}
     protected_counts=Counter((p["kind"],source[p["start"]:p["end"]]) for p in protected_spans(source) if p["kind"] in clinical_labels)
     for (kind,value),count in protected_counts.items():
         preserved=output.count(value)>=count

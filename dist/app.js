@@ -31,7 +31,7 @@ function actions(){
   document.querySelectorAll(".record").forEach(x=>x.disabled=state.busy);
 }
 function renderList(){
-  const from=$("date-from").value,to=$("date-to").value,query=$("record-search").value.trim().toLocaleLowerCase();const records=state.records.filter(r=>(!from||r.date>=from)&&(!to||r.date<=to)&&(!query||`${r.category} ${r.department} ${r.title}`.toLocaleLowerCase().includes(query)));
+  const from=$("date-from").value,to=$("date-to").value,query=$("record-search").value.trim().toLocaleLowerCase();const records=state.records.filter(r=>(!from||r.date>=from)&&(!to||r.date<=to)&&(!query||`${r.category} ${r.department} ${r.title}`.toLocaleLowerCase().includes(query))).sort((a,b)=>b.date.localeCompare(a.date));
   $("record-count").textContent=`${records.length}건`;
   $("records").replaceChildren();
   const table=node("table",undefined,"record-table"),head=node("thead"),header=node("tr"),body=node("tbody");

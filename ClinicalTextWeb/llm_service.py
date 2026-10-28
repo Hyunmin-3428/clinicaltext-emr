@@ -16,12 +16,15 @@ from .llm_client import ModelConfig, StructuredClient
 from .llm_pipeline import PurposePipeline, audit_evidence
 from .risk_candidates import detect_for_research
 from .temporal_policy import permitted_calendar_occurrences, preserved_date_candidate, POLICY_VERSION
+from .synthetic_notes import neonatal_examples
 
 SURGERY = "환자 김민수. 3월 10일 충수절제술 시행. 수술 3일 후에도 발열 없음. 수술 부위 감염 소견 없음."
 NEONATAL = "성명: 김민준.\n■ Dx\n#Hypoxic ischaemic encephalopathy of newborn\n#Respiratory failure of newborn\n#Metabolic acidosis\n■ PI\n생후 1일. No evidence of neonatal sepsis."
 SURROGATE = "김민수(47세, 연세대학교 교수)는 2023년 3월 10일 본원에서 충수절제술을 시행받았다. 수술 3일 후에도 발열은 없었고, F/U CT에서 특이 소견은 없었다. 과거력상 2018년 서울마라톤 완주 후 무릎 통증이 있었으며, 부친이 52세에 심근경색으로 사망하였다."
 SURROGATE_PURPOSE = "수술 후 감염 및 임상 경과 연구. 충수절제술의 실제 수술 날짜(연·월·일), 수술 후 경과일, 발열·F/U CT의 부정 표현, 과거력의 연도와 장거리 운동 후 무릎 통증, 부친의 심근경색 사망 가족관계와 52세라는 나이는 보존한다. 환자의 정확한 나이와 이름, 대학명·직함, 구체적인 행사명은 일반화한다."
-AUTHORED_SOURCES = {digest(item["source"]) for item in FIXTURES.values()} | {digest(SURGERY), digest(NEONATAL), digest(SURROGATE)}
+AUTHORED_SOURCES = ({digest(item["source"]) for item in FIXTURES.values()}
+                    | {digest(SURGERY), digest(NEONATAL), digest(SURROGATE)}
+                    | {digest(item["text"]) for item in neonatal_examples()})
 
 
 class EvidenceRegistry:

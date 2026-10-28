@@ -13,6 +13,7 @@ DIAGNOSIS_PATTERN = (
 GESTATIONAL_AGE = r"(?i)\b(?:IUP|GA)\s*[:=]?\s*\d{1,2}\s*(?:\+\s*\d\s*(?:주|w(?:eeks?)?)?|(?:주|w(?:eeks?)?)(?:\s*\+\s*\d\s*(?:일|d(?:ays?)?)?)?)"
 CLINICAL_ABBREVIATION = r"(?<![A-Za-z0-9_])(?:NSVD|NVD|NICU|PICU|ICU|CPR|ECMO|CT|MRI|EEG|GCS)(?![A-Za-z0-9_])"
 CLINICAL_CONTEXT = r"(?i)출생|분만|환기|삽관|소생|전원|도착|신생아|검사|촬영|소견|시행|입실|재원|수술|분만|F/U|delivery|birth|born|resuscit|ventilat|intubat|scan|imaging|admi"
+CLINICAL_SIGN = r"빈호흡(?=\s*(?:과|및|관찰|지속|호전|보여))|호흡수(?=\s*(?:와|및|감소|증가|추적|측정))"
 
 def name_anchored(text, start):
     return bool(re.search(r"(?i)(?:성명|환자명|이름|patient\s+name|name)\s*[:=]\s*$",text[max(0,start-35):start]))
@@ -30,6 +31,7 @@ def protected_spans(text):
         for match in re.finditer(pattern, text):
             spans.append({"start": match.start(), "end": match.end(), "kind": kind})
     for kind, pattern in [
+        ("clinical_sign", CLINICAL_SIGN),
         ("gestational_age", GESTATIONAL_AGE),
         ("birth_measurement", r"(?i)(?:출생\s*체중|birth\s*weight)\s*[:=]?\s*\d+(?:\.\d+)?\s*(?:kg|g)\b"),
         ("clinical_elapsed_time", r"생후\s*(?:약\s*)?\d+(?:\.\d+)?\s*(?:분|시간|일|주)"),
@@ -49,7 +51,7 @@ def protected_spans(text):
 
 
 def guard_checks(source, output):
-    groups = {kind:True for kind in ["measurement","kinship","medical_eponym_context","clinical_diagnosis","clinical_abbreviation","gestational_age","birth_measurement","clinical_elapsed_time"]}
+    groups = {kind:True for kind in ["measurement","kinship","medical_eponym_context","clinical_diagnosis","clinical_abbreviation","gestational_age","birth_measurement","clinical_elapsed_time","clinical_sign"]}
     protected = Counter((span["kind"], source[span["start"]:span["end"]]) for span in protected_spans(source))
     for (kind, value), count in protected.items():
         if output.count(value) < count:

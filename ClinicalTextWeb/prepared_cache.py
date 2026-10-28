@@ -8,7 +8,7 @@ from ClinicalCDSGateway.gateway.common import canonical, digest, Denied
 from .llm_pipeline import audit_evidence
 
 ROOT=Path(__file__).resolve().parent.parent
-FILES=['ClinicalTextWeb/prompts.py','ClinicalTextWeb/llm_pipeline.py','ClinicalTextWeb/llm_service.py','ClinicalTextWeb/clinical.py','ClinicalTextWeb/temporal_policy.py','ClinicalTextWeb/privacy_policy.py','ClinicalTextWeb/risk_candidates.py','ClinicalTextWeb/input_text.py','ClinicalTextDeid/clinical_guards.py','ClinicalTextDeid/detectors.py','ClinicalTextDeid/generalize.py']
+FILES=['ClinicalTextWeb/prompts.py','ClinicalTextWeb/llm_pipeline.py','ClinicalTextWeb/llm_service.py','ClinicalTextWeb/clinical.py','ClinicalTextWeb/temporal_policy.py','ClinicalTextWeb/privacy_policy.py','ClinicalTextWeb/risk_candidates.py','ClinicalTextWeb/input_text.py','ClinicalTextDeid/clinical_guards.py','ClinicalTextDeid/detectors.py','ClinicalTextDeid/generalize.py','ClinicalTextWeb/synthetic_notes.py','examples/clinical_notes/01_neonatal_admission.txt','examples/clinical_notes/02_neonatal_progress.txt','examples/clinical_notes/03_neonatal_discharge.txt']
 
 def fingerprint():
     return digest(canonical({name:hashlib.sha256((ROOT/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in FILES}))

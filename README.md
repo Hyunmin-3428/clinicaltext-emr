@@ -96,7 +96,7 @@ Compatible Unicode typography (full-width digits/letters, compatibility units an
 
 ## Presentation mode: 50 visitors
 
-`event_limits.json` is the common public queue / GPU agent policy. Six authored example-purpose pairs are precomputed with the real model, version-bound and revalidated on every use. The UI explicitly labels **사전 실행 결과**. A cache miss never falls back to inference. Approvals and signed exports are generated separately for each visitor; cached approvals or expired signatures are not reused.
+`event_limits.json` is the common public queue / GPU agent policy. Eight authored example-purpose pairs (seven notes and an alternative purpose for the figure example) are precomputed with the real model, version-bound and revalidated on every use. The UI explicitly labels **사전 실행 결과**. A cache miss never falls back to inference. Approvals and signed exports are generated separately for each visitor; cached approvals or expired signatures are not reused.
 
 - 256 visitor sessions (headroom for refreshes) and 128 lightweight pending jobs; shared venue Wi-Fi allowed (200 session starts per IP / 10 min, within the global cap).
 - One live GPU inference at a time, at most 2 pending live jobs, minimum 120 seconds between admissions, 1 per visitor / 10 min, 12 total / hour.
@@ -108,3 +108,9 @@ Compatible Unicode typography (full-width digits/letters, compatibility units an
 This is application-level admission and time control, not a physical GPU partition or a guarantee of zero host contention. GPU occupancy is rechecked before each model call. If another job begins between checks, the project cannot preempt or manage it. For an event requiring strict hardware isolation, leave live inference paused and serve the prepared examples only, or reserve a GPU through the server's normal scheduler.
 
 Prepare once, using the same guard and hourly budget: `python warm_event_cache.py --runtime ~/clinicaltext/runtime/sessions`. The deployed worker is `gpu_agent.py`; the optional standalone `demo_server.py` is a development path with separate limits.
+
+## Synthetic clinical-note files
+
+`examples/clinical_notes/` contains an independently written fictional neonatal admission, progress note and discharge summary, with plain-text headings used in clinical documentation. The same fictional infant progresses from suspected transient tachypnea with a pending culture to recovery and a negative culture. These are not real patient notes with identifiers substituted. They contain no copied source narrative or original patient details. The older three-diagnosis neonatal string remains a regression fixture; it is no longer the public neonatal record.
+
+`ClinicalTextWeb/synthetic_notes.py` supplies these files to the agent and the authored-source registry. Run `python build_catalog.py` after changing example sources, then `node build.mjs` to embed the identical records in the hosted queue. Example files and metadata participate in the prepared-cache fingerprint. Clinical context guards prevent Korean sign terms from being treated as names while keeping explicit name fields detectable. A generic `Hospital course` heading is not a named hospital.

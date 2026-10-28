@@ -133,7 +133,7 @@ def detect(text: str, hints=None, *, detector="hybrid"):
         _add_matches(spans, view, offsets, r"(?:성명|이름|환자)\s*[:=]\s*([가-힣]{2,4})(?=\b|[은는이가의,.;])", "PERSON", 1)
         _add_matches(spans, view, offsets, r"(?m)^\s*([가-힣]{2,4})(?=\s*[（(]\s*\d{1,3}\s*세)", "PERSON", 1)
         _add_matches(spans, view, offsets, r"(?i)\b(?:MRN|patient ID|chart number|등록번호|병록번호)\s*[:=]\s*([A-Z0-9-]{4,30})", "MRN", 1)
-        _add_matches(spans, view, offsets, r"\b(?:[A-Z][A-Za-z]+\s+){0,3}(?:University|Hospital)\b", "ORGANIZATION")
+        _add_matches(spans, view, offsets, r"\b(?:[A-Z][A-Za-z]+\s+){1,3}(?:University|Hospital)(?=\b|에서|으로|에|의|은|는|이|가|와|과)", "ORGANIZATION")
         _add_matches(spans, view, offsets, r"(?:[가-힣]{2,10})(?:대학교|대학병원)\b", "ORGANIZATION")
         _add_matches(spans, view, offsets, r"\b(?:[A-Z][a-z]+\s+){1,2}Marathon\b", "EVENT")
     if hints is not None:

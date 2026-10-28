@@ -22,7 +22,7 @@ def wait_job(job,token):
 
 def visitor(i):
     session=call('/api/bootstrap');token=session['token']
-    assert len(session['presentation']['cache_ready'])==6
+    assert len(session['presentation']['cache_ready'])>=len(session['records'])
     record=session['records'][i%len(session['records'])]
     started=time.monotonic()
     job=call('/api/analyze',{'record_id':record['id'],'purpose_id':'record-default','purpose':record['purpose']},token)

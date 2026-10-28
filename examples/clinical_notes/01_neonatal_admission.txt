@@ -1,0 +1,28 @@
+[독립 작성한 합성 진료기록]
+성명: 윤가람.
+병록번호: SIM-N3401
+입원일: 2023년 3월 6일
+
+■ C.C
+tachypnea
+
+■ PI
+GA 38+3주, 출생체중 2.84 kg, 남아. 제왕절개로 출생, A/S 8/9.
+생후 2시간부터 빈호흡과 경한 흉부함몰 보여 NICU 입원.
+CPAP 5 cmH2O, FiO2 0.25 적용 후 SpO2 96%로 유지됨.
+기관내삽관 시행하지 않음. 경련 없음.
+
+■ PHx / FHx
+산모 발열 없음. 조기양막파수 없음. 가족력상 선천성 심질환 없음.
+
+■ ROS / PEx
+발열 없음. RR 72/min, HR 148 bpm. 양측 호흡음 대칭적.
+복부 soft, distension 없음.
+
+■ Assessment
+# Transient tachypnea of newborn, suspected
+# Neonatal sepsis, rule out
+
+■ Plan
+호흡수와 산소 요구량 추적하며 호흡보조 감량 여부 평가.
+혈액배양 검사 중으로 결과 미확인. 보호자에게 현재 상태 설명함.

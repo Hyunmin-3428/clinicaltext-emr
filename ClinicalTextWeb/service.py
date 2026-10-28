@@ -70,6 +70,7 @@ class Session:
 
 def examples():
     from .llm_service import SURGERY, NEONATAL, SURROGATE, SURROGATE_PURPOSE
+    from .synthetic_notes import neonatal_examples
     return [
         {"id": "surrogate", "label": "모식도 예시 · 자연스러운 대체 기록", "purpose": SURROGATE_PURPOSE,
          "checks": ["treatment", "time", "negation", "family"], "text": SURROGATE, "note": "가상의 인물로 작성한 합성 예제입니다. 이름·기관·행사는 일반화하고, 실제 수술 날짜·3일 경과·가족관계·52세 사망 정보를 보존합니다."},
@@ -77,8 +78,7 @@ def examples():
          "checks": ["measurements", "negation"], "text": FIXTURES["connected-hybrid"]["source"], "note": "등록된 합성 예제입니다. 실제 탐지기 연결부터 승인·반출까지 시연합니다."},
         {"id": "surgery", "label": "수술 기록 · 목적별 처리", "purpose": "수술 후 감염 위험인자 연구",
          "checks": ["treatment", "time", "negation"], "text": SURGERY, "note": "서버에 등록한 합성 수술 기록입니다. LLM 모드에서는 별도 검증 통과 후 승인할 수 있습니다."},
-        {"id": "neonatal", "label": "신생아 기록 · 진단명 보존", "purpose": "신생아 뇌손상과 호흡부전 연구",
-         "checks": ["negation", "time"], "text": NEONATAL, "note": "가상 환자의 합성 예제입니다. Respiratory failure와 Metabolic acidosis 등 진단명을 보존합니다."},
+        *neonatal_examples(),
         {"id": "medication", "label": "투약 서술 · 보존 점검", "purpose": "폐렴 약물 치료 연구. 환자의 정확한 나이 47세, 폐렴 진단, 발열 없음, amoxicillin 500 mg 경구 1일 3회 복용 중이라는 약물·용량·경로·횟수를 필수 보존한다. 이름, 연락처, 병록번호는 가명처리한다.",
          "checks": ["treatment", "measurements", "negation"], "text": FIXTURES["ko-treatment"]["source"], "note": "합성 자유서술 안의 약물 용량과 부정 표현을 점검합니다. 정형 투약 DB는 처리하지 않습니다."},
     ]

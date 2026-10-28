@@ -71,7 +71,7 @@ class PublicTests(unittest.TestCase):
         self.fail("Worker did not finish")
     def test_sources_are_authored_and_calendar_dates_present(self):
         boot = self.app.bootstrap()
-        self.assertEqual(len(boot["records"]), 5)
+        self.assertEqual(len(boot["records"]), 7)
         self.assertIn("2023년 3월 10일", boot["records"][0]["text"])
         self.assertNotIn("base_url", boot)
     def test_arbitrary_source_field_rejected(self):

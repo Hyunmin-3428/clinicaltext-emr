@@ -1,0 +1,22 @@
+[독립 작성한 합성 진료기록]
+성명: 윤가람.
+병록번호: SIM-N3401
+입원일: 2023년 3월 6일
+퇴원일: 2023년 3월 9일
+
+■ Discharge diagnosis
+# Transient tachypnea of newborn, resolved
+
+■ Hospital course
+GA 38+3주, 출생체중 2.84 kg, 남아. 제왕절개로 출생, A/S 8/9.
+생후 2시간부터 빈호흡 관찰되어 NICU 입원.
+CPAP 5 cmH2O, FiO2 0.25 적용 후 호흡 상태 호전됨.
+생후 24시간에 CPAP 중단, 이후 48시간 이상 room air에서 안정적.
+퇴원 시 RR 42/min, HR 132 bpm, SpO2 98%.
+혈액배양 48시간 음성. 발열 없음. 무호흡 및 경련 없음.
+모유 및 분유 35 mL씩 3시간 간격 경구 수유, 구토 없음.
+입원 3일 경과 후 퇴원함.
+
+■ Discharge plan
+퇴원약 없음. 퇴원 7일 후 신생아 외래 추적 예정.
+보호자에게 수유 및 호흡 상태 관찰 사항 설명함.

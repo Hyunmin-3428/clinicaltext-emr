@@ -23,15 +23,17 @@ from xml.sax.saxutils import escape
 from ClinicalCDSGateway.gateway.common import Denied, canonical, strict_json, exact_schema
 from ClinicalTextWeb.service import DemoService, Session, examples, MESSAGES
 from ClinicalTextWeb.llm_service import SURROGATE_PURPOSE
+from ClinicalTextWeb.synthetic_notes import neonatal_examples
 
 ROOT = Path(__file__).resolve().parent
 RECORD_INFO = {
     "surrogate": ("경과기록", "외과", "2023-03-13", "수술 후 경과 및 과거력"),
     "bilingual": ("외래 초진기록", "순환기내과", "2023-03-10", "한영 혼용 진찰 기록"),
     "surgery": ("수술기록", "외과", "2023-03-10", "충수절제술 후 감염 평가"),
-    "neonatal": ("입원기록", "신생아중환자실", "2023-03-09", "신생아 진단과 임상 경과"),
     "medication": ("외래 경과기록", "호흡기내과", "2023-03-08", "폐렴 치료와 약물 용량"),
 }
+RECORD_INFO.update({r["id"]:tuple(r[k] for k in ["category","department","date","title"])
+                    for r in neonatal_examples()})
 PURPOSES = [
     {"id": "clinical", "label": "수술 후 경과·감염 연구", "purpose": SURROGATE_PURPOSE},
     {"id": "exact-age", "label": "연령별 수술 예후 연구", "purpose": SURROGATE_PURPOSE.replace("환자의 정확한 나이와 이름", "환자의 정확한 나이 47세는 연령별 분석에 필요하므로 반드시 보존한다. 이름")},
