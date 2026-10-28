@@ -1,0 +1,1 @@
+window.CLINICAL_DEMO = {"apiBase": "https://clinicaltext-emr.alexchoi676.chatgpt.site", "publicUrl": "https://hyunmin-3428.github.io/clinicaltext-emr/", "githubUrl": "https://github.com/Hyunmin-3428/clinicaltext-emr"};

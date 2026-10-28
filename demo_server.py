@@ -94,8 +94,18 @@ class PublicDemo:
 
     def submit(self, token, data, visitor):
         self.service.session(token)
-        exact_schema(data, {"record_id", "purpose_id", "purpose"})
-        if type(data["record_id"]) is not str or data["record_id"] not in self.records or data["purpose_id"] not in {p["id"] for p in PURPOSES}:
+        custom = type(data) is dict and "custom_note" in data
+        exact_schema(data, {"record_id", "purpose_id", "purpose"} | ({"custom_note"} if custom else set()))
+        if custom:
+            from ClinicalCDSGateway.gateway.common import plain_text
+            note = data["custom_note"]
+            exact_schema(note, {"title", "text", "synthetic_confirmed"})
+            if (note["synthetic_confirmed"] is not True or type(note["title"]) is not str or not 1<=len(note["title"].strip())<=60
+                    or type(note["text"]) is not str or not 1<=len(note["text"].strip())<=4000 or len(note["text"].encode())>16000
+                    or type(data["record_id"]) is not str or not data["record_id"].startswith("custom-")):
+                raise Denied("WEB_INPUT_INVALID")
+            plain_text(note["text"])
+        if type(data["record_id"]) is not str or (not custom and data["record_id"] not in self.records) or data["purpose_id"] not in {p["id"] for p in PURPOSES}:
             raise Denied("WEB_INPUT_INVALID")
         if type(data["purpose"]) is not str or not 1 <= len(data["purpose"].strip()) <= 800:
             raise Denied("WEB_INPUT_INVALID")
@@ -130,7 +140,8 @@ class PublicDemo:
         with self.lock:
             job = self.jobs[job_id]
             job["state"] = "running"
-        record = self.records[data["record_id"]]
+        record = ({"text":data["custom_note"]["text"], "checks":["treatment","measurements","time","negation","family"]}
+                  if "custom_note" in data else self.records[data["record_id"]])
         try:
             view = self.service.analyze(job["owner"], {"engine": "llm", "purpose": data["purpose"].strip(), "text": record["text"], "checks": record["checks"], "required_phrases": [], "synthetic_consent": True})
             with self.lock:
@@ -256,7 +267,7 @@ class Handler(BaseHTTPRequestHandler):
         try:
             self.connection.settimeout(10)
             size = int(self.headers.get("Content-Length", "0"))
-            if self.headers.get("Transfer-Encoding") or not 0 < size <= 5000:
+            if self.headers.get("Transfer-Encoding") or not 0 < size <= 24000:
                 raise Denied("SIZE_LIMIT")
             raw = self.rfile.read(size)
             self.origin()

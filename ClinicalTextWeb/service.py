@@ -79,7 +79,7 @@ def examples():
          "checks": ["treatment", "time", "negation"], "text": SURGERY, "note": "서버에 등록한 합성 수술 기록입니다. LLM 모드에서는 별도 검증 통과 후 승인할 수 있습니다."},
         {"id": "neonatal", "label": "신생아 기록 · 진단명 보존", "purpose": "신생아 뇌손상과 호흡부전 연구",
          "checks": ["negation", "time"], "text": NEONATAL, "note": "가상 환자의 합성 예제입니다. Respiratory failure와 Metabolic acidosis 등 진단명을 보존합니다."},
-        {"id": "medication", "label": "투약 서술 · 보존 점검", "purpose": "약물 용량과 치료 중 증상 보존 연구",
+        {"id": "medication", "label": "투약 서술 · 보존 점검", "purpose": "폐렴 약물 치료 연구. 환자의 정확한 나이 47세, 폐렴 진단, 발열 없음, amoxicillin 500 mg 경구 1일 3회 복용 중이라는 약물·용량·경로·횟수를 필수 보존한다. 이름, 연락처, 병록번호는 가명처리한다.",
          "checks": ["treatment", "measurements", "negation"], "text": FIXTURES["ko-treatment"]["source"], "note": "합성 자유서술 안의 약물 용량과 부정 표현을 점검합니다. 정형 투약 DB는 처리하지 않습니다."},
     ]
 

@@ -9,6 +9,8 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--site',default='https://clinicaltext-emr.alexchoi676.chatgpt.site')
     parser.add_argument('--output',default='.runtime/public-cases.json')
+    parser.add_argument('--record',default='')
+    parser.add_argument('--purpose',default='')
     args=parser.parse_args()
     token=''
     def api(path,data=None):
@@ -26,7 +28,8 @@ def main():
             time.sleep(1.5)
         raise RuntimeError('Public job timeout')
     for record in bootstrap['records']:
-        purpose=record['purpose']
+        if args.record and record['id']!=args.record:continue
+        purpose=args.purpose or record['purpose']
         result=wait(api('/api/analyze',{'record_id':record['id'],'purpose_id':'record-default','purpose':purpose}))
         if result['state']=='done':
             view=result['view']

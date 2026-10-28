@@ -52,7 +52,13 @@ def main():
                 try:
                     data=job['payload']
                     if job['kind']=='analyze':
-                        record=app.records[data['record_id']]
+                        if 'custom_note' in data:
+                            from ClinicalCDSGateway.gateway.common import plain_text
+                            custom=data['custom_note']
+                            if custom.get('synthetic_confirmed') is not True or not isinstance(custom.get('text'),str) or len(custom['text'])>4000:raise Denied('WEB_INPUT_INVALID')
+                            plain_text(custom['text'])
+                            record={'text':custom['text'],'checks':['treatment','measurements','time','negation','family']}
+                        else:record=app.records[data['record_id']]
                         result=app.service.analyze(local,{'engine':'llm','purpose':data['purpose'],'text':record['text'],'checks':record['checks'],'required_phrases':[],'synthetic_consent':True})
                     elif job['kind']=='approve':result=app.approve(local,data)
                     elif job['kind']=='export':result=app.export(local,data)

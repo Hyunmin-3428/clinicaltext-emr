@@ -5,7 +5,7 @@ const base=decodeURIComponent(root);
 const output=path.join(base,'dist/server');fs.mkdirSync(output,{recursive:true});
 const assets={};
 for(const [name,type] of Object.entries({'index.html':'text/html; charset=utf-8','styles.css':'text/css; charset=utf-8','app.js':'text/javascript; charset=utf-8','config.js':'text/javascript; charset=utf-8','favicon.svg':'image/svg+xml','qr.svg':'image/svg+xml'}))assets[name==='index.html'?'/':'/'+name]={type,text:fs.readFileSync(path.join(base,'dist',name),'utf8')};
-assets['/config.js'].text=`window.CLINICAL_DEMO = ${JSON.stringify({apiBase:'',publicUrl:'https://clinicaltext-emr.alexchoi676.chatgpt.site',githubUrl:'https://github.com/Hyunmin-3428/clinicaltext-emr'})};`;
+assets['/config.js'].text=`window.CLINICAL_DEMO = ${JSON.stringify({apiBase:'',publicUrl:'https://hyunmin-3428.github.io/clinicaltext-emr/',githubUrl:'https://github.com/Hyunmin-3428/clinicaltext-emr'})};`;
 const catalog=JSON.parse(fs.readFileSync(path.join(base,'catalog.json'),'utf8'));
 const source='const ASSETS='+JSON.stringify(assets)+';\nconst CATALOG='+JSON.stringify(catalog)+';\n'+fs.readFileSync(path.join(base,'worker/index.js'),'utf8');
 fs.writeFileSync(path.join(output,'index.js'),source);

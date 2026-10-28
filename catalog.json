@@ -67,7 +67,7 @@
     {
       "id": "medication",
       "label": "투약 서술 · 보존 점검",
-      "purpose": "약물 용량과 치료 중 증상 보존 연구",
+      "purpose": "폐렴 약물 치료 연구. 환자의 정확한 나이 47세, 폐렴 진단, 발열 없음, amoxicillin 500 mg 경구 1일 3회 복용 중이라는 약물·용량·경로·횟수를 필수 보존한다. 이름, 연락처, 병록번호는 가명처리한다.",
       "checks": [
         "treatment",
         "measurements",

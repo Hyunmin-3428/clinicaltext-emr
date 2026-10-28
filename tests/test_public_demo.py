@@ -80,6 +80,14 @@ class PublicTests(unittest.TestCase):
     def test_unknown_record_rejected(self):
         with self.assertRaises(Denied):
             self.app.submit(self.token, {**self.data, "record_id":"../../private"}, "ip")
+    def test_custom_synthetic_note_can_be_analyzed(self):
+        data={**self.data,"record_id":"custom-123","custom_note":{"title":"새 수술기록","text":"합성 환자. 충수절제술. 수술 3일 후 발열 없음.","synthetic_confirmed":True}}
+        self.assertEqual(self.wait(self.app.submit(self.token,data,"ip"))["state"],"done")
+    def test_custom_note_requires_synthetic_confirmation_and_bounded_text(self):
+        note={"title":"새 기록","text":"가상 기록","synthetic_confirmed":False}
+        for change in ({},{"synthetic_confirmed":True,"text":"x"*4001},{"synthetic_confirmed":True,"title":""}):
+            with self.assertRaises(Denied):
+                self.app.submit(self.token,{**self.data,"record_id":"custom-123","custom_note":{**note,**change}},"ip")
     def test_bounded_purpose(self):
         for value in ("", "a"*801, [], None):
             with self.assertRaises(Denied):

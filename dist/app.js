@@ -21,6 +21,7 @@ function status(id,text,kind="neutral"){$(id).textContent=text;$(id).className="
 function actions(){
   const v=state.current;
   $("process-open").disabled=!state.ready||state.busy||!state.selected;
+  $("new-record").disabled=!state.ready||state.busy;
   $("run").disabled=state.busy||!$("purpose").value.trim();
   $("review").disabled=state.busy||!v?.can_approve||v.state!=="REVIEW_READY";
   $("approve").disabled=state.busy||v?.state!=="REVIEW_READY"||!v?.can_approve||!$("review").checked;
@@ -67,7 +68,9 @@ async function processRecord(){
   $("empty").hidden=true;$("result").hidden=true;$("progress").hidden=false;$("progress-title").textContent="서버에서 임상기록을 처리하고 있습니다";$("progress-detail").textContent="연구 목적별 가명처리와 임상정보 보존 검증을 진행합니다.";status("output-status","처리 중","neutral");message();actions();
   const start=Date.now();$("elapsed").textContent="0초 경과";const timer=setInterval(()=>$("elapsed").textContent=`${Math.floor((Date.now()-start)/1000)}초 경과`,1000);
   try{
-    const submitted=await api("/api/analyze",{record_id:state.selected.id,purpose_id:$("purpose-preset").value,purpose:$("purpose").value.trim()});
+    const input={record_id:state.selected.id,purpose_id:$("purpose-preset").value,purpose:$("purpose").value.trim()};
+    if(state.selected.custom)input.custom_note={title:state.selected.category,text:state.selected.text,synthetic_confirmed:true};
+    const submitted=await api("/api/analyze",input);
     const deadline=Date.now()+15*60*1000;
     while(generation===state.generation){
       const job=await api(`/api/jobs/${submitted.job_id}`);
@@ -105,6 +108,11 @@ $("process-open").onclick=()=>$("purpose-dialog").showModal();$("purpose-cancel"
 $("purpose-preset").onchange=choosePurpose;$("purpose").oninput=actions;$("run").onclick=processRecord;$("review").onchange=actions;$("approve").onclick=approve;$("download").onclick=download;
 $("copy").onclick=()=>copyText(state.current.output,"승인된 가명처리 기록을 복사했습니다.");
 $("date-from").onchange=renderList;$("date-to").onchange=renderList;
+function newActions(){$("new-add").disabled=!$("new-title").value.trim()||!$("new-source").value.trim()||!$("new-synthetic").checked;}
+$("new-record").onclick=()=>$("new-dialog").showModal();$("new-cancel").onclick=()=>$("new-dialog").close();
+for(const id of ["new-title","new-source","new-synthetic"])$(id).oninput=newActions;
+$("new-file").onchange=async()=>{const file=$("new-file").files[0];if(!file)return;try{if(!file.name.toLowerCase().endsWith('.txt')||file.size>16000)throw new Error("16KB 이하의 UTF-8 텍스트(.txt) 파일을 선택해 주세요.");const text=new TextDecoder('utf-8',{fatal:true}).decode(await file.arrayBuffer());if(text.length>4000)throw new Error("기록은 4,000자 이내로 입력해 주세요.");$("new-source").value=text;$("new-title").value=file.name.replace(/\.txt$/i,'').slice(0,60);$("file-message").textContent=file.name;newActions();}catch(e){$("file-message").textContent=e.message;}};
+$("new-add").onclick=()=>{if($("new-add").disabled)return;const record={id:'custom-'+crypto.randomUUID(),category:$("new-title").value.trim(),department:'직접 입력',title:'새 합성 기록',date:new Date().toLocaleDateString('sv-SE'),text:$("new-source").value,purpose:'임상 경과 연구',custom:true};state.records.unshift(record);$("date-from").value='';$("date-to").value='';$("new-dialog").close();selectRecord(record);$("new-title").value='새 외래기록';$("new-source").value='';$("new-synthetic").checked=false;$("new-file").value='';$("file-message").textContent='';newActions();};
 $("share").onclick=()=>$("share-dialog").showModal();
 $("copy-url").onclick=()=>copyText(cfg.publicUrl||location.origin,"체험 주소를 복사했습니다.");
 async function init(){

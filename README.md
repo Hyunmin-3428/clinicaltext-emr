@@ -1,6 +1,6 @@
 # ClinicalText · EMR research export demo
 
-**[Try the live synthetic demo](https://clinicaltext-emr.alexchoi676.chatgpt.site)** · [QR code](dist/qr.png)
+**[Try the live synthetic demo](https://hyunmin-3428.github.io/clinicaltext-emr/)** · [QR code](dist/qr.png)
 
 The website and GPU worker run independently of the developer laptop. The shared GPU host is not rebooted or reconfigured by this project.
 
@@ -10,7 +10,7 @@ An EMR-style prototype for **research-purpose-specific clinical information pres
 
 ## Experience
 
-1. Select an outpatient, surgical, inpatient or progress note from the simulated chart.
+1. Select an outpatient, surgical, inpatient or progress note from the simulated chart, or use **새 문서** to type a new synthetic note or import a UTF-8 `.txt` file (4,000 characters / 16 KB). No actual patient records should be entered into this public demo.
 2. Choose a research purpose and preservation conditions. For the main example, compare generalizing patient age with retaining exact age for age-stratified research.
 3. Run actual server inference; examine the natural surrogate note and source-grounded preservation evidence.
 4. Review and approve an eligible result; download TXT, a real Excel `.xlsx`, or the gateway-signed JSON artifact. Held results cannot be exported.
@@ -31,7 +31,7 @@ Mobile / desktop browser (hosted EMR interface)
   → reviewer confirmation → signed gateway export → TXT / XLSX / JSON
 ```
 
-The public API exposes no model configuration, arbitrary source upload, original restoration, administrative shutdown, raw Ollama proxy, or filesystem routes. Visitor tokens are kept only in browser memory. Notes and approval records are temporary; restart discards session access. Queue, visitor rate and session limits bound GPU usage. A public demo approval simulates the workflow; real institutional identity and role separation remain future work.
+The public API exposes no model configuration, original restoration, administrative shutdown, raw Ollama proxy, or filesystem routes. Custom notes require an explicit synthetic-record confirmation and bounded plain text. Unregistered custom notes can be processed and inspected; their export remains held for institutional review. This confirmation does not establish that a note is truly synthetic or safe. Visitor tokens are kept only in browser memory. Notes and approval records are temporary; restart discards session access. Queue, visitor rate and session limits bound GPU usage. A public demo approval simulates the workflow; real institutional identity and role separation remain future work.
 
 ## Run locally
 
@@ -85,3 +85,9 @@ The underlying development evaluation covered five synthetic clinical cases and 
 - **Qwen3 / Ollama**: external model/runtime, installed separately; weights are not redistributed here.
 
 Project-authored code is provided under the MIT license. Bundled third-party files remain under their original licenses. See `THIRD_PARTY_NOTICES.md`.
+
+## Public website and GPU isolation
+
+The visitor-facing website is GitHub Pages. A separate HTTPS API accepts bounded synthetic jobs; the GPU server pulls those jobs outward over HTTPS using a private worker token. It does not expose Ollama or its SSH/admin interface through the website. GitHub Pages receives no worker credentials. Public anonymous requests still consume GPU resources, so queue and rate limits are enforced.
+
+Run `python build_pages.py` after frontend changes to update the static `docs/` site. GitHub Pages uses `main:/docs`; set the backend API and exact allowed frontend origin together. QR codes point to the GitHub Pages URL. A custom domain can later be attached to Pages through verified DNS ownership.

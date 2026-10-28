@@ -50,7 +50,12 @@ def residual_check(source: str, candidate: str) -> tuple[str, ...]:
         "RESIDUAL_DATE": r"\b(?:19|20)\d{2}[-/.]\d{1,2}[-/.]\d{1,2}\b",
     }
     for code, pattern in patterns.items():
-        if re.search(pattern, candidate):
+        checked = candidate
+        if code == "RESIDUAL_ID":
+            # A field label followed by a fully substituted typed ID token is
+            # not an identifying value. Inspect everything else unchanged.
+            checked = re.sub(r"(?i)(?:\b(?:MRN|SSN|patient id|passport)\b|병록번호|병록|주민등록번호|주민등록|여권번호|여권)\s*[:：=]?\s*<ID_\d+>", "", candidate)
+        if re.search(pattern, checked):
             reasons.add(code)
     _, fixture = find_fixture(source)
     if fixture and any(term.casefold() in candidate.casefold() for term in fixture["private_terms"]):

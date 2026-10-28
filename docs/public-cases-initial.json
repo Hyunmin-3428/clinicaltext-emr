@@ -1,0 +1,74 @@
+{
+  "scope": "authored synthetic examples, not held-out validation",
+  "cases": [
+    {
+      "case": "surrogate",
+      "request_state": "done",
+      "release_state": "REVIEW_READY",
+      "passed": 12,
+      "failed": 0,
+      "unknown": 0,
+      "residual": 0,
+      "model_calls": 6,
+      "seconds": 37,
+      "output": "중년 성인의 교육기관 종사자는 2023년 3월 10일 본원에서 충수절제술을 시행받았다. 수술 3일 후에도 발열은 없었고, F/U CT에서 특이 소견은 없었다. 과거력상 2018년 장거리 운동 완주 후 무릎 통증이 있었으며, 부친이 52세에 심근경색으로 사망하였다.",
+      "reasons": []
+    },
+    {
+      "case": "bilingual",
+      "request_state": "done",
+      "release_state": "REVIEW_READY",
+      "passed": 5,
+      "failed": 0,
+      "unknown": 0,
+      "residual": 0,
+      "model_calls": 3,
+      "seconds": 8,
+      "output": "성명: <PERSON_1>. Patient name: <PERSON_2>. No evidence of MI. BP 120/80 mmHg.",
+      "reasons": []
+    },
+    {
+      "case": "surgery",
+      "request_state": "done",
+      "release_state": "REVIEW_READY",
+      "passed": 8,
+      "failed": 0,
+      "unknown": 0,
+      "residual": 0,
+      "model_calls": 3,
+      "seconds": 10,
+      "output": "환자 <PERSON_1>. 3월 10일 충수절제술 시행. 수술 3일 후에도 발열 없음. 수술 부위 감염 소견 없음.",
+      "reasons": []
+    },
+    {
+      "case": "neonatal",
+      "request_state": "done",
+      "release_state": "REVIEW_READY",
+      "passed": 13,
+      "failed": 0,
+      "unknown": 0,
+      "residual": 0,
+      "model_calls": 3,
+      "seconds": 11,
+      "output": "성명: <PERSON_1>.\n■ Dx\n#Hypoxic ischaemic encephalopathy of newborn\n#Respiratory failure of newborn\n#Metabolic acidosis\n■ PI\n생후 1일. No evidence of neonatal sepsis.",
+      "reasons": []
+    },
+    {
+      "case": "medication",
+      "request_state": "done",
+      "release_state": "HELD",
+      "passed": 7,
+      "failed": 1,
+      "unknown": 0,
+      "residual": 0,
+      "model_calls": 6,
+      "seconds": 20,
+      "output": "환자 <PERSON_1>, , 연락처 <CONTACT_1>, 병록번호 <ID_1>. 폐렴 확진. 발열 없음. amoxicillin 500 mg 경구 1일 3회 복용 중.",
+      "reasons": [
+        "잔여 식별정보 후보에 대한 추가 검토가 필요합니다.",
+        "임상관계 손상 또는 근거 불확실성이 남아 있습니다.",
+        "반출 게이트웨이의 검증 조건을 충족하지 못했습니다."
+      ]
+    }
+  ]
+}

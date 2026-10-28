@@ -15,7 +15,7 @@ async function enqueue(env,owner,kind,payload){
   if(!result.meta.changes)failure('체험 대기열 또는 요청 한도에 도달했습니다. 잠시 후 다시 시도해 주세요.',429);
   return reply({job_id:id,state:'queued',position:0},202);
 }
-export default {async fetch(request,env){
+async function handle(request,env){
   try{
     const url=new URL(request.url),path=url.pathname;
     if(path.startsWith('/internal/')){
@@ -38,7 +38,7 @@ export default {async fetch(request,env){
     }
     if(path.startsWith('/api/')){
       if(!env.DB)return reply({message:'체험 저장소를 준비하고 있습니다.'},503);
-      const origin=request.headers.get('Origin');if(origin&&origin!==url.origin)failure('허용되지 않은 접속입니다.',403);
+      const origin=request.headers.get('Origin');if(origin&&origin!==url.origin&&origin!=='https://hyunmin-3428.github.io')failure('허용되지 않은 접속입니다.',403);
       if(request.method==='GET'&&path==='/api/health')return reply({status:'ok',server_online:await online(env),scope:'authored-synthetic-only',model:'qwen3:30b'});
       if(request.method==='GET'&&path==='/api/bootstrap'){
         const stamp=now(),visitor=await hash((env.AGENT_TOKEN||'')+(request.headers.get('CF-Connecting-IP')||'unknown'));
@@ -58,8 +58,12 @@ export default {async fetch(request,env){
       }
       if(request.method==='POST'&&path==='/api/analyze'){
         if(!await online(env))failure('GPU 체험 서버에 연결 중입니다. 잠시 후 다시 시도해 주세요.',503);
-        const data=await body(request);exact(data,['record_id','purpose_id','purpose']);
-        if(!CATALOG.records.some(r=>r.id===data.record_id)||!CATALOG.purposes.some(p=>p.id===data.purpose_id)||typeof data.purpose!=='string'||!data.purpose.trim()||data.purpose.length>800)failure('연구 목적과 기록을 확인해 주세요.');
+        const data=await body(request,24000);
+        if(data.custom_note!==undefined){
+          exact(data,['record_id','purpose_id','purpose','custom_note']);exact(data.custom_note,['title','text','synthetic_confirmed']);
+          if(typeof data.record_id!=='string'||!/^custom-[a-f0-9-]{36}$/.test(data.record_id)||data.custom_note.synthetic_confirmed!==true||typeof data.custom_note.title!=='string'||!data.custom_note.title.trim()||data.custom_note.title.length>60||typeof data.custom_note.text!=='string'||!data.custom_note.text.trim()||data.custom_note.text.length>4000||new TextEncoder().encode(data.custom_note.text).length>16000)failure('직접 작성한 합성 기록과 입력 범위를 확인해 주세요.');
+        }else{exact(data,['record_id','purpose_id','purpose']);if(!CATALOG.records.some(r=>r.id===data.record_id))failure('기록을 확인해 주세요.');}
+        if(!CATALOG.purposes.some(p=>p.id===data.purpose_id)||typeof data.purpose!=='string'||!data.purpose.trim()||data.purpose.length>800)failure('연구 목적을 확인해 주세요.');
         return await enqueue(env,owner,'analyze',data);
       }
       if(request.method==='POST'&&['/api/approve','/api/export'].includes(path)){
@@ -74,4 +78,15 @@ export default {async fetch(request,env){
     const asset=ASSETS[path];if(!asset)return new Response('Not found',{status:404});
     return new Response(request.method==='HEAD'?null:asset.text,{headers:{'Content-Type':asset.type,'Cache-Control':'no-cache','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'"}});
   }catch(error){return reply({message:error.status?error.message:'요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.'},error.status||500);}
+}
+export default {async fetch(request,env){
+  const origin=request.headers.get('Origin'),url=new URL(request.url);
+  const allowed=origin===url.origin||origin==='https://hyunmin-3428.github.io';
+  if(request.method==='OPTIONS'){
+    if(!allowed||!url.pathname.startsWith('/api/'))return reply({message:'허용되지 않은 접속입니다.'},403);
+    return new Response(null,{status:204,headers:{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Methods':'GET, POST, OPTIONS','Access-Control-Allow-Headers':'Authorization, Content-Type','Access-Control-Max-Age':'600','Vary':'Origin'}});
+  }
+  const response=await handle(request,env);
+  if(allowed){response.headers.set('Access-Control-Allow-Origin',origin);response.headers.set('Vary','Origin');}
+  return response;
 }};
