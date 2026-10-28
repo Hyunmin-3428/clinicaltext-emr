@@ -1,0 +1,228 @@
+"""한국 전화번호 detection (휴대전화 / 일반전화 / 인터넷전화 / 국제 형식).
+
+Covered formats:
+  - Mobile (휴대전화): 010·011·016·017·018·019 + 7~8 digits
+  - Seoul landline: 02 + 7~8 digits
+  - Regional landline: 031~033, 041~044, 051~055, 061~064 + 7~8 digits
+  - VoIP (인터넷전화): 070 + 8 digits
+  - International: +82 / 0082 prefix → 모바일/일반 모두 지원
+
+Separators: hyphen, dot, space, or none. Each emitted DetectionResult carries
+its sub-type in `extra["type"]` ∈ {"mobile", "landline", "voip"}, and the
+international flag in ``extra["international"]``.
+
+Legal basis: 개인정보보호법 제2조 (개인 식별 정보).
+"""
+from __future__ import annotations
+
+import re
+from typing import Iterator
+
+from ko_pii.core.types import DetectionResult, RiskLevel
+
+LABEL = "PHONE"
+LEGAL_BASIS = "개인정보보호법 제2조"
+CATEGORY = "일반개인정보"
+
+# International prefix: +82, 0082, or 82- (less common). The body strips the
+# leading 0 of the area code per ITU-T E.123 conventions.
+_INTL_PREFIX = r"(?:\+82|0082|82)[-.\s]?(?:\(0\)[-.\s]?)?"
+
+_MOBILE = re.compile(
+    r"(?<![0-9+])"
+    r"(01[01679])"
+    r"[-.\s]{0,3}"
+    r"(\d{3,4})"
+    r"[-.\s]{0,3}"
+    r"(\d{4})"
+    r"(?![0-9])"
+)
+
+_MOBILE_INTL = re.compile(
+    r"(?<![0-9])"
+    + _INTL_PREFIX +
+    r"(1[01679])"  # leading 0 dropped under intl prefix
+    r"[-.\s]{0,3}"
+    r"(\d{3,4})"
+    r"[-.\s]{0,3}"
+    r"(\d{4})"
+    r"(?![0-9])"
+)
+
+# 국제표기 유선 — +82-2-... (서울) / +82-3x-... (지역). leading 0 생략.
+_SEOUL_INTL = re.compile(
+    r"(?<![0-9])"
+    + _INTL_PREFIX +
+    r"(2)"
+    r"[-.\s]{0,3}"
+    r"(\d{3,4})"
+    r"[-.\s]{0,3}"
+    r"(\d{4})"
+    r"(?![0-9])"
+)
+
+_REGIONAL_INTL = re.compile(
+    r"(?<![0-9])"
+    + _INTL_PREFIX +
+    r"(3[1-3]|4[1-4]|5[1-5]|6[1-4]|70)"
+    r"[-.\s]{0,3}"
+    r"(\d{3,4})"
+    r"[-.\s]{0,3}"
+    r"(\d{4})"
+    r"(?![0-9])"
+)
+
+_SEOUL = re.compile(
+    r"(?<![0-9+])"
+    r"(02)"
+    r"[-.\s)\]]{0,3}"
+    r"(\d{3,4})"
+    r"[-.\s]{0,3}"
+    r"(\d{4})"
+    r"(?![0-9])"
+)
+
+_REGIONAL = re.compile(
+    r"(?<![0-9+])"
+    r"(03[1-3]|04[1-4]|05[1-5]|06[1-4]|070)"
+    r"[-.\s)\]]{0,3}"
+    r"(\d{3,4})"
+    r"[-.\s]{0,3}"
+    r"(\d{4})"
+    r"(?![0-9])"
+)
+
+# 괄호 지역번호 (GAP 4): "(010) 9876-5432", "(02) 1234-5678", "(031) 123-4567".
+# 지역번호를 괄호로 감싼 표기 — 기존 패턴은 여는 괄호 '(' 를 흡수 못 해 미검출하거나
+# 닫는 괄호만 ')' 를 잘못 포함했다. 유효 한국 prefix(휴대/서울/지역/VoIP)만 허용해
+# '(2024) 발표'·'(주) 회사' 같은 괄호 텍스트 FP 를 차단. span 은 여는 괄호부터 덮는다.
+_PAREN_AREA = re.compile(
+    r"(?<![0-9A-Za-z])"
+    r"\("
+    r"(01[01679]|02|03[1-3]|04[1-4]|05[1-5]|06[1-4]|070)"
+    r"\)"
+    r"[-.\s]{0,3}"
+    r"(\d{3,4})"
+    r"[-.\s]{0,3}"
+    r"(\d{4})"
+    r"(?![0-9])"
+)
+
+# 대표번호 (15xx/16xx/17xx/18xx) — 8자리, 사업장/콜센터
+# KISA 번호자원관리 가이드: 1500-1899 대역
+# 주: 4-4 형식은 제품/규격/연식 번호('1588-2024 모델')와 형식이 같아 단독으론 구분
+# 불가하다. recall 우선(대표번호는 MEDIUM risk)이라 그대로 채택하며, 이 잔여 FP 는
+# 문서화된 한계로 둔다(맥락 게이팅은 정상 대표번호 recall 을 떨어뜨려 채택하지 않음).
+_REPRESENTATIVE = re.compile(
+    r"(?<![0-9+])"
+    r"(1[5-8]\d{2})"
+    r"[-.\s]{0,3}"
+    r"(\d{4})"
+    r"(?![0-9])"
+)
+
+
+def _emit(m: re.Match[str], phone_type: str, international: bool = False) -> DetectionResult:
+    digits = re.sub(r"\D", "", m.group(0))
+    ev = ["pattern:phone", f"type:{phone_type}"]
+    if international:
+        ev.append("intl:+82")
+    # 위험도 분기 — 휴대전화는 개인 직통 (HIGH), 유선/VoIP 는 가입자 추적
+    # 가능하지만 사업장·대표번호 케이스 다수 (MEDIUM).
+    risk = RiskLevel.HIGH if phone_type == "mobile" else RiskLevel.MEDIUM
+    return DetectionResult(
+        label=LABEL,
+        text=m.group(0),
+        start=m.start(),
+        end=m.end(),
+        risk_level=risk,
+        confidence=1.0,
+        evidence=ev,
+        legal_basis=LEGAL_BASIS,
+        extra={
+            "type": phone_type,
+            "prefix": m.group(1),
+            "digits_only": digits,
+            "international": international,
+            "category": CATEGORY,
+        },
+    )
+
+
+def _overlaps(span: tuple[int, int], seen: set[tuple[int, int]]) -> bool:
+    s, e = span
+    for ss, ee in seen:
+        if s < ee and ss < e:
+            return True
+    return False
+
+
+def _phone_type_for_prefix(prefix: str) -> str:
+    if prefix.startswith("01"):
+        return "mobile"
+    if prefix == "070":
+        return "voip"
+    return "landline"
+
+
+def detect(text: str) -> Iterator[DetectionResult]:
+    seen: set[tuple[int, int]] = set()
+
+    # 괄호 지역번호 표기 먼저 — 여는 괄호까지 포함한 전체 span 을 선점.
+    for m in _PAREN_AREA.finditer(text):
+        span = (m.start(), m.end())
+        if _overlaps(span, seen):
+            continue
+        seen.add(span)
+        yield _emit(m, _phone_type_for_prefix(m.group(1)))
+
+    # International forms first — they cover their domestic-looking core.
+    for m in _MOBILE_INTL.finditer(text):
+        span = (m.start(), m.end())
+        if _overlaps(span, seen):
+            continue
+        seen.add(span)
+        yield _emit(m, "mobile", international=True)
+
+    for m in _SEOUL_INTL.finditer(text):
+        span = (m.start(), m.end())
+        if _overlaps(span, seen):
+            continue
+        seen.add(span)
+        yield _emit(m, "landline", international=True)
+
+    for m in _REGIONAL_INTL.finditer(text):
+        span = (m.start(), m.end())
+        if _overlaps(span, seen):
+            continue
+        seen.add(span)
+        yield _emit(m, "voip" if m.group(1) == "70" else "landline", international=True)
+
+    for m in _MOBILE.finditer(text):
+        span = (m.start(), m.end())
+        if _overlaps(span, seen):
+            continue
+        seen.add(span)
+        yield _emit(m, "mobile")
+
+    for m in _REGIONAL.finditer(text):
+        span = (m.start(), m.end())
+        if _overlaps(span, seen):
+            continue
+        seen.add(span)
+        prefix = m.group(1)
+        yield _emit(m, "voip" if prefix == "070" else "landline")
+
+    for m in _SEOUL.finditer(text):
+        span = (m.start(), m.end())
+        if _overlaps(span, seen):
+            continue
+        seen.add(span)
+        yield _emit(m, "landline")
+
+    for m in _REPRESENTATIVE.finditer(text):
+        span = (m.start(), m.end())
+        if _overlaps(span, seen):
+            continue
+        seen.add(span)
+        yield _emit(m, "representative")

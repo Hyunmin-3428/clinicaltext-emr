@@ -1,0 +1,12 @@
+{
+  "developer": "Google",
+  "family": "Gemma-3",
+  "hf_gguf_repo": "unsloth/gemma-3-27b-it-GGUF",
+  "is_medical": false,
+  "moe": false,
+  "params_active_B": null,
+  "params_total_B": 27.0,
+  "quant_target": "Q5_K_M",
+  "reasoning": false,
+  "size_gb": 19.27
+}

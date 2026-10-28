@@ -1,0 +1,12 @@
+{
+  "developer": "Mistral AI",
+  "family": "Ministral-3",
+  "hf_gguf_repo": "unsloth/Ministral-3-14B-Instruct-2512-GGUF",
+  "is_medical": false,
+  "moe": false,
+  "params_active_B": null,
+  "params_total_B": 14.0,
+  "quant_target": "Q6_K",
+  "reasoning": false,
+  "size_gb": 11.09
+}

@@ -1,0 +1,79 @@
+{
+  "sourcedb": "synthetic-fixture",
+  "sourceid": "TEST002",
+  "text": "Progress Note\nSeen by Dr. Karen Poole on 2047-05-09.\nPatient Robert Lin called from 617-555-0143 regarding recent lab results.\nNo acute distress. Next visit 2047-05-23.\n",
+  "denotations": [
+    {
+      "id": "T1",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 26,
+        "end": 37
+      }
+    },
+    {
+      "id": "T2",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 41,
+        "end": 51
+      }
+    },
+    {
+      "id": "T3",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 61,
+        "end": 71
+      }
+    },
+    {
+      "id": "T4",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 84,
+        "end": 96
+      }
+    },
+    {
+      "id": "T5",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 157,
+        "end": 167
+      }
+    }
+  ],
+  "attributes": [
+    {
+      "id": "A1",
+      "subj": "T1",
+      "obj": "01_NAME",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A2",
+      "subj": "T2",
+      "obj": "03_DATE",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A3",
+      "subj": "T3",
+      "obj": "01_NAME",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A4",
+      "subj": "T4",
+      "obj": "05_TELEPHONE_NUMBER",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A5",
+      "subj": "T5",
+      "obj": "03_DATE",
+      "pred": "identifier_type"
+    }
+  ]
+}

@@ -1,0 +1,268 @@
+"""유니코드 정규화 — 전각/호환문자 폴딩 + 보이지 않는 문자 제거 (offset 보존).
+
+PII 검출 우회 차단:
+- **전각 숫자/영문**: ``０１０`` → ``010``, ``ＡＢ`` → ``AB`` (NFKC)
+- **호환 형태**: ``①`` → ``1``, ``㈜`` → ``(주)``, ``㎡`` → ``m2``
+- **제로폭/보이지 않는 문자 삽입**: 제로폭 공백(U+200B), 조이너(ZWJ/ZWNJ),
+  BOM(U+FEFF), 소프트하이픈(U+00AD), 방향 마크(LRM/RLM) 등 → 제거
+
+``detect.detect_all`` 진입점에서 **기본 적용**되며, 검출 결과 offset 은
+원본 문자열 기준으로 역매핑된다. 외부 의존성 없음 (표준 ``unicodedata``).
+
+문자 단위로 처리하는 이유: 문자열 전체 NFKC 는 길이를 바꿔(``ﬁ``→``fi`` 등)
+offset 이 깨진다. 글자별 폴딩 + offset_map 으로 원본 위치를 보존한다.
+"""
+from __future__ import annotations
+
+import re
+import unicodedata
+from dataclasses import replace
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ko_pii.core.types import DetectionResult
+
+# 보이지 않는/제로폭/방향 문자 — 삽입형 우회 벡터.
+# 소프트하이픈(00AD), 제로폭 공백·조이너·방향마크(200B–200F),
+# 방향 임베딩/오버라이드/아이솔레이트·word joiner(202A–202E, 2060–206F),
+# BOM/ZWNBSP(FEFF).
+_INVISIBLE = re.compile(
+    # U+2A74(\u2A74) \uCD94\uAC00: NFKC \uD655\uC7A5\uC774 '::=' \uC778 \uC720\uC77C \uBB38\uC790 \u2014 PII \uC22B\uC790\uC5F4\uC5D0 '::' \uC8FC\uC785\uC73C\uB85C
+    # RRN/\uC804\uD654\uB97C \uCABC\uAC1C \uBBF8\uAC80\uCD9C\uC2DC\uD0A4\uACE0 \uAC00\uC9DC IPv6 \uB97C \uC720\uBC1C. \uC81C\uAC70\uD558\uBA74 \uC22B\uC790\uC5F4\uC774 \uC7AC\uACB0\uD569\uB428.
+    # C0 \uC81C\uC5B4\uBB38\uC790(\uD0ED\t\u00B7\uC904\uBC14\uAFC8\n\u00B7CR\r \uC81C\uC678)\u00B7DEL\u00B7C1 \uCD94\uAC00: PII \uC22B\uC790\uC5F4 \uD55C\uAC00\uC6B4\uB370 \uB07C\uBA74
+    # \uAC80\uCD9C\uC744 \uCABC\uAC1C\uB294 \uC6B0\uD68C. XML(HWPX/XLSX) \uCD94\uCD9C \uD14D\uC2A4\uD2B8\uC5D0 \uC0B4\uC544\uB0A8\uB294 \uCF00\uC774\uC2A4 \uD3EC\uD568.
+    r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f"
+    r"\u00AD\u200B-\u200F\u202A-\u202E\u2060-\u206F\u2A74\uFEFF]"
+)
+
+# \uACB0\uD569\uD45C\uC2DC(nonspacing marks) \u2014 \uC22B\uC790 \uC0AC\uC774\uC5D0 \uB07C\uBA74 PII \uB97C \uCABC\uAC1C\uB294 \uC6B0\uD68C. \uD074\uB7EC\uC2A4\uD130 NFKC
+# \uB2E8\uACC4\uC5D0\uC11C \uBB38\uC790\uC5D4 \uBCF4\uC874(\u00E9)\u00B7\uC22B\uC790\uC5D4 \uC81C\uAC70. fast-path \uAC00 \uACB0\uD569\uD45C\uC2DC \uD14D\uC2A4\uD2B8(\uC774\uBBF8 NFKC \uB77C\uB3C4)\uB97C
+# \uAC74\uB108\uB6F0\uC9C0 \uC54A\uB3C4\uB85D \uBCC4\uB3C4 \uAC80\uC0AC\uD55C\uB2E4.
+_COMBINING = re.compile(
+    r"[\u0300-\u036F\u0483-\u0489\u0591-\u05BD\u0610-\u061A"
+    r"\u064B-\u065F\u0670\u06D6-\u06DC\u1AB0-\u1AFF\u1DC0-\u1DFF"
+    r"\u20D0-\u20FF\uFE20-\uFE2F]"
+)
+
+# \uBE44ASCII \uC22B\uC790 \u2192 ASCII \uC22B\uC790 \uD3F4\uB529. NFKC \uB294 \uC774\uB4E4\uC744 \uD3B4\uC9C0 \uC54A\uC73C\uBBC0\uB85C(\uC815\uADDC\uD615) \uC9C1\uC811 \uB9E4\uD551\uD55C\uB2E4.
+# \uC8FC\uBBFC/\uC0AC\uC5C5\uC790/\uCE74\uB4DC \uBC88\uD638\uB97C Arabic-Indic \uC22B\uC790\uB85C \uC801\uC740 \uAC80\uCD9C \uC6B0\uD68C\uB97C \uCC28\uB2E8. 1:1 \uCE58\uD658\uC774\uB77C
+# offset_map \uC774 \uBCF4\uC874\uB41C\uB2E4.
+# \uBE44ASCII \uC22B\uC790\uCCB4(\uC544\uB78D/\uB370\uBC14\uB098\uAC00\uB9AC/\uBCB5\uACE8/\uD0DC\uAD6D \uB4F1) \u2192 ASCII, \uADF8\uB9AC\uACE0 \uB2E4\uC591\uD55C \uD558\uC774\uD508\u00B7\uB300\uC2DC\u00B7
+# \uB9C8\uC774\uB108\uC2A4 \u2192 ASCII '-'. NFKC \uAC00 \uD3B4\uC9C0 \uC54A\uB294 \uAC80\uCD9C \uC6B0\uD68C\uB97C \uC9C1\uC811 \uB9E4\uD551\uD55C\uB2E4(1:1, offset \uBCF4\uC874).
+# \uBAA8\uB4E0 \uC720\uB2C8\uCF54\uB4DC \uB2E8\uC77C \uC22B\uC790 \uAE00\uC790 \u2192 ASCII \uD3F4\uB529. \uACE0\uC815 16\uAC1C \uC22B\uC790\uCCB4 \uD558\uB4DC\uCF54\uB529\uC740 \uBABD\uACE8/Vai/
+# N'Ko/\uC790\uBC14 \uB4F1 NFKC \uAC00 \uD3B4\uC9C0 \uBABB\uD558\uB294 \uC22B\uC790\uCCB4\uB97C \uB193\uCCE4\uB2E4. Nd(\uC2ED\uC9C4 \uC22B\uC790)\uB294 decimal() \uB85C,
+# No(\uC6D0/\uAD04\uD638/\uB529\uBCB3/\uC704\uCCA8\uC790 \uC22B\uC790: \u2468 \u277E \u2780 \u00B2 \uB4F1 NFKC \uBBF8\uC801\uC6A9\uBD84)\uB294 \uB2E8\uC77C \uC790\uB9BF\uAC12\uC774 \uC788\uB294 \uAC83\uB9CC
+# digit() \uB85C \uD658\uC6D0\uD55C\uB2E4(\u00BD \uB4F1 \uBD84\uC218\uB294 digit() \uC5C6\uC74C \u2192 \uBCF4\uC874). 1:1 \uCE58\uD658\uC774\uB77C offset \uBCF4\uC874.
+# \uC0C1\uD55C U+1FFFF: \uD604\uC7AC \uC720\uB2C8\uCF54\uB4DC \uCD5C\uC0C1\uC704 Nd(U+1FBF9)\uB97C \uB36E\uC73C\uBA74\uC11C import \uBE44\uC6A9\uC744 \uC904\uC778\uB2E4.
+def _build_digit_fold() -> dict[str, str]:
+    fold: dict[str, str] = {}
+    for cp in range(0x80, 0x20000):
+        ch = chr(cp)
+        cat = unicodedata.category(ch)
+        if cat == "Nd":
+            fold[ch] = str(unicodedata.decimal(ch))
+        elif cat == "No":
+            try:
+                fold[ch] = str(unicodedata.digit(ch))
+            except ValueError:
+                pass  # \uBD84\uC218 \uB4F1 \uB2E8\uC77C \uC790\uB9BF\uAC12 \uC5C6\uB294 No \uB294 \uC81C\uC678(\u00BD\u00B7\u00BC \uBCF4\uC874)
+    return fold
+
+
+_NONASCII_DIGIT_FOLD: dict[str, str] = _build_digit_fold()
+# \uB300\uC2DC\uB958 + \uAC00\uC6B4\uB383\uC810\uB958(\uC22B\uC790 \uAD6C\uBD84\uC790\uB85C \uC4F0\uC774\uB294 \u00B7\u2022\u2027\u2219\u22C5\u30FB\uFF65\u318D) \u2192 ASCII '-'. PII \uADF8\uB8F9 \uAD6C\uBD84\uC790\uAC00
+# \uAC00\uC6B4\uB383\uC810\uC774\uC5B4\uB3C4 \uAC80\uCD9C\uB418\uB3C4\uB85D(010\u00B71234\u00B75678). 1:1 \uCE58\uD658\uC774\uB77C offset \uBCF4\uC874.
+_DASH_CHARS = "\u2010\u2011\u2012\u2013\u2014\u2015\u2043\u2212\uFE58\uFE63\uFF0D\u00B7\u2022\u2027\u2219\u22C5\u30FB\uFF65\u318D"
+# \uC2AC\uB798\uC2DC/\uC194\uB9AC\uB354\uC2A4 \uB2EE\uC740\uAF34(NFKC \uAC00 ASCII '/' \uB85C \uD3B4\uC9C0 \uBABB\uD558\uB294 \uAC83\uB9CC; U+FF0F \uC804\uAC01\uC740 NFKC \uCC98\uB9AC)
+# \u2192 ASCII '/'. PII \uADF8\uB8F9 \uAD6C\uBD84\uC790\uAC00 \uBD84\uC218\uC2AC\uB798\uC2DC\uC5EC\uB3C4 \uAC80\uCD9C\uB418\uB3C4\uB85D(900101\u20445234567).
+_SLASH_CHARS = "\u2044\u2215\u29F8\u2571"
+_CHAR_FOLD: dict[str, str] = {
+    **_NONASCII_DIGIT_FOLD,
+    **{c: "-" for c in _DASH_CHARS},
+    **{c: "/" for c in _SLASH_CHARS},
+}
+# fast-path \uAC80\uC0AC\uC6A9: _CHAR_FOLD \uC758 \uBAA8\uB4E0 \uBB38\uC790(\uBE44ASCII \uC22B\uC790 + \uB300\uC2DC)\uB97C \uC7A1\uB294 \uBB38\uC790\uD074\uB798\uC2A4\uB97C
+# \uC790\uB3D9 \uC0DD\uC131 \u2014 \uC22B\uC790\uCCB4 \uBAA9\uB85D\uACFC regex \uAC00 \uC5B4\uAE0B\uB0A0 \uC77C\uC774 \uC5C6\uB2E4.
+_FOLD_DIGIT = re.compile("[" + "".join(re.escape(c) for c in _CHAR_FOLD) + "]")
+
+# 조합용 한글 자모(NFD 분해형 + '9001ᄀ01' 우회). NFKC 가 단독 자모를 안 바꿔
+# fast-path 가 그냥 통과시키므로, 클러스터 루프를 타도록 fast-path 에서 별도 검사한다.
+_CONJOINING_JAMO_RE = re.compile(r"[ᄀ-ᇿꥠ-꥿ힰ-퟿]")
+
+# 자릿수 사이 ASCII 공백 주입 우회('8 8 0 1 0 1-1234568', '0 1 0 1 2 3 4 5 6 7 8').
+# 서식 칸별 입력(PDF)이나 적대적 마스킹 회피로 한 자리씩 공백을 끼워 넣으면 RRN/전화
+# 패턴이 통째로 미검출 → 원본 PII 가 LLM 에 평문 유출된다. 정규화 단계에서 '수상한
+# 공백 런'의 공백만 제거하되 offset_map 은 보존 → redact/partial span 이 원본(공백 포함)
+# 전체를 덮는다.
+#
+# recall-safe 설계 — 일반 산문 공백은 절대 건드리지 않는다:
+#   1. _SPACED_NUM_REGION: 숫자 + 단일공백/하이픈/점(각 1~3자)로만 이루어진 연속 구간.
+#      한글/영문이 끼면 끊긴다('좌표 37 126' 처럼 단어 경계가 보존).
+#   2. candidate(): (a) 공백 제거 후 10~16자리(전화10/11·주민13·사업자10·카드16 대역)이고
+#      (b) '단일공백에 둘러싸인 한 자리 숫자'가 4회 이상 — 즉 자릿수 분할 시그니처가
+#      뚜렷할 때만 붕괴. '37 126 875'(좌표)·'1234 5678 9012'(그룹)·'버전 1 5 2 0 2 4'
+#      (6자리, 대역 밖)는 모두 미해당 → FP 0.
+_SPACED_NUM_REGION = re.compile(
+    r"(?<![0-9A-Za-z])[0-9](?:[ .\-]{0,3}[0-9]){8,}(?![0-9A-Za-z])"
+)
+_SINGLE_SPACED_DIGIT = re.compile(r"(?<=[ ])[0-9](?=[ ])")
+
+
+def _spaced_collapse_positions(text: str) -> set[int]:
+    """자릿수 분할 우회 구간 안의 '제거 대상 ASCII 공백' 원본 위치 집합 반환.
+
+    제거 대상은 PII 후보로 판정된 숫자 구간 내부의 단일 ASCII 공백뿐이다(하이픈/점 등
+    구분자는 그대로 둠 — 패턴 검출기가 처리). 비후보 구간이나 산문 공백은 미포함.
+    """
+    drop: set[int] = set()
+    for m in _SPACED_NUM_REGION.finditer(text):
+        region = m.group(0)
+        digits = sum(c.isdigit() for c in region)
+        if not (10 <= digits <= 16):
+            continue
+        # 단일공백에 둘러싸인 한 자리 숫자 카운트 — 자릿수 분할 시그니처.
+        padded = " " + region + " "
+        if len(_SINGLE_SPACED_DIGIT.findall(padded)) < 4:
+            continue
+        base = m.start()
+        for i, ch in enumerate(region):
+            if ch == " ":
+                drop.add(base + i)
+    return drop
+
+# \uB77C\uD2F4 \uAE00\uB9AC\uD504\uB85C \uC704\uC7A5\uD55C \uC22B\uC790(O\u21920, l\u21921 \u2026). \uC815\uC0C1 \uC601\uBB38(NO/ID/SOS)\uC744 \uAE68\uC9C0 \uC54A\uB3C4\uB85D
+# '\uC22B\uC790 2\uAC1C \uC774\uC0C1 + \uD638\uBAB0\uB85C\uADF8 1\uAC1C \uC774\uC0C1'\uC73C\uB85C \uC774\uB904\uC9C4 \uC22B\uC790\uC5F4 \uD1A0\uD070\uC5D0\uC11C\uB9CC \uD3F4\uB529\uD55C\uB2E4.
+# \uC8FC\uBBFC/\uCE74\uB4DC/\uC0AC\uC5C5\uC790\uBC88\uD638\uB97C 'l234567' \uCC98\uB7FC \uC801\uC740 \uAC80\uCD9C \uC6B0\uD68C\uB97C \uCC28\uB2E8. 1:1 \uCE58\uD658(\uAE38\uC774 \uBD88\uBCC0)
+# \uC774\uB77C offset_map \uC774 \uBCF4\uC874\uB41C\uB2E4.
+_DIGIT_HOMOGLYPH: dict[str, str] = {
+    "O": "0", "o": "0", "Q": "0", "l": "1", "I": "1", "|": "1",
+    "S": "5", "B": "8", "Z": "2", "G": "6",
+}
+_DIGIT_HG_CHARS = "".join(re.escape(c) for c in _DIGIT_HOMOGLYPH)
+_DIGIT_HG_TOKEN = re.compile(rf"[0-9{_DIGIT_HG_CHARS}][0-9{_DIGIT_HG_CHARS}\-\u2010-\u2015]*")
+
+
+def _fold_digit_homoglyphs(text: str) -> str:
+    """\uC22B\uC790\uC5F4 \uD1A0\uD070 \uC548\uC758 \uB77C\uD2F4 \uD638\uBAB0\uB85C\uADF8\uB97C \uC22B\uC790\uB85C \uD3F4\uB529(1:1, \uAE38\uC774 \uBD88\uBCC0)."""
+
+    def repl(m: re.Match[str]) -> str:
+        s = m.group(0)
+        digits = sum(c.isdigit() for c in s)
+        hg = sum(c in _DIGIT_HOMOGLYPH for c in s)
+        if digits >= 2 and hg >= 1:
+            return "".join(_DIGIT_HOMOGLYPH.get(c, c) for c in s)
+        return s
+
+    return _DIGIT_HG_TOKEN.sub(repl, text)
+
+
+def needs_normalization(text: str) -> bool:
+    """\uC815\uADDC\uD654(\uC6B0\uD68C \uCC28\uB2E8)\uAC00 \uD544\uC694\uD55C\uAC00 \u2014 \uBE44ASCII\uC774\uAC70\uB098 \uC81C\uC5B4/\uBCF4\uC774\uC9C0 \uC54A\uB294 \uBB38\uC790 \uD3EC\uD568.
+
+    ``detect_all`` \uC758 \uC9C4\uC785 \uAC00\uB4DC\uC6A9. ASCII \uC81C\uC5B4\uBB38\uC790(DEL\u00B7C0)\uB3C4 PII \uB97C \uCABC\uAC1C\uB294 \uC6B0\uD68C\uB77C
+    ``text.isascii()`` \uB9CC\uC73C\uB860 \uBD80\uC871 \u2014 ``_INVISIBLE`` \uB85C \uC7A1\uB294\uB2E4. \uACB0\uD569\uD45C\uC2DC\uB294 \uBE44ASCII.
+    \uC790\uB9BF\uC218 \uC0AC\uC774 ASCII \uACF5\uBC31 \uC8FC\uC785('8 8 0 1 0 1-1234568')\uC740 \uC21C\uC218 ASCII \uB77C \uC704 \uB450 \uAC80\uC0AC\uB85C
+    \uC548 \uC7A1\uD600 \uBCC4\uB3C4\uB85C \uD6C4\uBCF4 \uACF5\uBC31 \uB7F0\uC774 \uC788\uB294\uC9C0 \uBCF8\uB2E4.
+    """
+    return (
+        (not text.isascii())
+        or bool(_INVISIBLE.search(text))
+        or bool(_spaced_collapse_positions(text))
+    )
+
+
+def _is_conjoining_jamo(ch: str) -> bool:
+    """NFD \uBD84\uD574\uD615 \uD55C\uAE00 \uC790\uBAA8(\uCD08\uC131/\uC911\uC131/\uC885\uC131) \uC5EC\uBD80 \u2014 \uD569\uC131 \uD074\uB7EC\uC2A4\uD130\uC5D0 \uD3EC\uD568."""
+    return (
+        "\u1100" <= ch <= "\u11FF"      # Hangul Jamo
+        or "\uA960" <= ch <= "\uA97F"   # Jamo Extended-A
+        or "\uD7B0" <= ch <= "\uD7FF"   # Jamo Extended-B
+    )
+
+
+def normalize_unicode(text: str) -> tuple[str, list[int]]:
+    """NFKC 폴딩 + 보이지 않는 문자 제거.
+
+    Returns ``(normalized, offset_map)``. ``offset_map[i]`` 는 ``normalized[i]``
+    에 대응하는 원본 ``text`` 위치. 변화가 없으면 ``normalized == text`` (offset_map
+    은 빈 리스트 — 호출측이 무시).
+    """
+    # 라틴 호몰로그 숫자 폴딩(1:1, 길이 불변 → offset 보존). 빠른 경로 전에 적용해야
+    # 'l234567' 같은 ASCII-호몰로그 우회도 펴진다.
+    text = _fold_digit_homoglyphs(text)
+    # 자릿수 분할 공백 제거 대상 위치(원본 기준). 이 공백들은 invisible 처럼 스킵하되
+    # offset_map 은 보존해 redact span 이 원본 전체(공백 포함)를 덮게 한다.
+    drop_spaces = _spaced_collapse_positions(text)
+    # 빠른 경로: 이미 NFKC 이고 보이지 않는/결합 문자도 없으면 그대로 (no-op).
+    # 결합표시는 이미 NFKC 일 수 있어(1+◌́ 는 합성형 없음) 별도 검사 — 빠진 채
+    # 건너뛰면 숫자에 붙은 결합표시가 PII 를 쪼개 누출된다.
+    if (
+        not drop_spaces
+        and not _INVISIBLE.search(text)
+        and not _COMBINING.search(text)
+        and not _FOLD_DIGIT.search(text)
+        and not _CONJOINING_JAMO_RE.search(text)
+        and unicodedata.is_normalized("NFKC", text)
+    ):
+        return text, []
+
+    out: list[str] = []
+    omap: list[int] = []
+    n = len(text)
+    i = 0
+    while i < n:
+        ch = text[i]
+        if _INVISIBLE.match(ch):
+            i += 1
+            continue
+        # 자릿수 분할 우회 구간 안의 ASCII 공백 — invisible 처럼 스킵(omap 미추가).
+        # 다음 글자가 자기 원본 위치로 매핑되므로 redact span 이 원본 공백까지 덮는다.
+        if ch == " " and i in drop_spaces:
+            i += 1
+            continue
+        # 기본 문자 + 뒤따르는 결합표시/한글 자모를 한 클러스터로 묶어 NFKC.
+        # 글자별 NFKC 는 NFD 분해형(예: 한글 "홍"=홍, 라틴 "é"=e+´)을 합치지
+        # 못해 우회를 허용함 → 클러스터 단위 합성으로 차단. 합성 결과는 모두
+        # 클러스터 시작 위치(i)로 매핑한다.
+        j = i + 1
+        while j < n and (unicodedata.combining(text[j]) or _is_conjoining_jamo(text[j])):
+            j += 1
+        base_is_alpha = text[i].isalpha()
+        for fc in unicodedata.normalize("NFKC", text[i:j]):
+            # 숫자/기호 베이스에 NFKC 로 합쳐지지 않고 남은 결합표시(U+0301 등)나 조합용
+            # 한글 자모(U+1100~, '9001ᄀ01' 처럼 숫자에 끼어 PII 를 쪼개는 우회)는 제거.
+            # 문자(é=e+´, NFD 한글 등 정상 결합)는 base 가 alpha 라 보존된다.
+            if not base_is_alpha and (
+                unicodedata.combining(fc) or _is_conjoining_jamo(fc)
+            ):
+                continue
+            out.append(_CHAR_FOLD.get(fc, fc))
+            omap.append(i)
+        i = j
+    return "".join(out), omap
+
+
+def remap_to_source(
+    detections: list["DetectionResult"],
+    offset_map: list[int],
+    source: str,
+) -> list["DetectionResult"]:
+    """정규화 텍스트 기준 offset 을 원본 기준으로 역매핑 + ``.text`` 원본 복원.
+
+    ``source[start:end] == .text`` 불변식을 유지하도록 ``.text`` 를 원본
+    슬라이스로 다시 설정한다.
+    """
+    n = len(offset_map)
+    out: list[DetectionResult] = []
+    for det in detections:
+        start = offset_map[det.start] if det.start < n else det.start
+        # 검출 끝 = 다음 정규화 글자의 원본 시작 위치(= 마지막 글자 클러스터의 원본 끝).
+        # 합성(다대일)·제거(invisible)에도 정확하며, 0길이 검출의 start>end 역전도 방지.
+        if det.end < n:
+            end = offset_map[det.end]
+        elif det.end == n:
+            end = len(source)
+        else:
+            end = det.end
+        out.append(replace(det, start=start, end=end, text=source[start:end]))
+    return out

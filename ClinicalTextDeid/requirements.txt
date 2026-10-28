@@ -1,0 +1,8 @@
+# ko-pii 1.16.0 is bundled unchanged under vendor/ko-pii/src (pinned commit in MANIFEST.json).
+cryptography==50.0.1
+presidio-analyzer==2.2.360
+spacy==3.8.11
+# spaCy 3.8 CLI imports Click; latest Typer stopped providing this dependency.
+click==8.1.8
+# Official release wheel. SHA256 verified against the release page and pip install report.
+en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl#sha256=1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85

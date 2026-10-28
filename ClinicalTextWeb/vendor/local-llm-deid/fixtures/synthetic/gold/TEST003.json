@@ -1,0 +1,107 @@
+{
+  "sourcedb": "synthetic-fixture",
+  "sourceid": "TEST003",
+  "text": "Emergency Department Note\nFacility: Northgate Medical Center\nPatient: Emily Sun, MRN: ZX-77410\nDate of service: 11/30/2047.\nEmily Sun is a 91-year-old woman evaluated for chest pain and discharged home.\nPortal message sent to emily.sun@example.net. Return precautions reviewed.\n",
+  "denotations": [
+    {
+      "id": "T1",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 36,
+        "end": 60
+      }
+    },
+    {
+      "id": "T2",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 70,
+        "end": 79
+      }
+    },
+    {
+      "id": "T3",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 86,
+        "end": 94
+      }
+    },
+    {
+      "id": "T4",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 112,
+        "end": 122
+      }
+    },
+    {
+      "id": "T5",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 124,
+        "end": 133
+      }
+    },
+    {
+      "id": "T6",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 139,
+        "end": 150
+      }
+    },
+    {
+      "id": "T7",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 226,
+        "end": 247
+      }
+    }
+  ],
+  "attributes": [
+    {
+      "id": "A1",
+      "subj": "T1",
+      "obj": "02_GEOGRAPHIC_SUBDIVISION",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A2",
+      "subj": "T2",
+      "obj": "01_NAME",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A3",
+      "subj": "T3",
+      "obj": "09_MEDICAL_RECORD_NUMBER",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A4",
+      "subj": "T4",
+      "obj": "03_DATE",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A5",
+      "subj": "T5",
+      "obj": "01_NAME",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A6",
+      "subj": "T6",
+      "obj": "04_AGE_OVER_89",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A7",
+      "subj": "T7",
+      "obj": "07_EMAIL_ADDRESS",
+      "pred": "identifier_type"
+    }
+  ]
+}

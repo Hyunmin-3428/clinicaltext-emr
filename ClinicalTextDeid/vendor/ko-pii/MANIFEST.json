@@ -1,0 +1,962 @@
+{
+  "upstream": "https://github.com/Marker-Inc-Korea/ko-pii",
+  "commit": "9516cabd6f582935cae1536ccbd8c5448afae679",
+  "commit_date_utc": "2026-09-09T05:50:11Z",
+  "retrieved_utc": "2026-10-07T16:07:52.103025+00:00",
+  "license": "MIT",
+  "selection": "Unmodified src/ko_pii subtree and LICENSE; no upstream data directory, model weights, evaluation datasets, tests, or README copied. Bundled source dictionary legal_dongs.txt.gz included as runtime dependency.",
+  "files": [
+    {
+      "path": "LICENSE",
+      "size_bytes": 1068,
+      "sha256": "9dce2e29778188aaf7c1917fec57e9dda892331cdd5b8e4546f6528199cf6735",
+      "git_blob_sha1": "8104a6af57b1acb83f919c250369262993f97595",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/LICENSE"
+    },
+    {
+      "path": "src/ko_pii/__init__.py",
+      "size_bytes": 2293,
+      "sha256": "91e6f4e956c5d8a02902fc87f2e9c1d8fce161904538fd5c7a404395704b51de",
+      "git_blob_sha1": "ec2d03fd2f99f3509aeef4b1eea776ad3dab2897",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/analytics/__init__.py",
+      "size_bytes": 785,
+      "sha256": "2b7612854fb8d657c34d0240d9ad71c359678bab6ea59eafeb24d86a1798aab9",
+      "git_blob_sha1": "9e0f23b5ba0b8dcae249a9d09e4bfe18de93b0db",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/analytics/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/analytics/combined_risk.py",
+      "size_bytes": 5709,
+      "sha256": "c1a5cc188ad8c2a882998bf6779ce5f884429ef216eb08a6ba4a3d6b2348dfaf",
+      "git_blob_sha1": "9fc5aa7beff179f8be8d456545002a6dcfe6fa03",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/analytics/combined_risk.py"
+    },
+    {
+      "path": "src/ko_pii/analytics/k_anonymity.py",
+      "size_bytes": 4266,
+      "sha256": "0e6099e730849a5f368a51b381ba89513287a067f97e60d25a127acb1b879165",
+      "git_blob_sha1": "6eb4a7f0d94ae0f834f36247376f8dbbd1ae7226",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/analytics/k_anonymity.py"
+    },
+    {
+      "path": "src/ko_pii/anonymizer.py",
+      "size_bytes": 10506,
+      "sha256": "c1112dc1deefcea1d21e9efc969af8fe4243d3e5aa2e07378aa801443fd5bba6",
+      "git_blob_sha1": "2b3c4f3ae7e9350a2a53537f42d54e7151335f41",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/anonymizer.py"
+    },
+    {
+      "path": "src/ko_pii/batch.py",
+      "size_bytes": 9573,
+      "sha256": "fac119ee695a950ea9edc742d2f04603a82f2c8b9a0132d98f4c8e1499fa56e6",
+      "git_blob_sha1": "e01f77a00346c931a062b9e2af27b6b433403e33",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/batch.py"
+    },
+    {
+      "path": "src/ko_pii/checksum/__init__.py",
+      "size_bytes": 50,
+      "sha256": "a9ad9d1b252c00298921edd9ef339800d29d572e52bbaf72850e32e37738aa6e",
+      "git_blob_sha1": "c3195fd42fc173dfb2b5545335d7db3abedb7d1d",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/checksum/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/checksum/business_reg_checksum.py",
+      "size_bytes": 959,
+      "sha256": "bf2a86bded4ac0b87533d42888a131b36b743d0a0bbd47a04f3ca2896dd0502d",
+      "git_blob_sha1": "9e4383599baefc1c5214160a27d968fde7c293a8",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/checksum/business_reg_checksum.py"
+    },
+    {
+      "path": "src/ko_pii/checksum/corp_reg_checksum.py",
+      "size_bytes": 1076,
+      "sha256": "7098d22596c3a332da2a89a451492a01d0ae4d523b1884fc2d0e5a5b1a10c706",
+      "git_blob_sha1": "d06bbba0befbaeef024449e3acbee6f572cfe0b3",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/checksum/corp_reg_checksum.py"
+    },
+    {
+      "path": "src/ko_pii/checksum/luhn.py",
+      "size_bytes": 1267,
+      "sha256": "634184319363990ab27bcac64d98245a43fb250fc77f56e5e9fa1327bbe4cede",
+      "git_blob_sha1": "4ce183b79aced85309479a470a3a610383c927c0",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/checksum/luhn.py"
+    },
+    {
+      "path": "src/ko_pii/checksum/rrn_checksum.py",
+      "size_bytes": 1179,
+      "sha256": "4340f5012108dc0a26930308507fba6d807440e37e8c6fdeb3ca1a1ae66cf0fb",
+      "git_blob_sha1": "08e5fa57f1e82913234c912d07619cd62758c05a",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/checksum/rrn_checksum.py"
+    },
+    {
+      "path": "src/ko_pii/classifier/__init__.py",
+      "size_bytes": 480,
+      "sha256": "75fb18ed57269971eb7b96827698c7273faad4c457da693e22ea4edbc2103295",
+      "git_blob_sha1": "c6928807f7cf39e42446663c592bb8d18211f355",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/classifier/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/classifier/cli.py",
+      "size_bytes": 4590,
+      "sha256": "a5e092141e9fabfb21d9a37f0fe6768105386a36e52f1b4dec1d37413cf0983d",
+      "git_blob_sha1": "92b3ed690c2f680701f71b27b86466a3b3303cd6",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/classifier/cli.py"
+    },
+    {
+      "path": "src/ko_pii/classifier/hybrid.py",
+      "size_bytes": 5257,
+      "sha256": "a110c86e48394ff0de5a72c71a9326f2b45ff87bbf9320622663015dc8b613ea",
+      "git_blob_sha1": "b7d70d9abc86b9ff96a7d7aa936b5d4caf8a9167",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/classifier/hybrid.py"
+    },
+    {
+      "path": "src/ko_pii/classifier/predict.py",
+      "size_bytes": 3135,
+      "sha256": "04a1fe5d02e517f1704d11d2209cc2162c891b3eaa18db0e9ded8842b4100d15",
+      "git_blob_sha1": "a1ccf01560b94daff6d721b0c0ea3255a933e4fa",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/classifier/predict.py"
+    },
+    {
+      "path": "src/ko_pii/classifier/tfidf_baseline.py",
+      "size_bytes": 5654,
+      "sha256": "2685ff268f5e8349779c01f0aef099020fd683be51e843e50a757184eb84ca66",
+      "git_blob_sha1": "c79c5b078b679d9235a7fe8ab18c5d09fbde4ed5",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/classifier/tfidf_baseline.py"
+    },
+    {
+      "path": "src/ko_pii/classifier/train.py",
+      "size_bytes": 5075,
+      "sha256": "073efaebd3919be32b704fc1af86c2fe5c138fc7ba2e0f59f13ace07cde2d938",
+      "git_blob_sha1": "df971bff857827a29393a1558166746c31943b15",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/classifier/train.py"
+    },
+    {
+      "path": "src/ko_pii/cli.py",
+      "size_bytes": 15467,
+      "sha256": "bc6f97d3e2c6360019cdf070bd3f0bfd0bfba936a28a27c471df7d8a80db4563",
+      "git_blob_sha1": "5fdf38b01d9924b565e840430e0aa58bd86c9d7f",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/cli.py"
+    },
+    {
+      "path": "src/ko_pii/context/__init__.py",
+      "size_bytes": 786,
+      "sha256": "af3da07dd71ba6227221b3172610afcf0af1a9a23225e31c291c7d7243fc7475",
+      "git_blob_sha1": "10c379b8eb965b1160c8c843e09931d164d3a293",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/context/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/context/context_rules.py",
+      "size_bytes": 7890,
+      "sha256": "7d1f5bd63a0524f365745949f63c70d4ed3096f4dbeca541ced713e1b15713c5",
+      "git_blob_sha1": "33a340d50469495b784bcea72bce57ae0a8c265c",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/context/context_rules.py"
+    },
+    {
+      "path": "src/ko_pii/context/hanja.py",
+      "size_bytes": 3677,
+      "sha256": "e81ee520d748dbc3ed1216a3ce2932c9c9b88e8e7cf9e52083eb425b71a3d014",
+      "git_blob_sha1": "0f14244d7aaedddb3f1ef52e06254a3c0b663f5a",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/context/hanja.py"
+    },
+    {
+      "path": "src/ko_pii/context/name_dictionary.py",
+      "size_bytes": 2095,
+      "sha256": "9a1fd3b83a332e96d73cd74ffe5bb8849336cbcaddf0a32f7e95ad3811d37ac0",
+      "git_blob_sha1": "1c4a6f32cfb2b45fe728cab519b0e7f6ba6a6b73",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/context/name_dictionary.py"
+    },
+    {
+      "path": "src/ko_pii/context/name_origin.py",
+      "size_bytes": 3779,
+      "sha256": "ca7f4f52ce865d762260e11c2dda33a1e7e74173346989bcbf15b073c7d0def4",
+      "git_blob_sha1": "620d0a2a207816f00b977991288dfb7378cc0587",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/context/name_origin.py"
+    },
+    {
+      "path": "src/ko_pii/context/name_syllables.py",
+      "size_bytes": 4205,
+      "sha256": "28e9445a62043d6f4fa3b26f74f7c57be11e06c913611f388ec7991572ef6bbf",
+      "git_blob_sha1": "9f4f20ba7dbb35222ae0713d3d68a53cec428340",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/context/name_syllables.py"
+    },
+    {
+      "path": "src/ko_pii/context/particles.py",
+      "size_bytes": 1021,
+      "sha256": "587bb6f3e5c04a547cca66669b4890c174821559050ce4157c3ce64aeaa7b40d",
+      "git_blob_sha1": "4120373a6071b0f1469b1321402835d0acdaa43c",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/context/particles.py"
+    },
+    {
+      "path": "src/ko_pii/context/romanization.py",
+      "size_bytes": 4212,
+      "sha256": "d1627e85c7d563067ea23102382ac2b0c1ebe63b1f20fa4a27488a16d603b8ca",
+      "git_blob_sha1": "d69911052f2428d248af552becbcca5ec280e995",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/context/romanization.py"
+    },
+    {
+      "path": "src/ko_pii/core/__init__.py",
+      "size_bytes": 39,
+      "sha256": "052e82d9e931e111d7e7999f9f0369099bc5871cae4fbc171fcb0a1bedc62310",
+      "git_blob_sha1": "6d648bfb4775acbd69781b7010bb246bb4d538da",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/core/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/core/modes.py",
+      "size_bytes": 3318,
+      "sha256": "63b5611a9a9b1812c3819825519c9d6d4c684213cc31e017ff7f01e331e8f811",
+      "git_blob_sha1": "c387beec72e9ca762c6f725172e7dd7682e8934e",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/core/modes.py"
+    },
+    {
+      "path": "src/ko_pii/core/overlap.py",
+      "size_bytes": 1423,
+      "sha256": "d97df7424f7a11cfdd956064d769592957b3fb8c53d86636f4e900c932f5a82f",
+      "git_blob_sha1": "5e52ce6edc52b9fd9690d6ee14813b68b7bb8417",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/core/overlap.py"
+    },
+    {
+      "path": "src/ko_pii/core/types.py",
+      "size_bytes": 607,
+      "sha256": "332c4e3eeced1b4788aa92c59a577c21523bc090bdf3cae1584eb0be2975dfa1",
+      "git_blob_sha1": "ba47f71d283cfb52145e35539744bb48c5e50c45",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/core/types.py"
+    },
+    {
+      "path": "src/ko_pii/core/unicode_norm.py",
+      "size_bytes": 16032,
+      "sha256": "492535d95dbf0417ff25093ab8db24738fb226503066116ae4a623275607957d",
+      "git_blob_sha1": "772fcd837406dc709e62ffc3a7afeaa4c6c5a802",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/core/unicode_norm.py"
+    },
+    {
+      "path": "src/ko_pii/detect.py",
+      "size_bytes": 6088,
+      "sha256": "0f34cc8d37320d6856b5d9031b7dce089221f308dbd03af7bba72c307bddf12e",
+      "git_blob_sha1": "0707088833311c69fcd8225e5b276a51b086718f",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/detect.py"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/__init__.py",
+      "size_bytes": 2914,
+      "sha256": "5b680f5544c578cee99966db3692a1779e4d8b4faf139b49a068d002ad0fdea1",
+      "git_blob_sha1": "c7b579f97dc2a46611d7385aeb8d659bbd0de9b5",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/agencies.py",
+      "size_bytes": 10870,
+      "sha256": "1cec97381eda94cbc88c8496c3e10d6a0ce6b68f7cba2434a702724833d5b691",
+      "git_blob_sha1": "bbf95321f338c6076ccb16ac6bdd62a57cbe9b59",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/agencies.py"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/agency_abbrev.py",
+      "size_bytes": 6373,
+      "sha256": "cdc4b74ed0c896faeae6570da572f0040b93e7d6ba2f07c673b5564cdbc8f78a",
+      "git_blob_sha1": "77ed65890e25b813ebaabda6f963eafdff5ae34d",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/agency_abbrev.py"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/agency_titles.py",
+      "size_bytes": 9910,
+      "sha256": "7b845b61e201fb9878a9e1f2b19a3986426582c3c4f650f300595106cb79033a",
+      "git_blob_sha1": "02bfe6908aa816eebf0937c33c2686add1b6f3ad",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/agency_titles.py"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/common_words.py",
+      "size_bytes": 41685,
+      "sha256": "94b95e37343fde3a6a25b50309a1777a8ffa2602e60de2b4086b2d8f2ef2682f",
+      "git_blob_sha1": "05fbb850da5447173d550eaf35c116d0d1892b12",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/common_words.py"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/districts.py",
+      "size_bytes": 18893,
+      "sha256": "07e0e2b09c108d5590ae46f7338a80f64b6cfe37f8fbc3de68a875e32b8c04cd",
+      "git_blob_sha1": "e15152f5617860fb46212ca5b9c407418fa64844",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/districts.py"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/field_labels.py",
+      "size_bytes": 1678,
+      "sha256": "03a16bac0902ddf64e7dcd955859b07b406e44fe6721a62bd7c2c2b7ffb09b35",
+      "git_blob_sha1": "17e5381f8ebf5746af437263e022a0aa500acfc4",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/field_labels.py"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/legal_dongs.py",
+      "size_bytes": 1471,
+      "sha256": "f3a6e3461c3efa7de85cfd4df1e712237262f2f1943deba1e52820145cd645a7",
+      "git_blob_sha1": "0c72d4eaf326250197d9e8a56a68a0069f1c7a29",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/legal_dongs.py"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/legal_dongs.txt.gz",
+      "size_bytes": 31098,
+      "sha256": "5cf099ffd8a7a7c27096625ccb3ffb35e996c72f83c6d7a70dd20de4c2155624",
+      "git_blob_sha1": "53e8b4255f8b26e6769499ca7756e12cdeaa9556",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/legal_dongs.txt.gz"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/majors.py",
+      "size_bytes": 11924,
+      "sha256": "e0832811c4f964326947876bd950dbcdd9b1f7b3288f5e4a635d6564b80aac96",
+      "git_blob_sha1": "903ee009bfe9799cd06c66659fd5607d8e98a142",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/majors.py"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/surnames.py",
+      "size_bytes": 3110,
+      "sha256": "a2345844e5bbdf3ad268f5ca819ce2ea1b4e7aa19cf9193f6083498c7afcff2c",
+      "git_blob_sha1": "60a3c0e897163df53b74af64c412a2be2544687b",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/surnames.py"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/titles.py",
+      "size_bytes": 14919,
+      "sha256": "48d27c40aad3da54753a08ed37eed6286839dfdb5ebcef19f826dcdb67f4af54",
+      "git_blob_sha1": "b38bce037078d1cd86a3ced5d17601fa6f28245e",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/titles.py"
+    },
+    {
+      "path": "src/ko_pii/dictionaries/universities.py",
+      "size_bytes": 17447,
+      "sha256": "a78a74c452281e27633bc43c7e963c48e74862f8886cb9ef75c30754517517fa",
+      "git_blob_sha1": "095a59db922877d7ba749c6184514d6ff024261b",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/dictionaries/universities.py"
+    },
+    {
+      "path": "src/ko_pii/domain/__init__.py",
+      "size_bytes": 594,
+      "sha256": "bdb710daef6c171930ddf1fc7ec6b235fb469870bde1527f9de31aad0fe3d6c6",
+      "git_blob_sha1": "e6625f900fe622cee2bf50df81761d452af0e041",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/domain/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/domain/civil_petition.py",
+      "size_bytes": 1613,
+      "sha256": "ea40e3e5870359459254f6ac318d82dbe5380551ceed8c37df365ab13497de43",
+      "git_blob_sha1": "7016f177e5a8c9e816b3890249d6bc1bba21ed2d",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/domain/civil_petition.py"
+    },
+    {
+      "path": "src/ko_pii/domain/government.py",
+      "size_bytes": 2590,
+      "sha256": "b94b908cb03788250696b60a6e60eafa73f227a8f39744cbb97b5e4224899528",
+      "git_blob_sha1": "a146ad8c2a7e4c0466effdbe21e4c0ebcdce8f2c",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/domain/government.py"
+    },
+    {
+      "path": "src/ko_pii/domain/hr.py",
+      "size_bytes": 2233,
+      "sha256": "e7800794f3aa68fba9b71f0c5118251bd35687b4059ff3d634652e9eb21969da",
+      "git_blob_sha1": "d11ee217aaa237f927243e212f760ec2fc36c52f",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/domain/hr.py"
+    },
+    {
+      "path": "src/ko_pii/eval/__init__.py",
+      "size_bytes": 529,
+      "sha256": "4f0aee8d46bb7e3b9df848ca41f8e345019e096632140926bda51c79e36238f9",
+      "git_blob_sha1": "8915535967c749d359e4f0f8ff909098d0edfa96",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/eval/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/eval/benchmark.py",
+      "size_bytes": 3632,
+      "sha256": "f017c2b6e7bddfa3467dc3e303aee6c4b0814c33376990a3c3ab51927a4adea7",
+      "git_blob_sha1": "7915760f9972cfe96344743383150d33c6991683",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/eval/benchmark.py"
+    },
+    {
+      "path": "src/ko_pii/eval/dataset_integrity.py",
+      "size_bytes": 1857,
+      "sha256": "1b58999b796ba62cc9b97e43badabfbe9bedb602e20905389b0f31b16b11d927",
+      "git_blob_sha1": "15021687342f1a62edb20efea3309510b44182a8",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/eval/dataset_integrity.py"
+    },
+    {
+      "path": "src/ko_pii/eval/fp_collector.py",
+      "size_bytes": 4777,
+      "sha256": "3f0d166ce5131d824d156dbfae33cb6eb25aed952046f1c976c4956b6c2eac89",
+      "git_blob_sha1": "21e7f48cce5930bd06d775580107704289e903e8",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/eval/fp_collector.py"
+    },
+    {
+      "path": "src/ko_pii/eval/kdpii.py",
+      "size_bytes": 11025,
+      "sha256": "ea5b3c8219a7c2b83bc5bc931250c3e0a146377f5645a17f0166d2b36985aece",
+      "git_blob_sha1": "e8d61c60fff005034119504c9938fa1526259d48",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/eval/kdpii.py"
+    },
+    {
+      "path": "src/ko_pii/eval/klue_benchmark.py",
+      "size_bytes": 2849,
+      "sha256": "ee7033dcba799a3f9d62794c3c55ad8395f6f7a8503d755389f2a5d0ba10b4fc",
+      "git_blob_sha1": "8d400e5d1ac688b0b853bf3dcd48e7bf540f2aed",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/eval/klue_benchmark.py"
+    },
+    {
+      "path": "src/ko_pii/eval/klue_ner.py",
+      "size_bytes": 8610,
+      "sha256": "c0d331292f3866c020c126c578e008d19852946e607974d6d9cdac0ff6724d9c",
+      "git_blob_sha1": "e19f418bb33b9b2592352d83a8bb4c041912b265",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/eval/klue_ner.py"
+    },
+    {
+      "path": "src/ko_pii/eval/metrics.py",
+      "size_bytes": 4724,
+      "sha256": "ca8f40cdd116f9d2e59e1ce306ff9d56c2aa99f0393dcb1b9b7c5408f30e26a3",
+      "git_blob_sha1": "0a7f0c4fd770ae2dd3fd835ee1d14e4b59019a1c",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/eval/metrics.py"
+    },
+    {
+      "path": "src/ko_pii/eval/model_comparison.py",
+      "size_bytes": 27699,
+      "sha256": "11a549f0af384b8bb71ab8006be6332fb8f52958e6726948a49c14030bbfe266",
+      "git_blob_sha1": "ad84c7d17652e89ced078ac7ddd79ceacb60e473",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/eval/model_comparison.py"
+    },
+    {
+      "path": "src/ko_pii/eval/presidio_compare.py",
+      "size_bytes": 7178,
+      "sha256": "53712eaf298cda60bc9eb26136c5eca484ce496943e1f120716fe1272937f943",
+      "git_blob_sha1": "854a3f444802e8a28ab210e693b3267574d365ee",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/eval/presidio_compare.py"
+    },
+    {
+      "path": "src/ko_pii/eval/synth.py",
+      "size_bytes": 67044,
+      "sha256": "77208eae0e274844df37437cfadc30ed9c83adfa4afd663b49b083424e7728ac",
+      "git_blob_sha1": "033c44ff08b66d3eef1356616ed6ae032cb83aa0",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/eval/synth.py"
+    },
+    {
+      "path": "src/ko_pii/generalization/__init__.py",
+      "size_bytes": 624,
+      "sha256": "1bf067f8a138f86f8b5539db95a3fae1ba493ca78e026414e37cbbe2a1966a5c",
+      "git_blob_sha1": "bd190e61d3766141b2103305e227925e9f5398d7",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/generalization/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/generalization/address.py",
+      "size_bytes": 1279,
+      "sha256": "0e9512660c8d0371240c4d71da3137f5452ed49cb7c39b7e58c9cf979ee63a9e",
+      "git_blob_sha1": "e03f6a1b06049008d45b58a707913d00b155b5e1",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/generalization/address.py"
+    },
+    {
+      "path": "src/ko_pii/generalization/age.py",
+      "size_bytes": 642,
+      "sha256": "435bda456619061ed361b94af7e8a4fd651b9693be505f085005cd169eea7054",
+      "git_blob_sha1": "1674479b5a883f85f4b5cabd88180026d8247831",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/generalization/age.py"
+    },
+    {
+      "path": "src/ko_pii/generalization/date.py",
+      "size_bytes": 629,
+      "sha256": "347bd449a634ad71e3f64d0fd73f5435bc44c90ea57c01d5a0de9aceefdccb1a",
+      "git_blob_sha1": "95dd54644c082e6025e8ff7548a575118a56d808",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/generalization/date.py"
+    },
+    {
+      "path": "src/ko_pii/generalization/occupation.py",
+      "size_bytes": 1249,
+      "sha256": "c4738cb6f34c95329f44222922b6cb32c1530798d0ac4e40b51c838219d6db8b",
+      "git_blob_sha1": "23fbcc057ce9f5e64767b9bf0d8d27f44484097d",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/generalization/occupation.py"
+    },
+    {
+      "path": "src/ko_pii/integrations/__init__.py",
+      "size_bytes": 2114,
+      "sha256": "6374b1ab17605ecdf001e72217c1801035fba6b5d52495741a59ce297553c2ff",
+      "git_blob_sha1": "5cbd244ddb791ae6870fe79f0543a6e8b98337c9",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/integrations/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/integrations/base.py",
+      "size_bytes": 1540,
+      "sha256": "10e6601dc44ddf16ae00e1f18ef003c11931993bdcf3035590f6fc796a14beda",
+      "git_blob_sha1": "056314a3ee309487df83c3daafd18f2fb538096d",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/integrations/base.py"
+    },
+    {
+      "path": "src/ko_pii/integrations/hf_token_ner.py",
+      "size_bytes": 6189,
+      "sha256": "50dd33a94823aaa773bbbe5cdd88be87e5c45c23d988c2b01d560c569367a018",
+      "git_blob_sha1": "ae5c9edb475d6abc8509d0f37e134354ef493d2f",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/integrations/hf_token_ner.py"
+    },
+    {
+      "path": "src/ko_pii/integrations/hybrid.py",
+      "size_bytes": 8075,
+      "sha256": "11ba3e6aab774c7d241516d01558607a351dddd9817e3096a2db1f5e5867a944",
+      "git_blob_sha1": "ba72f248d245258081be864e1669bd8c4cd35464",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/integrations/hybrid.py"
+    },
+    {
+      "path": "src/ko_pii/integrations/langchain.py",
+      "size_bytes": 3493,
+      "sha256": "52bed14dced45a272ec1a32dc62c6023dcc96e857371d5071eafc6d2b8f74986",
+      "git_blob_sha1": "35acc16dbe59aceed8894f38e96d1d84bdc8a513",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/integrations/langchain.py"
+    },
+    {
+      "path": "src/ko_pii/integrations/llamaindex.py",
+      "size_bytes": 3623,
+      "sha256": "9a0afca99f6554a5e9adf88a4305b802f0fc2dbef1a812ee25fd3dc2ee784525",
+      "git_blob_sha1": "7f245f0bd8bb2caf9eb8dc3711bf34ffba32975b",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/integrations/llamaindex.py"
+    },
+    {
+      "path": "src/ko_pii/integrations/mcp_server.py",
+      "size_bytes": 9688,
+      "sha256": "c81024be8ef554669f41196ea05ff16447c7fc09e761e3e432d0e71f000db2a7",
+      "git_blob_sha1": "6a25aa94255c72245739e0f109195d50e5046aa3",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/integrations/mcp_server.py"
+    },
+    {
+      "path": "src/ko_pii/integrations/openai_privacy_filter.py",
+      "size_bytes": 9128,
+      "sha256": "b348e1c9f9ea7c9a5a8b5c7c45af509821f83badae176dd664490db4890404ea",
+      "git_blob_sha1": "518b634a641f05f75760bc2cc0ce7f3936e68901",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/integrations/openai_privacy_filter.py"
+    },
+    {
+      "path": "src/ko_pii/integrations/presidio_plugin.py",
+      "size_bytes": 6036,
+      "sha256": "6243b00105dd350d3e774309dac0e2d317e83849ec005cc15a5d6dfd10926b58",
+      "git_blob_sha1": "2a829497db4581b410ef1ff4b15d561df8cdef2a",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/integrations/presidio_plugin.py"
+    },
+    {
+      "path": "src/ko_pii/io_/__init__.py",
+      "size_bytes": 1094,
+      "sha256": "7e4b8dd4b5cd13b2fe995d2e0236a9d0055e0daaf563686d45fffb66687bd99f",
+      "git_blob_sha1": "39823d7b7b7cc4939c66f3927960d11ae0c5acda",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/io_/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/io_/bounded.py",
+      "size_bytes": 10222,
+      "sha256": "331523b4a7479d8ddec65afc13024bbff20108fc47b50b6c3837c456360f3728",
+      "git_blob_sha1": "361eb715b39744ee928b947c973d7f5cb5b58bbb",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/io_/bounded.py"
+    },
+    {
+      "path": "src/ko_pii/io_/csv_reader.py",
+      "size_bytes": 1066,
+      "sha256": "38307924c8d27217e28c1a8e3f4f031a8743285439ddfab5f331467c76233d55",
+      "git_blob_sha1": "abaea218bcebacb06aa669931d4b4621c10b1def",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/io_/csv_reader.py"
+    },
+    {
+      "path": "src/ko_pii/io_/dispatcher.py",
+      "size_bytes": 2045,
+      "sha256": "e0626c28ea1b0bafe0aca3ae0db616fb6da38371adb04806b3568c5ac80f6747",
+      "git_blob_sha1": "e791d92d8aec2ab679333249223a755a14e1249e",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/io_/dispatcher.py"
+    },
+    {
+      "path": "src/ko_pii/io_/docx.py",
+      "size_bytes": 2232,
+      "sha256": "d54d19c4e98bd801a9bfd84e7f15c8e7a9bbfb9f043cab9a34af65b7207ef3cc",
+      "git_blob_sha1": "bdc726d71242afff29fba5cfbd6050f70782e418",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/io_/docx.py"
+    },
+    {
+      "path": "src/ko_pii/io_/hwp.py",
+      "size_bytes": 5547,
+      "sha256": "e5092e41c7d615bd1abea50c5ed40f3fc563925ccd7cb8174eee07e219f350fb",
+      "git_blob_sha1": "56bf87e63e245001531901b34817b8ce438fdb9f",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/io_/hwp.py"
+    },
+    {
+      "path": "src/ko_pii/io_/hwpx.py",
+      "size_bytes": 3255,
+      "sha256": "2d432486534c4ed0c6393cdd9813c0c6142f618378fbc913fdfd6d66d06c2aca",
+      "git_blob_sha1": "a5b7407da066344500655b5a6f7115edad8dac58",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/io_/hwpx.py"
+    },
+    {
+      "path": "src/ko_pii/io_/pdf.py",
+      "size_bytes": 2807,
+      "sha256": "8dea0d72061abc72594a51b3bf5bcb170a5d0ff259b92eca559383eb6397c187",
+      "git_blob_sha1": "7e4ee50d64bf712b648ec616d64ab185687dba86",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/io_/pdf.py"
+    },
+    {
+      "path": "src/ko_pii/io_/plain.py",
+      "size_bytes": 411,
+      "sha256": "3d37ad3e8756f413175614cd26056f3fad55c2a96cbdf39ac3e416fa49da4631",
+      "git_blob_sha1": "bb1739855166580e102a2c908fcd67d716c6e890",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/io_/plain.py"
+    },
+    {
+      "path": "src/ko_pii/io_/text_normalizer.py",
+      "size_bytes": 4858,
+      "sha256": "1ec84b64dc87fdd5756c2c4a71c0808040c8cd8bd1c42194fff97a713c31ce05",
+      "git_blob_sha1": "aeac6bef8dca3aae90306c2b5b630aeee660121c",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/io_/text_normalizer.py"
+    },
+    {
+      "path": "src/ko_pii/io_/xlsx.py",
+      "size_bytes": 4212,
+      "sha256": "d75e26882219d4b917d12008c5c643dd1188c20eb2197dc0141fce3c1f8008b2",
+      "git_blob_sha1": "f2d9c528af5509b7161906cb6bb34bebdcf9ee71",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/io_/xlsx.py"
+    },
+    {
+      "path": "src/ko_pii/labels.py",
+      "size_bytes": 4323,
+      "sha256": "9456fdc8e33606646eb09e9036a44f297d664100cb78aa652a3a2e39913e492f",
+      "git_blob_sha1": "b23b18d90f0348167e5361a2eabf9d0167dc8d76",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/labels.py"
+    },
+    {
+      "path": "src/ko_pii/legal/__init__.py",
+      "size_bytes": 351,
+      "sha256": "9994aceb3125f4fdcf5662ce5dfc74829e464d83ef05973ca5cffbdfe1c01b46",
+      "git_blob_sha1": "fa5077ebaef4b91e92e71d635eb5437cf606f7ee",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/legal/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/legal/mapping.py",
+      "size_bytes": 5769,
+      "sha256": "aaaa12d6ee843a1c249e85440a04a5f74ebd7882fcc7d98d9e599f4572c37e5f",
+      "git_blob_sha1": "5cfa581a2c3a5f2f427580da6d6b7e93266f43cf",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/legal/mapping.py"
+    },
+    {
+      "path": "src/ko_pii/modes/__init__.py",
+      "size_bytes": 354,
+      "sha256": "4872b26bcd2063154efe638eee804564c4f945ec2fc2250bda6e824e357e0f35",
+      "git_blob_sha1": "044df18d54caaf38d58028a1c50fc262a388d430",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/modes/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/modes/_apply.py",
+      "size_bytes": 945,
+      "sha256": "e782dde47e3e5cb2bd54ab311069e7939e8bacb60196382565558fcb462b3ce1",
+      "git_blob_sha1": "84010fa3433467d01f2d0a94f82eee78ca10e8b3",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/modes/_apply.py"
+    },
+    {
+      "path": "src/ko_pii/modes/fpe.py",
+      "size_bytes": 8067,
+      "sha256": "59dbac4c7528e645689d0ebbf10fd4d328af1056e669a3a36a11267875d7aad9",
+      "git_blob_sha1": "0a1f8cdcb75831aefe96ed63481f4cb83c5fc122",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/modes/fpe.py"
+    },
+    {
+      "path": "src/ko_pii/modes/hashed.py",
+      "size_bytes": 1271,
+      "sha256": "64641157d6f556c4f66f9ef84ab922feb1cc74160c7b682f7990ab5acd24e126",
+      "git_blob_sha1": "fae30f808dd231f42934405d4e79fd660090e779",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/modes/hashed.py"
+    },
+    {
+      "path": "src/ko_pii/modes/partial.py",
+      "size_bytes": 10267,
+      "sha256": "2e31d8536f36a6822132e80478652b366f41f21da87f0ee9a88eb4f4c0eafd4f",
+      "git_blob_sha1": "a5ebdbf7f83f2efd343592e62a78e872da8847db",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/modes/partial.py"
+    },
+    {
+      "path": "src/ko_pii/modes/redact.py",
+      "size_bytes": 2473,
+      "sha256": "315b941cf352ad5ac8e4f7b713aa2c03848afa847949dc5e31b0a293b8578c2c",
+      "git_blob_sha1": "22c91f2142d10d55ff4c0c4bf3e52bd2d2c72944",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/modes/redact.py"
+    },
+    {
+      "path": "src/ko_pii/modes/tokenize.py",
+      "size_bytes": 1460,
+      "sha256": "68064f0aea3d593be99d937d4d8f9ca2fc4c4089354a7d336666820a368f68bb",
+      "git_blob_sha1": "eafe0643b1457aed64f9a709e43fa7a497354a49",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/modes/tokenize.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/__init__.py",
+      "size_bytes": 30,
+      "sha256": "dd2f50a03a0f81281eb62a4e84c32a69e284cd3cf4452c96792d4c03ed47ff68",
+      "git_blob_sha1": "d6f2ceef498a9f7637d30900cb37f6eeced9195c",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/account.py",
+      "size_bytes": 5624,
+      "sha256": "55fb67fe68bf0fcad695d0be213984bbe3a75d26fced188366c2fbf726b5cbe0",
+      "git_blob_sha1": "99af664d83864b69c6a6d7b2a9525f0ec64e271d",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/account.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/address.py",
+      "size_bytes": 14145,
+      "sha256": "6daa6814daa28d5a78b68a644412e9643010b07d73839416fdc71bc9664d47ff",
+      "git_blob_sha1": "33b4bfd97018870879be620d205b8d0370a83cef",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/address.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/birth.py",
+      "size_bytes": 10876,
+      "sha256": "6f9c82eed3a70cd9722d71ab3e157eb4c2896ffe3801db9c9df0e7dd99a79b3e",
+      "git_blob_sha1": "94925c01a1c652ac815b50779388aa9ef752bdc3",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/birth.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/business_reg.py",
+      "size_bytes": 1876,
+      "sha256": "e96622913659133c664dd52857167ab7ffef6725fb94d3bf8f0ee989857f245d",
+      "git_blob_sha1": "b5c06ee35e106b94d6ed822e3720e4c9a4596cb6",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/business_reg.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/card.py",
+      "size_bytes": 3106,
+      "sha256": "88e35637a18a8b42227a83674cdd6089083afd0bb080f4d2385de2d0370ec660",
+      "git_blob_sha1": "b642dd01ad8f5d2f45fe577f32ff3dbe5395f646",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/card.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/corp_reg.py",
+      "size_bytes": 3074,
+      "sha256": "9b9cfb449fde492378be82d0d874f1216b13d79b6fd18de4bd10eb6798afd3d6",
+      "git_blob_sha1": "e27a083d38139bf1f1734156c9f6b1d04df29539",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/corp_reg.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/court_case.py",
+      "size_bytes": 4150,
+      "sha256": "0330188c82ef21143d20d6a65ca216212568a3a2e4c536cda5d0c460d0e6fa20",
+      "git_blob_sha1": "9589d487ec61dfd0b707bde64aaeb0d4a24f08b3",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/court_case.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/driver_license.py",
+      "size_bytes": 3396,
+      "sha256": "eeb50b1939fc81c43619bd8e484973d46a2cd96be1baed8525fcaf32a8555840",
+      "git_blob_sha1": "a7045e3833309d31c175931fffd4d866fa6f21e3",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/driver_license.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/edi_drug.py",
+      "size_bytes": 3657,
+      "sha256": "f4a9a821905131f7f7d8475775ec04b3482e21d758a61764ce488a47c1e45ec2",
+      "git_blob_sha1": "35666ecfa60b40c9887a6504c58c7159b26ee11f",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/edi_drug.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/email.py",
+      "size_bytes": 4563,
+      "sha256": "6939e5c1516144fa09bd57a6c234a1401f630bb01c819c9df46907380f04c6a0",
+      "git_blob_sha1": "59dc50c36333bebe5bfdc7c5260ed9a0eb7094f8",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/email.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/fax.py",
+      "size_bytes": 1875,
+      "sha256": "6150db7440e218a71b94aedaa08a02075ab6f79e9e667cf4c0b8dfdd17e9b50d",
+      "git_blob_sha1": "0dad8e64bf60ddb9552935b49ae0c0bce2f12d56",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/fax.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/frn.py",
+      "size_bytes": 2771,
+      "sha256": "002a3eee84c4db9b43f896507e7bb45976e18c18ec66d673f79593059adb7e1f",
+      "git_blob_sha1": "0f54ea47b88fe5d6e75219102bb344c5eae4ddc7",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/frn.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/ip.py",
+      "size_bytes": 5436,
+      "sha256": "73d516d39778996514a8cccfbe48d9715ff9ea0f5a7c2430c0ad2ad63e4793b8",
+      "git_blob_sha1": "863f0c160697950973047a1b0394295f29a89e54",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/ip.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/medical_insurance.py",
+      "size_bytes": 2132,
+      "sha256": "9b3d699454762354f0a19ece89105541788d689081c15dbc5cb1b86da0e82d9e",
+      "git_blob_sha1": "8620b3935e8e70ed606ebe118546ce17bf9e90a9",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/medical_insurance.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/nationality.py",
+      "size_bytes": 1963,
+      "sha256": "f10608f4a9601ac9c29a7479f578808deb89bf951a2ba1d4321152e1966d3b14",
+      "git_blob_sha1": "2476cee2787847b8846557964603469ba86dfecd",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/nationality.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/passport.py",
+      "size_bytes": 2652,
+      "sha256": "b3bc2b8a84bc3e32f5e4ca5e4338939d2a837c9888faa029034e2dc7b7b196ff",
+      "git_blob_sha1": "4a5c931971270e2ff9bb6c6981dd3714b6c2c1e0",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/passport.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/person.py",
+      "size_bytes": 28369,
+      "sha256": "b002ef505a76b4834c07227116c673216c02def53730038a858bc2ca142a300e",
+      "git_blob_sha1": "0b7c243234c904ef456543058e4fd107d45d544a",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/person.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/personal_attr.py",
+      "size_bytes": 22360,
+      "sha256": "7951a16fcdfdd053dac446a097c535dee317a0673acc954712495a5b1879b80c",
+      "git_blob_sha1": "1428b2147a1ff4ddb5f0f93897d7af5151f5d7b1",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/personal_attr.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/phone.py",
+      "size_bytes": 6724,
+      "sha256": "b8ab52f35092c2ba50a0f87073479a5b4d86c17a6a9c119c29560361dbe4694d",
+      "git_blob_sha1": "f1ac37bd937d9082db7d2557f0274c310fbd67b6",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/phone.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/pnu.py",
+      "size_bytes": 3552,
+      "sha256": "12e8f5cfb0848a7d4f8c966a743387701edc83295021b1ab76f6533b6897f7ca",
+      "git_blob_sha1": "4556c65d4a01ab2d70c152cc157aa52f1e5d2ba2",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/pnu.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/postal_code.py",
+      "size_bytes": 3545,
+      "sha256": "fa34c2c4561347a9c844407f69cd0319d330c97c8a7dad7d6361b5b04932e3de",
+      "git_blob_sha1": "6ca2abaa868fd7b84330182b9d04f0c8cf5754d9",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/postal_code.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/prescription.py",
+      "size_bytes": 5707,
+      "sha256": "28fc089b162d067a81578a51fde1b439e49d9526581647d26bdab93fafb571c6",
+      "git_blob_sha1": "3d002ad432b551e1416587f94fb9d7037297961b",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/prescription.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/rrn.py",
+      "size_bytes": 9980,
+      "sha256": "493e0a97b8d0218028368d5241f434d932a2ff013cc3b93c53eff01fe6df867f",
+      "git_blob_sha1": "eddde1944bb9d6c64e533401ce088b2a6e339294",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/rrn.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/url.py",
+      "size_bytes": 1176,
+      "sha256": "8656f4e81aaab0d2f811a711656853d848121b3f3e8bec9e53637ad750d4eba4",
+      "git_blob_sha1": "e1e70fde9eb80f076961cfc91b3630fd0ba6be8c",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/url.py"
+    },
+    {
+      "path": "src/ko_pii/patterns/vehicle.py",
+      "size_bytes": 4422,
+      "sha256": "c2113e872f2e16bb163debdb5ae17cd55002540e727f052d702d041a65a956b0",
+      "git_blob_sha1": "36cfc172e443f4d3b63cbf117534e8d38d180b69",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/patterns/vehicle.py"
+    },
+    {
+      "path": "src/ko_pii/py.typed",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_blob_sha1": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/py.typed"
+    },
+    {
+      "path": "src/ko_pii/reporting/__init__.py",
+      "size_bytes": 265,
+      "sha256": "ec3e3f45a515d9fca8de96999e172d4abd40e62b925035c52adddfcb62d3cc07",
+      "git_blob_sha1": "00351e19b6557c4e8079ef4cf7f1b8fed8a25368",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/reporting/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/reporting/certificate.py",
+      "size_bytes": 2224,
+      "sha256": "24ce84e23c60ca1a5f76b6e506aca8b10c8dd312297d796afff290fe4949ee0a",
+      "git_blob_sha1": "390fad15ec41f17e2d37b1a85b4613e1d9b0b8d7",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/reporting/certificate.py"
+    },
+    {
+      "path": "src/ko_pii/reporting/html_report.py",
+      "size_bytes": 9459,
+      "sha256": "9a915f63566a71895c38acd84155abd4d233c5b4cd4625e7018856c9855c9876",
+      "git_blob_sha1": "2dc2f5491add321682e4567f5783ed8127ccc645",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/reporting/html_report.py"
+    },
+    {
+      "path": "src/ko_pii/reporting/summary.py",
+      "size_bytes": 2794,
+      "sha256": "c01a10dca6397346b311edd61592952aa1c3845c652625aa2c8fa29bfd6b0078",
+      "git_blob_sha1": "0cff99551c081775fa2f435237ee71682c026c26",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/reporting/summary.py"
+    },
+    {
+      "path": "src/ko_pii/review/__init__.py",
+      "size_bytes": 621,
+      "sha256": "bb6827b0bd3645ef63ecae28ceb29a7677d14836751555faf58281195f3f1480",
+      "git_blob_sha1": "ed0c04e8ea08a58e26a6e589d35d2a1cdac53728",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/review/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/review/feedback.py",
+      "size_bytes": 4348,
+      "sha256": "ef8bc4d716d229f3b8f11401c5c1f7c079c2d99c3cad10d3420a371277d9a36e",
+      "git_blob_sha1": "9d1722b593a7f7bf80d4f1418fd6b660a7f460c9",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/review/feedback.py"
+    },
+    {
+      "path": "src/ko_pii/review/queue.py",
+      "size_bytes": 6819,
+      "sha256": "df395e47be349e1c6d13665e795c0d042aee8182c9f71f756fa3c8b82cdcaab0",
+      "git_blob_sha1": "507dabe013dabec4b5248fc37b411a898a085f72",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/review/queue.py"
+    },
+    {
+      "path": "src/ko_pii/streaming.py",
+      "size_bytes": 3724,
+      "sha256": "656b2cd3efbcc75d3fb8951db3f0932c441e7a828c8bcbd67abd2ddc2859bf54",
+      "git_blob_sha1": "eba0af453d5a49049da5d45d0496b6c7a1c5b11a",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/streaming.py"
+    },
+    {
+      "path": "src/ko_pii/tabular.py",
+      "size_bytes": 12360,
+      "sha256": "a35bc8461d4b8ec68ed2f97deabd31268ef9c9891eead24d6a5fbc021c0e9394",
+      "git_blob_sha1": "60da8415878e2763dc2b3d323004c9d7bfca9ad5",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/tabular.py"
+    },
+    {
+      "path": "src/ko_pii/vault/__init__.py",
+      "size_bytes": 536,
+      "sha256": "c21b673168b16fb8f152f3839d70a0c49e6616138b05b192f04bf6dbfd9ca716",
+      "git_blob_sha1": "b88d35ae4ca7d97342effd9a775c73675183749a",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/vault/__init__.py"
+    },
+    {
+      "path": "src/ko_pii/vault/audit.py",
+      "size_bytes": 4495,
+      "sha256": "903d6e212be792da62d94bd3313f705c23fabd6a877aca32ba6c2420c342b8cc",
+      "git_blob_sha1": "6da6f87ae07c448fb7177e49d3749b2182a58e90",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/vault/audit.py"
+    },
+    {
+      "path": "src/ko_pii/vault/encrypted.py",
+      "size_bytes": 3701,
+      "sha256": "8c438ac1bc172dd0c787adc0e9c382b86694b94a3ef155b3edba2210f1614a00",
+      "git_blob_sha1": "ba260ccf8b47e704888bf28e7ac445a3a5879c38",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/vault/encrypted.py"
+    },
+    {
+      "path": "src/ko_pii/vault/reversible.py",
+      "size_bytes": 14421,
+      "sha256": "ed56d6bb55dea19ce6502441ab48c0699f3749b4163567ccfdccef4c8351434e",
+      "git_blob_sha1": "ad2549d0d154bbe84f858ea581eda3ca48f3a23b",
+      "url": "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/vault/reversible.py"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "developer": "Google",
+  "family": "Gemma-3",
+  "hf_gguf_repo": "ggml-org/gemma-3-1b-it-GGUF",
+  "is_medical": false,
+  "moe": false,
+  "params_active_B": null,
+  "params_total_B": 1.0,
+  "quant_target": "Q8_0",
+  "reasoning": false,
+  "size_gb": 1.07
+}

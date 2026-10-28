@@ -1,0 +1,9 @@
+# This project has no third-party Python dependencies.
+#
+# The pipeline (deid.pipeline), the two-pass runner (deid.run_model), the
+# scorer (deid.metrics), and the test suite all use only the Python standard
+# library. Python 3.9 or newer is required.
+#
+# Running a real evaluation additionally needs a local llama.cpp server
+# (`llama-server`) hosting one of the GGUF models listed in the README. That is
+# a separate native binary, not a Python package, so it is not listed here.

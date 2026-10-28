@@ -1,0 +1,205 @@
+{
+  "sourcedb": "synthetic-fixture",
+  "sourceid": "TEST001",
+  "text": "Discharge Summary\nPatient: John Archer    MRN: AB-102938\nFacility: Lakeside General Hospital, Riverton\nAdmitted: 03/14/2047    Discharged: 03/18/2047\nAttending: Maria Delgado, MD\n\nJohn Archer is a 94-year-old man admitted for community-acquired pneumonia.\nHe was seen by Dr. Delgado on 03/15/2047 and improved with antibiotics.\nCallback number (555) 204-1188. Follow-up scheduled for 04/02/2047 at\nLakeside General Hospital. Discharge instructions emailed to\njohn.archer@example.org. Patient ambulating independently at discharge.\n",
+  "denotations": [
+    {
+      "id": "T1",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 27,
+        "end": 38
+      }
+    },
+    {
+      "id": "T2",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 47,
+        "end": 56
+      }
+    },
+    {
+      "id": "T3",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 67,
+        "end": 92
+      }
+    },
+    {
+      "id": "T4",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 94,
+        "end": 102
+      }
+    },
+    {
+      "id": "T5",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 113,
+        "end": 123
+      }
+    },
+    {
+      "id": "T6",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 139,
+        "end": 149
+      }
+    },
+    {
+      "id": "T7",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 161,
+        "end": 174
+      }
+    },
+    {
+      "id": "T8",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 180,
+        "end": 191
+      }
+    },
+    {
+      "id": "T9",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 197,
+        "end": 208
+      }
+    },
+    {
+      "id": "T10",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 286,
+        "end": 296
+      }
+    },
+    {
+      "id": "T11",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 344,
+        "end": 358
+      }
+    },
+    {
+      "id": "T12",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 384,
+        "end": 394
+      }
+    },
+    {
+      "id": "T13",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 398,
+        "end": 423
+      }
+    },
+    {
+      "id": "T14",
+      "obj": "PHI_IDENTIFIER",
+      "span": {
+        "begin": 459,
+        "end": 482
+      }
+    }
+  ],
+  "attributes": [
+    {
+      "id": "A1",
+      "subj": "T1",
+      "obj": "01_NAME",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A2",
+      "subj": "T2",
+      "obj": "09_MEDICAL_RECORD_NUMBER",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A3",
+      "subj": "T3",
+      "obj": "02_GEOGRAPHIC_SUBDIVISION",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A4",
+      "subj": "T4",
+      "obj": "02_GEOGRAPHIC_SUBDIVISION",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A5",
+      "subj": "T5",
+      "obj": "03_DATE",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A6",
+      "subj": "T6",
+      "obj": "03_DATE",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A7",
+      "subj": "T7",
+      "obj": "01_NAME",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A8",
+      "subj": "T8",
+      "obj": "01_NAME",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A9",
+      "subj": "T9",
+      "obj": "04_AGE_OVER_89",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A10",
+      "subj": "T10",
+      "obj": "03_DATE",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A11",
+      "subj": "T11",
+      "obj": "05_TELEPHONE_NUMBER",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A12",
+      "subj": "T12",
+      "obj": "03_DATE",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A13",
+      "subj": "T13",
+      "obj": "02_GEOGRAPHIC_SUBDIVISION",
+      "pred": "identifier_type"
+    },
+    {
+      "id": "A14",
+      "subj": "T14",
+      "obj": "07_EMAIL_ADDRESS",
+      "pred": "identifier_type"
+    }
+  ]
+}

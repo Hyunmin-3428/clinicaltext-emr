@@ -1,0 +1,52 @@
+test_audit_export_and_db_have_no_plaintext_phi (test_gateway.GatewayTests.test_audit_export_and_db_have_no_plaintext_phi) ... ok
+test_audit_failure_prevents_release_claim (test_gateway.GatewayTests.test_audit_failure_prevents_release_claim) ... ok
+test_audit_interior_tamper_detected (test_gateway.GatewayTests.test_audit_interior_tamper_detected) ... ok
+test_audit_suffix_truncation_is_documented_limit (test_gateway.GatewayTests.test_audit_suffix_truncation_is_documented_limit) ... ok
+test_auth_and_roles (test_gateway.GatewayTests.test_auth_and_roles) ... ok
+test_caller_approval_and_safety_flags_denied (test_gateway.GatewayTests.test_caller_approval_and_safety_flags_denied) ... ok
+test_cli_malformed_request_no_phi_in_error (test_gateway.GatewayTests.test_cli_malformed_request_no_phi_in_error) ... ok
+test_cli_review_output_must_stay_internal (test_gateway.GatewayTests.test_cli_review_output_must_stay_internal) ... ok
+test_clinical_dose_not_mistaken_for_address (test_gateway.GatewayTests.test_clinical_dose_not_mistaken_for_address) ... ok
+test_concurrent_export_one_shot (test_gateway.GatewayTests.test_concurrent_export_one_shot) ... ok
+test_connected_hybrid_actual_public_detectors_and_egress (test_gateway.GatewayTests.test_connected_hybrid_actual_public_detectors_and_egress) ... ok
+test_connected_rules_actual_bilingual_transform_and_egress (test_gateway.GatewayTests.test_connected_rules_actual_bilingual_transform_and_egress) ... ok
+test_corrupt_key_failure_has_no_secret (test_gateway.GatewayTests.test_corrupt_key_failure_has_no_secret) ... ok
+test_cross_document_capsule_denied (test_gateway.GatewayTests.test_cross_document_capsule_denied) ... ok
+test_document_source_metadata_change_after_approval (test_gateway.GatewayTests.test_document_source_metadata_change_after_approval) ... ok
+test_dose_negation_site_certainty_damage (test_gateway.GatewayTests.test_dose_negation_site_certainty_damage) ... ok
+test_egress_failure_consumes_approval_and_does_not_retry (test_gateway.GatewayTests.test_egress_failure_consumes_approval_and_does_not_retry) ... ok
+test_existing_egress_file_not_overwritten (test_gateway.GatewayTests.test_existing_egress_file_not_overwritten) ... ok
+test_external_signature_hash_and_schema_validation (test_gateway.GatewayTests.test_external_signature_hash_and_schema_validation) ... ok
+test_final_text_mutation_even_trailing_space_denied (test_gateway.GatewayTests.test_final_text_mutation_even_trailing_space_denied) ... ok
+test_four_fixture_end_to_end_and_allowlist (test_gateway.GatewayTests.test_four_fixture_end_to_end_and_allowlist) ... ok
+test_identity_revocation_checked_again (test_gateway.GatewayTests.test_identity_revocation_checked_again) ... ok
+test_independent_residual_rejects_fake_adapter (test_gateway.GatewayTests.test_independent_residual_rejects_fake_adapter) ... ok
+test_manifest_purpose_recipient_policy_doc_swaps_denied (test_gateway.GatewayTests.test_manifest_purpose_recipient_policy_doc_swaps_denied) ... ok
+test_missing_basis_purpose_and_recipient (test_gateway.GatewayTests.test_missing_basis_purpose_and_recipient) ... ok
+test_no_file_before_approval (test_gateway.GatewayTests.test_no_file_before_approval) ... ok
+test_policy_change_and_unsigned_policy_fail (test_gateway.GatewayTests.test_policy_change_and_unsigned_policy_fail) ... ok
+test_protected_fact_loss_independently_blocked (test_gateway.GatewayTests.test_protected_fact_loss_independently_blocked) ... ok
+test_real_source_cannot_be_released_even_if_known_text (test_gateway.GatewayTests.test_real_source_cannot_be_released_even_if_known_text) ... ok
+test_record_tampering_cannot_authorize (test_gateway.GatewayTests.test_record_tampering_cannot_authorize) ... ok
+test_replay_and_restart_replay_denied (test_gateway.GatewayTests.test_replay_and_restart_replay_denied) ... ok
+test_review_and_approval_expiry (test_gateway.GatewayTests.test_review_and_approval_expiry) ... ok
+test_review_requires_exact_seen_hash (test_gateway.GatewayTests.test_review_requires_exact_seen_hash) ... ok
+test_revocation_and_restart_persistence (test_gateway.GatewayTests.test_revocation_and_restart_persistence) ... ok
+test_revoke_dispatch_transaction_order_is_linear (test_gateway.GatewayTests.test_revoke_dispatch_transaction_order_is_linear) ... ok
+test_same_document_new_release_invalidates_old_bundle (test_gateway.GatewayTests.test_same_document_new_release_invalidates_old_bundle) ... ok
+test_schema_bounds_and_path_strings (test_gateway.GatewayTests.test_schema_bounds_and_path_strings) ... ok
+test_server_international_or_unreviewed_recipient_denied (test_gateway.GatewayTests.test_server_international_or_unreviewed_recipient_denied) ... ok
+test_source_mutation_denied (test_gateway.GatewayTests.test_source_mutation_denied) ... ok
+test_strict_json_duplicate_and_nonfinite (test_gateway.GatewayTests.test_strict_json_duplicate_and_nonfinite) ... ok
+test_transform_errors_cannot_echo_raw_phi (test_gateway.GatewayTests.test_transform_errors_cannot_echo_raw_phi) ... ok
+test_transform_metadata_change_after_approval (test_gateway.GatewayTests.test_transform_metadata_change_after_approval) ... ok
+test_trusted_subject_separation (test_gateway.GatewayTests.test_trusted_subject_separation) ... ok
+test_unexpected_nested_egress_metadata_denied (test_gateway.GatewayTests.test_unexpected_nested_egress_metadata_denied) ... ok
+test_unicode_controls_and_active_content_fail_closed (test_gateway.GatewayTests.test_unicode_controls_and_active_content_fail_closed) ... ok
+test_unknown_mixed_names_and_prompt_are_review_only (test_gateway.GatewayTests.test_unknown_mixed_names_and_prompt_are_review_only) ... ok
+test_upstream_approved_assessment_cannot_authorize_unknown_text (test_gateway.GatewayTests.test_upstream_approved_assessment_cannot_authorize_unknown_text) ... ok
+
+----------------------------------------------------------------------
+Ran 47 tests in 6.372s
+
+OK

@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "local-llm-deid"
+version = "1.0.1"
+description = "De-identification evaluation pipeline for locally deployed open-weight LLMs"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+  { name = "James Weatherhead", email = "jacweath@utmb.edu" },
+  { name = "Emily Cwiklik" },
+  { name = "Peter McCaffrey" },
+  { name = "George Golovko" },
+]
+keywords = [
+  "de-identification",
+  "protected health information",
+  "HIPAA Safe Harbor",
+  "clinical NLP",
+  "large language models",
+]
+# No runtime dependencies: standard library only.
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/JamesWeatherhead/local-llm-deid"
+Repository = "https://github.com/JamesWeatherhead/local-llm-deid"
+Issues = "https://github.com/JamesWeatherhead/local-llm-deid/issues"
+
+[project.scripts]
+deid-run = "deid.run_model:main"
+deid-score = "deid.metrics:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

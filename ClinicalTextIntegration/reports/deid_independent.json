@@ -1,0 +1,459 @@
+{
+  "scope": "24 independent hand-annotated synthetic notes; no hints; direct transformation",
+  "not_measured": [
+    "population reidentification",
+    "all clinical semantics",
+    "real patient performance",
+    "legal adequacy"
+  ],
+  "detector": "hybrid",
+  "cases_sha256": "daff94f8c405e5643bf4e3a8a808473bc5a6994d8b6a4446e32199f1b5ab5266",
+  "evaluator_sha256": "58df885201118ca011092febfeb521f1c04bb107a1a02ae0bb2946bda7ac0720",
+  "notes": 24,
+  "totals": {
+    "tp": 218,
+    "fp": 1,
+    "fn": 48,
+    "gold_entities": 27,
+    "exact_extent": 22,
+    "exact_extent_type": 21,
+    "restored": 24,
+    "fragments": 57,
+    "retained_fragments": 57
+  },
+  "character_precision": 0.995434,
+  "character_recall": 0.819549,
+  "character_f1": 0.898969,
+  "exact_entity_extent_recall": 0.814815,
+  "exact_entity_extent_type_recall": 0.777778,
+  "language_results": {
+    "en": {
+      "notes": 11,
+      "gold_entities": 6,
+      "tp": 84,
+      "fp": 0,
+      "fn": 0,
+      "character_precision": 1.0,
+      "character_recall": 1.0
+    },
+    "ko": {
+      "notes": 2,
+      "gold_entities": 3,
+      "tp": 15,
+      "fp": 0,
+      "fn": 0,
+      "character_precision": 1.0,
+      "character_recall": 1.0
+    },
+    "mixed": {
+      "notes": 11,
+      "gold_entities": 18,
+      "tp": 119,
+      "fp": 1,
+      "fn": 48,
+      "character_precision": 0.991667,
+      "character_recall": 0.712575
+    }
+  },
+  "code_snapshot": {
+    "ClinicalTextDeid/api.py": "8334be87c45ec2806256589cb9acf17faac9e7b903cf0b307428806f1fdb0611",
+    "ClinicalTextDeid/detectors.py": "1ef3503c26d0ce5d4c80c970521dccdb889a24f126400a126e77b47858405aee",
+    "ClinicalTextDeid/generalize.py": "ab5ba80b8e3284b0bf4a1d4baf979a2a414368ce1829882e215a4e88869069db",
+    "ClinicalTextDeid/clinical_guards.py": "fd94da72cce4567d122306dee1e051f08b51be12d5557bcf8dba9c9b3a392efe"
+  },
+  "integrity": [
+    {
+      "attack": "aad_public",
+      "rejected": true
+    },
+    {
+      "attack": "aad_audit",
+      "rejected": true
+    },
+    {
+      "attack": "aad_assessment",
+      "rejected": true
+    },
+    {
+      "attack": "aad_policy",
+      "rejected": true
+    },
+    {
+      "attack": "aad_schema_version",
+      "rejected": true
+    },
+    {
+      "attack": "purpose_swap",
+      "rejected": true
+    },
+    {
+      "attack": "wrong_key",
+      "rejected": true
+    }
+  ],
+  "rows": [
+    {
+      "id": "I01",
+      "language": "mixed",
+      "gold_entities": 1,
+      "predicted_entities": 1,
+      "tp_chars": 3,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "환자 <PERSON_1>은 chest pain을 호소. BP 120/80 mmHg, HR 82."
+    },
+    {
+      "id": "I02",
+      "language": "mixed",
+      "gold_entities": 2,
+      "predicted_entities": 1,
+      "tp_chars": 3,
+      "fp_chars": 0,
+      "fn_chars": 10,
+      "misses": [
+        {
+          "start": 7,
+          "end": 17,
+          "type": "PERSON",
+          "coverage": 0.0
+        }
+      ],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "환자 <PERSON_1>(Minjun Kim, same patient)은 metformin 500mg BID 복용 중."
+    },
+    {
+      "id": "I03",
+      "language": "mixed",
+      "gold_entities": 1,
+      "predicted_entities": 1,
+      "tp_chars": 12,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "Patient <PERSON_1> reports fever; no cough. amoxicillin 500 mg PO TID."
+    },
+    {
+      "id": "I04",
+      "language": "en",
+      "gold_entities": 1,
+      "predicted_entities": 1,
+      "tp_chars": 15,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "<PERSON_1> reports dizziness; denies taking warfarin 2.5 mg PO qd."
+    },
+    {
+      "id": "I05",
+      "language": "en",
+      "gold_entities": 1,
+      "predicted_entities": 1,
+      "tp_chars": 16,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "<PERSON_1> has suspected pneumonia, not confirmed infection."
+    },
+    {
+      "id": "I06",
+      "language": "en",
+      "gold_entities": 1,
+      "predicted_entities": 1,
+      "tp_chars": 12,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "Dr. <PERSON_1> examined the patient; Parkinson disease remains suspected."
+    },
+    {
+      "id": "I07",
+      "language": "mixed",
+      "gold_entities": 2,
+      "predicted_entities": 1,
+      "tp_chars": 10,
+      "fp_chars": 0,
+      "fn_chars": 10,
+      "misses": [
+        {
+          "start": 15,
+          "end": 25,
+          "type": "PERSON",
+          "coverage": 0.0
+        }
+      ],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "<PERSON_1> and John Brown은 서로 다른 환자. First has asthma; second has COPD."
+    },
+    {
+      "id": "I08",
+      "language": "ko",
+      "gold_entities": 2,
+      "predicted_entities": 2,
+      "tp_chars": 6,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "환자 <PERSON_1>의 보호자 <PERSON_2>에게 설명. 환자는 페니실린 알레르기 있음."
+    },
+    {
+      "id": "I09",
+      "language": "mixed",
+      "gold_entities": 3,
+      "predicted_entities": 3,
+      "tp_chars": 40,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "성명: <PERSON_1>; 연락처 <PHONE_1>; email <EMAIL_1>. No evidence of MI."
+    },
+    {
+      "id": "I10",
+      "language": "mixed",
+      "gold_entities": 2,
+      "predicted_entities": 2,
+      "tp_chars": 12,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "MRN: <MRN_1>; patient 이름: <PERSON_1>. HbA1c 6.5%, Cr 1.2 mg/dL."
+    },
+    {
+      "id": "I11",
+      "language": "en",
+      "gold_entities": 3,
+      "predicted_entities": 3,
+      "tp_chars": 41,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "47-year-old <PERSON_1>, professor at <ORGANIZATION_1>, ran <EVENT_1> last Sunday, father died from MI at 52."
+    },
+    {
+      "id": "I12",
+      "language": "en",
+      "gold_entities": 0,
+      "predicted_entities": 0,
+      "tp_chars": 0,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "No family history of MI. Father alive at 72."
+    },
+    {
+      "id": "I13",
+      "language": "en",
+      "gold_entities": 0,
+      "predicted_entities": 0,
+      "tp_chars": 0,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "Father had MI at 52, died of pneumonia at 74."
+    },
+    {
+      "id": "I14",
+      "language": "en",
+      "gold_entities": 0,
+      "predicted_entities": 0,
+      "tp_chars": 0,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "Father did not die from MI at 52."
+    },
+    {
+      "id": "I15",
+      "language": "en",
+      "gold_entities": 0,
+      "predicted_entities": 0,
+      "tp_chars": 0,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "Mother had MI at 54; maternal aunt had MI at 52."
+    },
+    {
+      "id": "I16",
+      "language": "en",
+      "gold_entities": 0,
+      "predicted_entities": 0,
+      "tp_chars": 0,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "Uncle had MI at 52; father history unknown."
+    },
+    {
+      "id": "I17",
+      "language": "mixed",
+      "gold_entities": 1,
+      "predicted_entities": 1,
+      "tp_chars": 3,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "47세 여성 환자 <PERSON_1>; 지난 일요일 마라톤 완주 후 어제 흉통 시작."
+    },
+    {
+      "id": "I18",
+      "language": "en",
+      "gold_entities": 0,
+      "predicted_entities": 0,
+      "tp_chars": 0,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "warfarin 2.5 mg PO qd; insulin 10 U SC; fentanyl 25 µg/h; no allergy."
+    },
+    {
+      "id": "I19",
+      "language": "mixed",
+      "gold_entities": 0,
+      "predicted_entities": 0,
+      "tp_chars": 0,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "Allergy: penicillin; denies taking metformin 500mg BID. 발열 없음."
+    },
+    {
+      "id": "I20",
+      "language": "ko",
+      "gold_entities": 1,
+      "predicted_entities": 1,
+      "tp_chars": 9,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "환자 <PERSON_1>은 흉통."
+    },
+    {
+      "id": "I21",
+      "language": "mixed",
+      "gold_entities": 2,
+      "predicted_entities": 2,
+      "tp_chars": 15,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "환자 <PERSON_1>은 흉통. Patient <PERSON_2> reports dyspnea."
+    },
+    {
+      "id": "I22",
+      "language": "mixed",
+      "gold_entities": 2,
+      "predicted_entities": 2,
+      "tp_chars": 21,
+      "fp_chars": 1,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "﻿환자<PERSON_1>은 흉통.\r\nPatient <PERSON_2>: insulin 10 U SC. 🩺  \r\n"
+    },
+    {
+      "id": "I23",
+      "language": "mixed",
+      "gold_entities": 2,
+      "predicted_entities": 0,
+      "tp_chars": 0,
+      "fp_chars": 0,
+      "fn_chars": 28,
+      "misses": [
+        {
+          "start": 8,
+          "end": 20,
+          "type": "PERSON",
+          "coverage": 0.0
+        },
+        {
+          "start": 24,
+          "end": 40,
+          "type": "ADDRESS",
+          "coverage": 0.0
+        }
+      ],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "Patient Naomi Brooks 주소 25 Willow Street; follow-up after 3 weeks."
+    },
+    {
+      "id": "I24",
+      "language": "en",
+      "gold_entities": 0,
+      "predicted_entities": 0,
+      "tp_chars": 0,
+      "fp_chars": 0,
+      "fn_chars": 0,
+      "misses": [],
+      "lost_fragments": [],
+      "byte_restored": true,
+      "allowlist_ok": true,
+      "output": "Parkinson disease, Hodgkin lymphoma, Behçet disease. BP 120/80, HR 82."
+    }
+  ]
+}

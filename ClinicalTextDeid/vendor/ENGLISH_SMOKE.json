@@ -1,0 +1,305 @@
+{
+  "synthetic_only": true,
+  "outbound_socket_connections_disabled_during_inference": true,
+  "entities": [
+    "PERSON",
+    "LOCATION",
+    "PHONE_NUMBER"
+  ],
+  "versions": {
+    "presidio-analyzer": "2.2.360",
+    "spacy": "3.8.11",
+    "en-core-web-sm": "3.8.0",
+    "click": "8.1.8"
+  },
+  "cases": [
+    {
+      "case": "requested",
+      "text": "47-year-old John Smith, professor at Yonsei University, ran Seoul Marathon last Sunday, father died from MI at 52.",
+      "presidio": [
+        {
+          "label": "PERSON",
+          "start": 12,
+          "end": 22,
+          "text": "John Smith",
+          "score": 0.85
+        }
+      ],
+      "spacy_ents": [
+        {
+          "label": "DATE",
+          "start": 0,
+          "end": 11,
+          "text": "47-year-old"
+        },
+        {
+          "label": "PERSON",
+          "start": 12,
+          "end": 22,
+          "text": "John Smith"
+        },
+        {
+          "label": "ORG",
+          "start": 37,
+          "end": 54,
+          "text": "Yonsei University"
+        },
+        {
+          "label": "ORG",
+          "start": 60,
+          "end": 74,
+          "text": "Seoul Marathon"
+        },
+        {
+          "label": "DATE",
+          "start": 75,
+          "end": 86,
+          "text": "last Sunday"
+        },
+        {
+          "label": "ORG",
+          "start": 105,
+          "end": 107,
+          "text": "MI"
+        },
+        {
+          "label": "CARDINAL",
+          "start": 111,
+          "end": 113,
+          "text": "52"
+        }
+      ]
+    },
+    {
+      "case": "mixed",
+      "text": "환자 홍길동 (John Smith) denies chest pain. Contact smith@example.com or +1 212 555 0123. metformin 500 mg BID.",
+      "presidio": [
+        {
+          "label": "PERSON",
+          "start": 8,
+          "end": 18,
+          "text": "John Smith",
+          "score": 0.85
+        },
+        {
+          "label": "PHONE_NUMBER",
+          "start": 68,
+          "end": 83,
+          "text": "+1 212 555 0123",
+          "score": 0.4
+        }
+      ],
+      "spacy_ents": [
+        {
+          "label": "PERSON",
+          "start": 8,
+          "end": 18,
+          "text": "John Smith"
+        },
+        {
+          "label": "CARDINAL",
+          "start": 95,
+          "end": 98,
+          "text": "500"
+        },
+        {
+          "label": "ORG",
+          "start": 102,
+          "end": 105,
+          "text": "BID"
+        }
+      ]
+    },
+    {
+      "case": "plain_name",
+      "text": "Amina Yusuf reports no fever. Her mother died from MI at 52.",
+      "presidio": [
+        {
+          "label": "PERSON",
+          "start": 0,
+          "end": 11,
+          "text": "Amina Yusuf",
+          "score": 0.85
+        }
+      ],
+      "spacy_ents": [
+        {
+          "label": "PERSON",
+          "start": 0,
+          "end": 11,
+          "text": "Amina Yusuf"
+        },
+        {
+          "label": "ORG",
+          "start": 51,
+          "end": 53,
+          "text": "MI"
+        },
+        {
+          "label": "CARDINAL",
+          "start": 57,
+          "end": 59,
+          "text": "52"
+        }
+      ]
+    },
+    {
+      "case": "eponym",
+      "text": "Parkinson disease, Hodgkin lymphoma, Crohn disease. Take warfarin 5 mg daily.",
+      "presidio": [
+        {
+          "label": "PERSON",
+          "start": 19,
+          "end": 26,
+          "text": "Hodgkin",
+          "score": 0.85
+        }
+      ],
+      "spacy_ents": [
+        {
+          "label": "PERSON",
+          "start": 19,
+          "end": 26,
+          "text": "Hodgkin"
+        },
+        {
+          "label": "PRODUCT",
+          "start": 37,
+          "end": 42,
+          "text": "Crohn"
+        },
+        {
+          "label": "CARDINAL",
+          "start": 66,
+          "end": 67,
+          "text": "5"
+        },
+        {
+          "label": "DATE",
+          "start": 71,
+          "end": 76,
+          "text": "daily"
+        }
+      ]
+    },
+    {
+      "case": "rare_name",
+      "text": "Xochitl Quispe came for review. No family history of MI.",
+      "presidio": [],
+      "spacy_ents": [
+        {
+          "label": "ORG",
+          "start": 0,
+          "end": 14,
+          "text": "Xochitl Quispe"
+        }
+      ]
+    },
+    {
+      "case": "lowercase_name",
+      "text": "patient john smith with chest pain; metformin 500 mg BID.",
+      "presidio": [
+        {
+          "label": "PERSON",
+          "start": 8,
+          "end": 18,
+          "text": "john smith",
+          "score": 0.85
+        }
+      ],
+      "spacy_ents": [
+        {
+          "label": "PERSON",
+          "start": 8,
+          "end": 18,
+          "text": "john smith"
+        },
+        {
+          "label": "CARDINAL",
+          "start": 46,
+          "end": 49,
+          "text": "500"
+        },
+        {
+          "label": "ORG",
+          "start": 53,
+          "end": 56,
+          "text": "BID"
+        }
+      ]
+    },
+    {
+      "case": "korean",
+      "text": "환자 김철수는 당뇨가 없고 아버지가 52세에 심근경색으로 사망했다.",
+      "presidio": [
+        {
+          "label": "PERSON",
+          "start": 0,
+          "end": 14,
+          "text": "환자 김철수는 당뇨가 없고",
+          "score": 0.85
+        }
+      ],
+      "spacy_ents": [
+        {
+          "label": "PERSON",
+          "start": 0,
+          "end": 14,
+          "text": "환자 김철수는 당뇨가 없고"
+        },
+        {
+          "label": "ORDINAL",
+          "start": 20,
+          "end": 24,
+          "text": "52세에"
+        }
+      ]
+    },
+    {
+      "case": "initial_name",
+      "text": "J. Smith denies shortness of breath.",
+      "presidio": [
+        {
+          "label": "PERSON",
+          "start": 0,
+          "end": 8,
+          "text": "J. Smith",
+          "score": 0.85
+        }
+      ],
+      "spacy_ents": [
+        {
+          "label": "PERSON",
+          "start": 0,
+          "end": 8,
+          "text": "J. Smith"
+        }
+      ]
+    },
+    {
+      "case": "timing",
+      "text": "Patient has chest pain since last Sunday, treated with aspirin 100 mg daily.",
+      "presidio": [],
+      "spacy_ents": [
+        {
+          "label": "DATE",
+          "start": 29,
+          "end": 40,
+          "text": "last Sunday"
+        },
+        {
+          "label": "CARDINAL",
+          "start": 63,
+          "end": 66,
+          "text": "100"
+        },
+        {
+          "label": "DATE",
+          "start": 70,
+          "end": 75,
+          "text": "daily"
+        }
+      ]
+    }
+  ]
+}

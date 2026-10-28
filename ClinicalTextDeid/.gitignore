@@ -1,0 +1,8 @@
+__pycache__/
+.venv/
+.cache/
+internal/
+*.key
+*.bin
+*.capsule.json
+result.json

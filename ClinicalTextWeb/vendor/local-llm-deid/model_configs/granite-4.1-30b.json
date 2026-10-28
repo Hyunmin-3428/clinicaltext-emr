@@ -1,0 +1,12 @@
+{
+  "developer": "IBM",
+  "family": "Granite-4.1",
+  "hf_gguf_repo": "ibm-granite/granite-4.1-30b-GGUF",
+  "is_medical": false,
+  "moe": false,
+  "params_active_B": null,
+  "params_total_B": 30.0,
+  "quant_target": "Q5_K_M",
+  "reasoning": false,
+  "size_gb": 20.49
+}

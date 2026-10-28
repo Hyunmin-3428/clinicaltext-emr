@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const root=path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/,'$1'));
+const base=decodeURIComponent(root);
+const output=path.join(base,'dist/server');fs.mkdirSync(output,{recursive:true});
+const assets={};
+for(const [name,type] of Object.entries({'index.html':'text/html; charset=utf-8','styles.css':'text/css; charset=utf-8','app.js':'text/javascript; charset=utf-8','config.js':'text/javascript; charset=utf-8','favicon.svg':'image/svg+xml','qr.svg':'image/svg+xml'}))assets[name==='index.html'?'/':'/'+name]={type,text:fs.readFileSync(path.join(base,'dist',name),'utf8')};
+assets['/config.js'].text=`window.CLINICAL_DEMO = ${JSON.stringify({apiBase:'',publicUrl:'https://clinicaltext-emr.alexchoi676.chatgpt.site',githubUrl:'https://github.com/Hyunmin-3428/clinicaltext-emr'})};`;
+const catalog=JSON.parse(fs.readFileSync(path.join(base,'catalog.json'),'utf8'));
+const source='const ASSETS='+JSON.stringify(assets)+';\nconst CATALOG='+JSON.stringify(catalog)+';\n'+fs.readFileSync(path.join(base,'worker/index.js'),'utf8');
+fs.writeFileSync(path.join(output,'index.js'),source);
+fs.mkdirSync(path.join(base,'dist/.openai'),{recursive:true});fs.copyFileSync(path.join(base,'.openai/hosting.json'),path.join(base,'dist/.openai/hosting.json'));
+const module=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+if(typeof module.default?.fetch!=='function')throw new Error('Invalid Worker');
+const response=await module.default.fetch(new Request('https://example.com/'),{});
+if(response.status!==200||!(await response.text()).includes('ClinicalText'))throw new Error('UI not served');
+console.log('Worker built and static UI verified.');

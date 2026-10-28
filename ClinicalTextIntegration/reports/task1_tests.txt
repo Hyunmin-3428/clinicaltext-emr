@@ -1,0 +1,50 @@
+test_additional_units_and_all_korean_age_expressions (test_api.ApiTests.test_additional_units_and_all_korean_age_expressions) ... ok
+test_all_synthetic_exact_restore (test_api.ApiTests.test_all_synthetic_exact_restore) ... ok
+test_byte_source_bom_nfd_crlf_whitespace (test_api.ApiTests.test_byte_source_bom_nfd_crlf_whitespace) ... ok
+test_ciphertext_nonce_and_tag_tamper_rejected (test_api.ApiTests.test_ciphertext_nonce_and_tag_tamper_rejected) ... ok
+test_cross_context_restore_rejected (test_api.ApiTests.test_cross_context_restore_rejected) ... ok
+test_default_keeps_age_exercise_time_gender_and_dose (test_api.ApiTests.test_default_keeps_age_exercise_time_gender_and_dose) ... ok
+test_explicit_name_anchor_wins_over_ambiguous_eponym_guard (test_api.ApiTests.test_explicit_name_anchor_wins_over_ambiguous_eponym_guard) ... ok
+test_fresh_nonce_for_same_input (test_api.ApiTests.test_fresh_nonce_for_same_input) ... ok
+test_hint_crossing_generalization_wins (test_api.ApiTests.test_hint_crossing_generalization_wins) ... ok
+test_hint_validation (test_api.ApiTests.test_hint_validation) ... ok
+test_input_validation (test_api.ApiTests.test_input_validation) ... ok
+test_invalid_policy_and_context (test_api.ApiTests.test_invalid_policy_and_context) ... ok
+test_json_round_trip_restores (test_api.ApiTests.test_json_round_trip_restores) ... ok
+test_key_length_and_type (test_api.ApiTests.test_key_length_and_type) ... ok
+test_known_failure_is_not_hidden (test_api.ApiTests.test_known_failure_is_not_hidden) ... ok
+test_malformed_capsule_rejected (test_api.ApiTests.test_malformed_capsule_rejected) ... ok
+test_medical_measurement_kinship_eponym_guards_preserve (test_api.ApiTests.test_medical_measurement_kinship_eponym_guards_preserve) ... ok
+test_metrics_do_not_hide_partial_or_wrong_type (test_api.ApiTests.test_metrics_do_not_hide_partial_or_wrong_type) ... ok
+test_name_never_infers_gender (test_api.ApiTests.test_name_never_infers_gender) ... ok
+test_negation_scope_separate_sentence (test_api.ApiTests.test_negation_scope_separate_sentence) ... ok
+test_nfd_fullwidth_zerowidth_offsets_nonempty (test_api.ApiTests.test_nfd_fullwidth_zerowidth_offsets_nonempty) ... ok
+test_no_safe_release_claim (test_api.ApiTests.test_no_safe_release_claim) ... ok
+test_normalized_view_maps_to_original (test_api.ApiTests.test_normalized_view_maps_to_original) ... ok
+test_one_repeated_age_or_exercise_time_removed_is_failed (test_api.ApiTests.test_one_repeated_age_or_exercise_time_removed_is_failed) ... ok
+test_opt_in_information_loss_exactly_restores (test_api.ApiTests.test_opt_in_information_loss_exactly_restores) ... ok
+test_public_allowlist (test_api.ApiTests.test_public_allowlist) ... ok
+test_public_audit_policy_assessment_tamper_rejected (test_api.ApiTests.test_public_audit_policy_assessment_tamper_rejected) ... ok
+test_same_context_same_public_same_length_capsule_swap_rejected (test_api.ApiTests.test_same_context_same_public_same_length_capsule_swap_rejected) ... ok
+test_scoped_negation_uncertainty_conditional_veto (test_api.ApiTests.test_scoped_negation_uncertainty_conditional_veto) ... ok
+test_supported_family_facts_and_output (test_api.ApiTests.test_supported_family_facts_and_output) ... ok
+test_swapped_capsule_rejected (test_api.ApiTests.test_swapped_capsule_rejected) ... ok
+test_union_overlaps_does_not_leak_tails (test_api.ApiTests.test_union_overlaps_does_not_leak_tails) ... ok
+test_unknown_capsule_schema_rejected (test_api.ApiTests.test_unknown_capsule_schema_rejected) ... ok
+test_unsupported_family_kept_and_reviewed (test_api.ApiTests.test_unsupported_family_kept_and_reviewed) ... ok
+test_wrong_hints_mark_selected_clinical_losses_failed (test_api.ApiTests.test_wrong_hints_mark_selected_clinical_losses_failed) ... ok
+test_wrong_key_rejected (test_api.ApiTests.test_wrong_key_rejected) ... ok
+test_boston_brace_and_measurement_model_false_positives_guarded (test_api.HybridTests.test_boston_brace_and_measurement_model_false_positives_guarded) ... ok
+test_hybrid_clinical_default_preservation (test_api.HybridTests.test_hybrid_clinical_default_preservation) ... ok
+test_local_english_detector_runs_with_network_blocked (test_api.HybridTests.test_local_english_detector_runs_with_network_blocked) ... ok
+test_public_english_detector_unanchored_name (test_api.HybridTests.test_public_english_detector_unanchored_name) ... ok
+test_fresh_process_transform_restore_byte_exact (test_cli.CliTests.test_fresh_process_transform_restore_byte_exact) ... ok
+test_nested_output_directories_rejected_both_directions (test_cli.CliTests.test_nested_output_directories_rejected_both_directions) ... ok
+test_path_alias_to_same_directory_rejected (test_cli.CliTests.test_path_alias_to_same_directory_rejected) ... ok
+test_restore_public_destination_rejected (test_cli.CliTests.test_restore_public_destination_rejected) ... ok
+test_symlink_alias_rejected_where_supported (test_cli.CliTests.test_symlink_alias_rejected_where_supported) ... skipped 'Directory symlink unavailable: OSError'
+
+----------------------------------------------------------------------
+Ran 45 tests in 3.911s
+
+OK (skipped=1)

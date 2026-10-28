@@ -1,0 +1,72 @@
+{
+  "scope": "Synthetic local validation; no real patients or remote AI",
+  "suites": [
+    {
+      "suite": "task1",
+      "exit_code": 0,
+      "tests": 45,
+      "passed": 44,
+      "skipped": 1,
+      "seconds": 4.453,
+      "log": "task1_tests.txt"
+    },
+    {
+      "suite": "task2",
+      "exit_code": 0,
+      "tests": 47,
+      "passed": 47,
+      "skipped": 0,
+      "seconds": 6.656,
+      "log": "task2_tests.txt"
+    },
+    {
+      "suite": "independent",
+      "exit_code": 0,
+      "tests": 7,
+      "passed": 7,
+      "skipped": 0,
+      "seconds": 4.407,
+      "log": "independent_tests.txt"
+    }
+  ],
+  "tests_run": 99,
+  "tests_passed": 98,
+  "tests_skipped": 1,
+  "stable_code_snapshot": true,
+  "code_snapshot": {
+    "ClinicalCDSGateway/gateway/__init__.py": "9802a97d5ebbf1a147671c02d8956e2d993295240d2a182bf36c785d04180b77",
+    "ClinicalCDSGateway/gateway/cli.py": "48ae4b693932529a78cf36221a0055eb44c2c1b548b8b5709153daa7e1eeb8b7",
+    "ClinicalCDSGateway/gateway/common.py": "4de655e07f4bdf2a536276a8cf6143a0d93dc1283d4f5666a6602dce7e2a213f",
+    "ClinicalCDSGateway/gateway/deid_adapter.py": "e9e1a056f95e4bfed5ff9f2b002c1b91544d6bee51c695e32fe85b389c839851",
+    "ClinicalCDSGateway/gateway/deid_runner.py": "0064377db68a8b7b22d8e13c42783f04cbbc10fca6f8a1aaf276647355821aa3",
+    "ClinicalCDSGateway/gateway/detector.py": "ef430a4b723ae8c6239d4989b8dd3060e0052730097289ce5ddd236dd41e780a",
+    "ClinicalCDSGateway/gateway/engine.py": "7fe43660aa2df53da17c03bf5707a4e3a7bc22caba5a1b49befcecaa4d9ff8cf",
+    "ClinicalCDSGateway/gateway/fixtures.py": "822fd2f8754e7fa5723f8ee7ea3901425879ed11bd15434afb57f36d04aaa32e",
+    "ClinicalCDSGateway/requirements.txt": "fee4c4a4373c159ca7cc40df08abed3def56c84e8d33b15ca8505b0773ebc6c9",
+    "ClinicalCDSGateway/tests/test_gateway.py": "156747be792560d1a1fb8f6101cca58765efd269c9c4d91865c6db422d616736",
+    "ClinicalTextDeid/__init__.py": "c2f92bf90973e8cebf62776c188cf20442ec54701312da2ecf790d24dffb0b05",
+    "ClinicalTextDeid/api.py": "8334be87c45ec2806256589cb9acf17faac9e7b903cf0b307428806f1fdb0611",
+    "ClinicalTextDeid/cli.py": "6b6271e2e8c4729ee96c7a4bf0feef178ba2c140c1134ab15861f0842cd13a36",
+    "ClinicalTextDeid/clinical_guards.py": "fd94da72cce4567d122306dee1e051f08b51be12d5557bcf8dba9c9b3a392efe",
+    "ClinicalTextDeid/demo.py": "1d7c4f5e222df7436ab963fbba0e4759def0f1d5db115cc9733c73941e294f89",
+    "ClinicalTextDeid/detectors.py": "1ef3503c26d0ce5d4c80c970521dccdb889a24f126400a126e77b47858405aee",
+    "ClinicalTextDeid/evaluate.py": "a2100805ed4a3e2acc764eb390a35439d425a4e3cb8160eb8a11388fe5e3ece8",
+    "ClinicalTextDeid/generalize.py": "ab5ba80b8e3284b0bf4a1d4baf979a2a414368ce1829882e215a4e88869069db",
+    "ClinicalTextDeid/requirements.txt": "f2481205c3d0fdfd940e7e2d3511c4fc003765e9d97081d1be883fb3b699c75a",
+    "ClinicalTextDeid/tests/__init__.py": "b2adb43a301ba9f253bd8bcc345d9b744055542ce4c04da576f1197f37f501d2",
+    "ClinicalTextDeid/tests/test_api.py": "26d3e0c8a792e53daf0fb63d927da7dc107478bf6d6446f34bf46d336d3e3386",
+    "ClinicalTextDeid/tests/test_cli.py": "c52b5775a113445d92034c936b4d7b87f67a63aa0d4fd31fc8304e85449b9e88",
+    "ClinicalTextDeid/vendor/ko-pii/MANIFEST.json": "a41a41a7a11aa3a52c26e227440cff2b5963fddcd306430c25c6929ac0ea0182",
+    "ClinicalTextDeid/vendor/RUNTIME_MANIFEST.json": "48a589b4b759dd4c50dd2e455bc0e5040d956474266da55eac38b9dccce54a68",
+    "ClinicalTextIntegration/__init__.py": "146a23a422b385294d2d9747895d894dd2b2340c5c80755b496ba909e438f1ab",
+    "ClinicalTextIntegration/cases.py": "1dadebc5082728126e396a3d3886c26f977a47c220e5b4b52aa6f0180a0fa56d",
+    "ClinicalTextIntegration/connected_demo.py": "86269c8d9070735f1c455f43916a80e40eb37e9a0816a752ceba0f5ff560a08a",
+    "ClinicalTextIntegration/evaluate_deid.py": "58df885201118ca011092febfeb521f1c04bb107a1a02ae0bb2946bda7ac0720",
+    "ClinicalTextIntegration/run_validation.py": "b548e7c1b5772f1fdedd1aa80d90c14696c6b89faf9562e518060ffaf47d7332",
+    "ClinicalTextIntegration/test_independent.py": "172f8d9cf9d8a274aebf026355c88747c728c73bf7921ad50cb953532fba657d"
+  },
+  "successful": true,
+  "connected_checks": 13,
+  "connected_denials": 9,
+  "independent_notes": 24
+}

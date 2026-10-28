@@ -1,0 +1,505 @@
+{
+  "python": "3.11",
+  "system": "win32",
+  "pip": "24.0",
+  "packages": [
+    {
+      "name": "presidio_analyzer",
+      "version": "2.2.360",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/04/dd/df0d00ff44977868878f391b08feb65b8269904262d0f1387de827c13c7d/presidio_analyzer-2.2.360-py3-none-any.whl",
+      "hashes": {
+        "sha256": "aa6e83779b8f23587000ccfa3ef47aa34356a60b51284742e0d2a96b33205c4e"
+      }
+    },
+    {
+      "name": "spacy",
+      "version": "3.8.11",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/9b/13/a542ac9b61d071f3328fda1fd8087b523fb7a4f2c340010bc70b1f762485/spacy-3.8.11-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "745c190923584935272188c604e0cc170f4179aace1025814a25d92ee90cf3de"
+      }
+    },
+    {
+      "name": "en_core_web_sm",
+      "version": "3.8.0",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
+      "hashes": {
+        "sha256": "1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85"
+      }
+    },
+    {
+      "name": "catalogue",
+      "version": "2.0.10",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/9e/96/d32b941a501ab566a16358d68b6eb4e4acc373fab3c3c4d7d9e649f7b4bb/catalogue-2.0.10-py3-none-any.whl",
+      "hashes": {
+        "sha256": "58c2de0020aa90f4a2da7dfad161bf7b3b054c86a5f09fcedc0b2b740c109a9f"
+      }
+    },
+    {
+      "name": "cymem",
+      "version": "2.0.13",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/21/0f/f94c6950edbfc2aafb81194fc40b6cacc8e994e9359d3cb4328c5705b9b5/cymem-2.0.13-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "ce821e6ba59148ed17c4567113b8683a6a0be9c9ac86f14e969919121efb61a5"
+      }
+    },
+    {
+      "name": "murmurhash",
+      "version": "1.0.15",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/82/ed/812103a7f353eba2d83655b08205e13a38c93b4db0692f94756e1eb44516/murmurhash-1.0.15-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "e43a69496342ce530bdd670264cb7c8f45490b296e4764c837ce577e3c7ebd53"
+      }
+    },
+    {
+      "name": "numpy",
+      "version": "2.4.6",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/c5/31/7fc6239c12bce7e931463251cca4426c465e1876ba3cc785402ef4dd8f4e/numpy-2.4.6-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "1e254a00cdf42b1e4d5b3d68d33af63268d41340d8885df2ab6470f2e1500147"
+      }
+    },
+    {
+      "name": "packaging",
+      "version": "26.3",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl",
+      "hashes": {
+        "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
+      }
+    },
+    {
+      "name": "phonenumbers",
+      "version": "9.0.40",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/74/da/c266478ebea2b8d3176484e06756960d94d27cce2d7dc5ca3be6151cb9e3/phonenumbers-9.0.40-py2.py3-none-any.whl",
+      "hashes": {
+        "sha256": "189c028c4acd41ee80782e50f74a91260bd76d9115c83be94302509e1cdb5e84"
+      }
+    },
+    {
+      "name": "preshed",
+      "version": "3.0.13",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/ed/22/0344b50f8b1ad9e3aac08099c47e1aba91c81602fd117d2673f6606ecae6/preshed-3.0.13-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "de87fbabb0f37c3c92d4dd9b94fc82ab73cdab4247cdfbd57ab3926caa983919"
+      }
+    },
+    {
+      "name": "pydantic",
+      "version": "2.13.5",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/eb/47/c95ffc2009878c7aac0c5e08528022dcb885933252a88b5f170058014464/pydantic-2.13.5-py3-none-any.whl",
+      "hashes": {
+        "sha256": "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73"
+      }
+    },
+    {
+      "name": "pydantic_core",
+      "version": "2.46.5",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/9e/c2/718b9deb4b72453b5d8c7447a3b14cb77bef36917ef5f514e0948a4096a0/pydantic_core-2.46.5-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "40375c2d05acec10323e45dfe2077ac44bc74659008614af5069034e2cfc781c"
+      }
+    },
+    {
+      "name": "requests",
+      "version": "2.34.2",
+      "license": "Apache-2.0",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl",
+      "hashes": {
+        "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0"
+      }
+    },
+    {
+      "name": "spacy-legacy",
+      "version": "3.0.12",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/c3/55/12e842c70ff8828e34e543a2c7176dac4da006ca6901c9e8b43efab8bc6b/spacy_legacy-3.0.12-py2.py3-none-any.whl",
+      "hashes": {
+        "sha256": "476e3bd0d05f8c339ed60f40986c07387c0a71479245d6d0f4298dbd52cda55f"
+      }
+    },
+    {
+      "name": "spacy-loggers",
+      "version": "1.0.5",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/33/78/d1a1a026ef3af911159398c939b1509d5c36fe524c7b644f34a5146c4e16/spacy_loggers-1.0.5-py3-none-any.whl",
+      "hashes": {
+        "sha256": "196284c9c446cc0cdb944005384270d775fdeaf4f494d8e269466cfa497ef645"
+      }
+    },
+    {
+      "name": "srsly",
+      "version": "2.5.4",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/24/ed/e2876a39f1f9e5110e72181a2884a75b8f0de15a439db9fb82abf96a9551/srsly-2.5.4-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "c6849bdda42fdb9028328c63998f710da720a2c04c62d1394e9b408c7a3de34c"
+      }
+    },
+    {
+      "name": "thinc",
+      "version": "8.3.11",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/fd/27/cbe70789c7c01241879672dd2e664d3787af78a7e503992c4c7713817992/thinc-8.3.11-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "977a99b65bc5182a7bfd4164b026224d120ea19de6ccce835bf7066517fb8368"
+      }
+    },
+    {
+      "name": "weasel",
+      "version": "0.4.3",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/a4/74/a148b41572656904a39dfcfed3f84dd1066014eed94e209223ae8e9d088d/weasel-0.4.3-py3-none-any.whl",
+      "hashes": {
+        "sha256": "08f65b5d0dbded4879e08a64882de9b9514753d9eaa4c4e2a576e33666ac12cf"
+      }
+    },
+    {
+      "name": "confection",
+      "version": "0.1.5",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/0c/00/3106b1854b45bd0474ced037dfe6b73b90fe68a68968cef47c23de3d43d2/confection-0.1.5-py3-none-any.whl",
+      "hashes": {
+        "sha256": "e29d3c3f8eac06b3f77eb9dfb4bf2fc6bcc9622a98ca00a698e3d019c6430b14"
+      }
+    },
+    {
+      "name": "tqdm",
+      "version": "4.70.1",
+      "license": "MPL-2.0 AND MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/a7/03/921a3d3c75785aca9ebfbfcabfbc3a1be12e2ab5265deb026d55a5a3f83e/tqdm-4.70.1-py3-none-any.whl",
+      "hashes": {
+        "sha256": "c293e525e6fef9c20e8728fd4612df02a0aa31bb5fe91ecd93e123b1b7bffa73"
+      }
+    },
+    {
+      "name": "typer-slim",
+      "version": "0.24.0",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/a7/24/5480c20380dfd18cf33d14784096dca45a24eae6102e91d49a718d3b6855/typer_slim-0.24.0-py3-none-any.whl",
+      "hashes": {
+        "sha256": "d5d7ee1ee2834d5020c7c616ed5e0d0f29b9a4b1dd283bdebae198ec09778d0e"
+      }
+    },
+    {
+      "name": "wasabi",
+      "version": "1.1.3",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/06/7c/34330a89da55610daa5f245ddce5aab81244321101614751e7537f125133/wasabi-1.1.3-py3-none-any.whl",
+      "hashes": {
+        "sha256": "f76e16e8f7e79f8c4c8be49b4024ac725713ab10cd7f19350ad18a8e3f71728c"
+      }
+    },
+    {
+      "name": "Jinja2",
+      "version": "3.1.6",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl",
+      "hashes": {
+        "sha256": "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67"
+      }
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.3",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/da/e3/ea007450a105ae919a72393cb06f122f288ef60bba2dc64b26e2646fa315/pyyaml-6.0.3-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "9f3bfb4965eb874431221a3ff3fdcddc7e74e3b07799e0e84ca4a0f867d449bf"
+      }
+    },
+    {
+      "name": "regex",
+      "version": "2026.9.29",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/4d/4a/aab232183c70fdcf77bcf0c51819da02ec522e393e6a0bf00bcf2142e21f/regex-2026.9.29-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "1043aedf5917caa861bcb25a9c11460049656bdf0017a90a309fa8f255467725"
+      }
+    },
+    {
+      "name": "tldextract",
+      "version": "5.4.0",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/b8/e0/d5760e222a7e3f3aec7ef59f6dff952af27d09ec168bcca50751d9698151/tldextract-5.4.0-py3-none-any.whl",
+      "hashes": {
+        "sha256": "7f02aed30bd3b6ad5717192eb859a39b20aafc7caf3917d9cf6cb00a58efb34f"
+      }
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/99/91/8acff4f5e50511b911bbccb72b8628a49c68ce14148cd9f6431094859a90/annotated_types-0.8.0-py3-none-any.whl",
+      "hashes": {
+        "sha256": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0"
+      }
+    },
+    {
+      "name": "blis",
+      "version": "1.3.3",
+      "license": "BSD",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/ea/44/b749f8777b020b420bceaaf60f66432fc30cc904ca5b69640ec9cbef11ed/blis-1.3.3-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "27f82b8633030f8d095d2b412dffa7eb6dbc8ee43813139909a20012e54422ea"
+      }
+    },
+    {
+      "name": "certifi",
+      "version": "2026.7.22",
+      "license": "MPL-2.0",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/0b/a7/71ac2cff56fec219ed242bb11b8efb69fcc4bec75db06fb7bfe35de520e6/certifi-2026.7.22-py3-none-any.whl",
+      "hashes": {
+        "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775"
+      }
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.5.2",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/e8/fc/fdf8cf52ff21cd5bf158f20978991cf985325842f74283eb6df26c8a39d8/charset_normalizer-3.5.2-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "87e50a3e7cb90af586b6c5faf23e302a970415ac73bd7bd90a515a04b427ef96"
+      }
+    },
+    {
+      "name": "cloudpathlib",
+      "version": "0.26.0",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/97/aa/c333f1be2afab2d033d51a66cb105f4bfc885b0c546e1168fb889a416b9d/cloudpathlib-0.26.0-py3-none-any.whl",
+      "hashes": {
+        "sha256": "abcd7f54bcbb2fbb79c0e96b79241f08866760aee6276586882b3558672d571b"
+      }
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl",
+      "hashes": {
+        "sha256": "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
+      }
+    },
+    {
+      "name": "filelock",
+      "version": "4.0.12",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/da/a1/b047e1c486a2c66283633b7dbb73872ca16ca1ce6a426f70d4d037fc8e1c/filelock-4.0.12-py3-none-any.whl",
+      "hashes": {
+        "sha256": "5f17ee83ecee8a6f3e389c75822fb70a1c2f0506b99438a6dffa1d56793588c8"
+      }
+    },
+    {
+      "name": "idna",
+      "version": "3.20",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/58/a2/bb081bab032533a855d44de1d56f8e8426114ff1ba5d1f07a438a0a654f8/idna-3.20-py3-none-any.whl",
+      "hashes": {
+        "sha256": "ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c"
+      }
+    },
+    {
+      "name": "MarkupSafe",
+      "version": "3.0.4",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/91/89/f2b509f7bf79352e40117824c1070dbeafd4df67031d3fa98165a3134228/markupsafe-3.0.4-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "fdb4ca07ab75ffadab4a8b135ad59cdbb3156b99310f3d565370da74a15d6bd3"
+      }
+    },
+    {
+      "name": "requests-file",
+      "version": "3.0.1",
+      "license": "Apache 2.0",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/e1/d5/de8f089119205a09da657ed4784c584ede8381a0ce6821212a6d4ca47054/requests_file-3.0.1-py2.py3-none-any.whl",
+      "hashes": {
+        "sha256": "d0f5eb94353986d998f80ac63c7f146a307728be051d4d1cd390dbdb59c10fa2"
+      }
+    },
+    {
+      "name": "smart_open",
+      "version": "7.7.1",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/8a/c5/14732c140fa0af0e59345949eaf9016c75ad3f076586f2413e3d3566a8da/smart_open-7.7.1-py3-none-any.whl",
+      "hashes": {
+        "sha256": "cb62dc45f519bf39b612564d326d2a17556f3a6056e3c3a86a07215d670d45bc"
+      }
+    },
+    {
+      "name": "typer",
+      "version": "0.27.3",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/07/ea/2e31b67051e91a133189e9c000c222502ddc6969856416de0d095de4c0b0/typer-0.27.3-py3-none-any.whl",
+      "hashes": {
+        "sha256": "e50022f28b82a86313e54501317a1db64bf8f8d036ff8cfe5ca7e47675454aff"
+      }
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl",
+      "hashes": {
+        "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+      }
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.4",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/67/81/4add07e5172b7ac40d8ed5ff580409a7801a4fe26d529bdd915401dabfbe/typing_inspection-0.4.4-py3-none-any.whl",
+      "hashes": {
+        "sha256": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147"
+      }
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/92/9d/c4e665119135114480843e7ab388fa94d8480650450e6f8e26b70d323a4c/urllib3-2.8.0-py3-none-any.whl",
+      "hashes": {
+        "sha256": "0cf3cae568d36aa9576b28dfb35f11328f1cb974ca7647d9475ebb86c75ac6e3"
+      }
+    },
+    {
+      "name": "annotated-doc",
+      "version": "0.0.5",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/3e/30/e900b21425a860e195f32e37657aa1f7c7f2b1bfb26f03ca209b90933c06/annotated_doc-0.0.5-py3-none-any.whl",
+      "hashes": {
+        "sha256": "117bac03a25ede5df5440e855b32d556049ca169ead221505badf432fed4b101"
+      }
+    },
+    {
+      "name": "rich",
+      "version": "15.0.0",
+      "license": "MIT",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/82/3b/64d4899d73f91ba49a8c18a8ff3f0ea8f1c1d75481760df8c68ef5235bf5/rich-15.0.0-py3-none-any.whl",
+      "hashes": {
+        "sha256": "33bd4ef74232fb73fe9279a257718407f169c09b78a87ad3d296f548e27de0bb"
+      }
+    },
+    {
+      "name": "shellingham",
+      "version": "1.5.4",
+      "license": "ISC License",
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/e0/f9/0595336914c5619e5f28a1fb793285925a8cd4b432c9da0a987836c7f822/shellingham-1.5.4-py2.py3-none-any.whl",
+      "hashes": {
+        "sha256": "7ecfff8f2fd72616f7481040475a65b2bf8af90a56c89140852d1120324e8686"
+      }
+    },
+    {
+      "name": "wrapt",
+      "version": "2.5.0",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/1e/96/5dcc944f39724e5df8a51f9095e856463df231764d503a7a935503eebeb9/wrapt-2.5.0-cp311-cp311-win_amd64.whl",
+      "hashes": {
+        "sha256": "99f8ea48f14a71c5e2df8763e9a490e8af63096dcd67755b7bab0a4b74fc7cd7"
+      }
+    },
+    {
+      "name": "markdown-it-py",
+      "version": "4.2.0",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/b3/81/4da04ced5a082363ecfa159c010d200ecbd959ae410c10c0264a38cac0f5/markdown_it_py-4.2.0-py3-none-any.whl",
+      "hashes": {
+        "sha256": "9f7ebbcd14fe59494226453aed97c1070d83f8d24b6fc3a3bcf9a38092641c4a"
+      }
+    },
+    {
+      "name": "Pygments",
+      "version": "2.21.0",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/71/46/17f022dd3e953bf20a04a028a21ec746d942f8d2af30fa0f124fa0e6a684/pygments-2.21.0-py3-none-any.whl",
+      "hashes": {
+        "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9"
+      }
+    },
+    {
+      "name": "mdurl",
+      "version": "0.1.2",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl",
+      "hashes": {
+        "sha256": "84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"
+      }
+    },
+    {
+      "name": "click",
+      "version": "8.1.8",
+      "license": null,
+      "license_expression": null,
+      "url": "https://files.pythonhosted.org/packages/7e/d4/7ebdbd03970677812aac39c869717059dbb71a4cfc033ca6e5221787892c/click-8.1.8-py3-none-any.whl",
+      "hashes": {
+        "sha256": "63c132bbbed01578a06712a2d1f497bb62d9c1c0d329b7903a866228027263b2"
+      }
+    }
+  ],
+  "preinstalled_by_parent": [
+    {
+      "name": "cryptography",
+      "version": "50.0.1",
+      "license_expression": "Apache-2.0 OR BSD-3-Clause",
+      "note": "Installed by parent before this Presidio integration; source provenance is dependency requirement and installed distribution metadata."
+    }
+  ]
+}

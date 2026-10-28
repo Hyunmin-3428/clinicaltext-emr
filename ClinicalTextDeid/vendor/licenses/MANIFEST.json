@@ -1,0 +1,40 @@
+{
+  "files": [
+    {
+      "path": "licenses/cryptography-LICENSE.APACHE.txt",
+      "size_bytes": 11360,
+      "sha256": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe"
+    },
+    {
+      "path": "licenses/cryptography-LICENSE.BSD.txt",
+      "size_bytes": 1532,
+      "sha256": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb"
+    },
+    {
+      "path": "licenses/cryptography-LICENSE.txt",
+      "size_bytes": 197,
+      "sha256": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb"
+    },
+    {
+      "path": "licenses/en_core_web_sm-LICENSES_SOURCES.txt",
+      "size_bytes": 2347,
+      "sha256": "20d9dfacd215112251f15341edd1a47b1f98bf393a212f10f194ffdc7ee98a90"
+    },
+    {
+      "path": "licenses/en_core_web_sm-MIT.txt",
+      "size_bytes": 1056,
+      "sha256": "3933c176979b68bc6d0bcc902c7d6c130f1d127f476f17ba5cdba8d99cfd0012"
+    },
+    {
+      "path": "licenses/Presidio-MIT.txt",
+      "size_bytes": 1104,
+      "sha256": "5d1fc20cf185ea1c6ea91e7b2d6b86e23cb1ef06cab964815febb060c5b372bc"
+    },
+    {
+      "path": "licenses/spaCy-MIT.txt",
+      "size_bytes": 1149,
+      "sha256": "28a7e41d177cf772d4ebebf157558501508e82e9c57b654c87865956b69f7288"
+    }
+  ],
+  "provenance": "Presidio fixed GitHub source LICENSE; spaCy/model/cryptography LICENSE files copied unchanged from installed official wheels. See RUNTIME_MANIFEST.json for wheel hashes and UPSTREAM.md for URL and source notices."
+}

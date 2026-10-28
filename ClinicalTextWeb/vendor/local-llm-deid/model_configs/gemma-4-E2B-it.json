@@ -1,0 +1,15 @@
+{
+  "checkpoint_file": "gemma-4-E2B-it-BF16.gguf",
+  "checkpoint_sha256": "246c5fb19e64b941b531e86639f070bc67b00f20e9ec8556a6c02653321bc65d",
+  "developer": "Google",
+  "family": "Gemma-4",
+  "hf_gguf_repo": "ggml-org/gemma-4-E2B-it-GGUF",
+  "is_medical": false,
+  "moe": false,
+  "params_active_B": null,
+  "params_effective_B": 2.3,
+  "params_total_B": 5.1,
+  "quant_target": "BF16",
+  "reasoning": false,
+  "size_gb": 9.31
+}

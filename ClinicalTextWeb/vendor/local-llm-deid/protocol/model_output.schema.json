@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Protocol 3.0 unique-literal PHI extraction",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["identifiers"],
+  "properties": {
+    "identifiers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["exact_text", "identifier_type"],
+        "properties": {
+          "exact_text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "identifier_type": {
+            "type": "string",
+            "enum": [
+              "01_NAME",
+              "02_GEOGRAPHIC_SUBDIVISION",
+              "03_DATE",
+              "04_AGE_OVER_89",
+              "05_TELEPHONE_NUMBER",
+              "06_FAX_NUMBER",
+              "07_EMAIL_ADDRESS",
+              "08_SOCIAL_SECURITY_NUMBER",
+              "09_MEDICAL_RECORD_NUMBER",
+              "10_HEALTH_PLAN_BENEFICIARY_NUMBER",
+              "11_ACCOUNT_NUMBER",
+              "12_CERTIFICATE_OR_LICENSE_NUMBER",
+              "13_VEHICLE_IDENTIFIER_OR_SERIAL_NUMBER",
+              "14_DEVICE_IDENTIFIER_OR_SERIAL_NUMBER",
+              "15_WEB_URL",
+              "16_IP_ADDRESS",
+              "17_BIOMETRIC_IDENTIFIER",
+              "18_FULL_FACE_PHOTO_OR_OTHER_UNIQUE_IDENTIFIER"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

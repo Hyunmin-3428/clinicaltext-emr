@@ -1,0 +1,5 @@
+Extract every project-defined identifier from the provided clinical text. Follow the system instructions exactly and return JSON only.
+
+<<<BEGIN PROVIDED CLINICAL TEXT>>>
+{{CLINICAL_TEXT}}
+<<<END PROVIDED CLINICAL TEXT>>>

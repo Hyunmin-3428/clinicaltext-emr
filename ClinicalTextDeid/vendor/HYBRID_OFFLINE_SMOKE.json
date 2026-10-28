@@ -1,0 +1,78 @@
+{
+  "synthetic_only": true,
+  "network_disabled_before_engine_creation": true,
+  "cases": [
+    {
+      "case": "example",
+      "mode": "direct",
+      "detection_count": 3,
+      "byte_exact_restore": true,
+      "public_fields": [
+        "schema_version",
+        "text",
+        "validation_status"
+      ],
+      "status": "executed offline"
+    },
+    {
+      "case": "example",
+      "mode": "context_rules",
+      "detection_count": 3,
+      "byte_exact_restore": true,
+      "public_fields": [
+        "schema_version",
+        "text",
+        "validation_status"
+      ],
+      "status": "executed offline"
+    },
+    {
+      "case": "mixed",
+      "mode": "direct",
+      "detection_count": 4,
+      "byte_exact_restore": true,
+      "public_fields": [
+        "schema_version",
+        "text",
+        "validation_status"
+      ],
+      "status": "executed offline"
+    },
+    {
+      "case": "mixed",
+      "mode": "context_rules",
+      "detection_count": 4,
+      "byte_exact_restore": true,
+      "public_fields": [
+        "schema_version",
+        "text",
+        "validation_status"
+      ],
+      "status": "executed offline"
+    },
+    {
+      "case": "korean",
+      "mode": "direct",
+      "detection_count": 2,
+      "byte_exact_restore": true,
+      "public_fields": [
+        "schema_version",
+        "text",
+        "validation_status"
+      ],
+      "status": "executed offline"
+    },
+    {
+      "case": "korean",
+      "mode": "context_rules",
+      "detection_count": 2,
+      "byte_exact_restore": true,
+      "public_fields": [
+        "schema_version",
+        "text",
+        "validation_status"
+      ],
+      "status": "executed offline"
+    }
+  ]
+}

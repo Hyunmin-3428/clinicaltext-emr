@@ -1,0 +1,2 @@
+# Existing, pinned inference/detector dependencies; no training framework required.
+-r ClinicalTextDeid/requirements.txt

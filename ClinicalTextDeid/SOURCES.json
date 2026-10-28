@@ -1,0 +1,333 @@
+{
+  "schema_version": "1.0",
+  "verified_on": "2026-10-08",
+  "timezone": "Asia/Seoul",
+  "scope": "Research agent read primary repository code, licenses, documentation, papers and model metadata only. Integration phase downloaded and installed MIT en_core_web_sm 3.8.0 for offline hybrid NER. No patient datasets or SNUBH/MIDRC/CliniDeID weights downloaded.",
+  "installed_runtime_observed": {
+    "presidio-analyzer": "2.2.360",
+    "spacy": "3.8.11",
+    "en-core-web-sm": "3.8.0",
+    "detector_default": "hybrid",
+    "implementation_scope": "ko-pii and clinical rules plus local trained English spaCy tok2vec/NER; contextual generalization uses regex/dictionaries without LLM or embeddings."
+  },
+  "sources": [
+    {
+      "id": "ko-pii",
+      "kind": "code_repository",
+      "title": "Marker-Inc-Korea/ko-pii",
+      "url": "https://github.com/Marker-Inc-Korea/ko-pii",
+      "revision": "9516cabd6f582935cae1536ccbd8c5448afae679",
+      "commit_time_utc": "2026-09-09T05:50:11Z",
+      "license": "MIT",
+      "license_url": "https://github.com/Marker-Inc-Korea/ko-pii/blob/9516cabd6f582935cae1536ccbd8c5448afae679/LICENSE",
+      "evidence_urls": [
+        "https://api.github.com/repos/Marker-Inc-Korea/ko-pii/commits?per_page=1",
+        "https://github.com/Marker-Inc-Korea/ko-pii/blob/9516cabd6f582935cae1536ccbd8c5448afae679/README.md",
+        "https://github.com/Marker-Inc-Korea/ko-pii/blob/9516cabd6f582935cae1536ccbd8c5448afae679/pyproject.toml"
+      ],
+      "claims": [
+        "Rules, dictionaries and checksums; core dependencies empty; package declares 1.16.0 and Python >=3.10.",
+        "No guarantee for arbitrary clinical free text, generic NER or legal anonymity."
+      ],
+      "reuse_conditions": [
+        "Retain copyright and permission notice for copies or substantial portions."
+      ],
+      "selection": "Integrate pinned permissible core; measure domain-specific errors separately."
+    },
+    {
+      "id": "ko-pii-generalization",
+      "kind": "primary_source_code",
+      "title": "ko-pii generalization modules",
+      "url": "https://github.com/Marker-Inc-Korea/ko-pii/tree/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/generalization",
+      "revision": "9516cabd6f582935cae1536ccbd8c5448afae679",
+      "evidence_urls": [
+        "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/generalization/age.py",
+        "https://raw.githubusercontent.com/Marker-Inc-Korea/ko-pii/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/generalization/occupation.py",
+        "https://github.com/Marker-Inc-Korea/ko-pii/blob/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/anonymizer.py"
+      ],
+      "claims": [
+        "generalize_age(47) returns 40대.",
+        "Korean 교수 maps to 연구/학계; unrecognized professor remains unchanged.",
+        "Anonymizer does not invoke sentence-wide exercise or family-history generalization."
+      ]
+    },
+    {
+      "id": "ko-pii-vault",
+      "kind": "primary_source_code",
+      "title": "ko-pii encrypted Vault",
+      "url": "https://github.com/Marker-Inc-Korea/ko-pii/blob/9516cabd6f582935cae1536ccbd8c5448afae679/src/ko_pii/vault/encrypted.py",
+      "revision": "9516cabd6f582935cae1536ccbd8c5448afae679",
+      "claims": [
+        "Optional cryptography AESGCM; 32-byte key and 12-byte nonce.",
+        "PBKDF2-HMAC-SHA256, 480000 iterations, random 16-byte salt.",
+        "Vault mapping encryption does not itself supply app authorization or whole-original preservation after generalization."
+      ]
+    },
+    {
+      "id": "presidio",
+      "kind": "code_repository",
+      "title": "Data Privacy Stack Presidio (formerly microsoft/presidio)",
+      "url": "https://github.com/data-privacy-stack/presidio",
+      "revision": "d8847904621733f4eaad4f9bd977b96a11325c90",
+      "commit_time_utc": "2026-10-04T11:07:17Z",
+      "license": "MIT",
+      "license_url": "https://github.com/data-privacy-stack/presidio/blob/d8847904621733f4eaad4f9bd977b96a11325c90/LICENSE",
+      "evidence_urls": [
+        "https://api.github.com/repos/data-privacy-stack/presidio/commits?per_page=1",
+        "https://github.com/data-privacy-stack/presidio/blob/d8847904621733f4eaad4f9bd977b96a11325c90/README.MD"
+      ],
+      "reuse_conditions": [
+        "Retain copyright and permission notice."
+      ],
+      "selection": "HEAD source review only; actual integrated presidio-analyzer release is 2.2.360, recorded separately."
+    },
+    {
+      "id": "presidio-configuration",
+      "kind": "official_documentation_and_code",
+      "title": "Presidio language support and default model configuration",
+      "url": "https://github.com/data-privacy-stack/presidio/blob/d8847904621733f4eaad4f9bd977b96a11325c90/docs/analyzer/languages.md",
+      "revision": "d8847904621733f4eaad4f9bd977b96a11325c90",
+      "evidence_urls": [
+        "https://raw.githubusercontent.com/data-privacy-stack/presidio/d8847904621733f4eaad4f9bd977b96a11325c90/docs/analyzer/languages.md",
+        "https://github.com/data-privacy-stack/presidio/blob/d8847904621733f4eaad4f9bd977b96a11325c90/presidio-analyzer/presidio_analyzer/conf/default.yaml",
+        "https://presidio.dataprivacystack.org/tutorial/02_regex/"
+      ],
+      "claims": [
+        "Default models and recognizers are English; language-specific NLP and recognizer adaptation needed.",
+        "Default spaCy model is en_core_web_lg and ORGANIZATION is in labels_to_ignore.",
+        "PatternRecognizer.analyze can be called directly for patterns without loading a NER model; errors require representative evaluation."
+      ]
+    },
+    {
+      "id": "presidio-reversible-operator",
+      "kind": "primary_source_code",
+      "title": "Presidio Encrypt operator",
+      "url": "https://github.com/data-privacy-stack/presidio/blob/d8847904621733f4eaad4f9bd977b96a11325c90/presidio-anonymizer/presidio_anonymizer/operators/encrypt.py",
+      "revision": "d8847904621733f4eaad4f9bd977b96a11325c90",
+      "claims": [
+        "Encryption/decryption operators are existing public features.",
+        "This file alone does not establish whole-input byte-exact restoration or the new capsule security properties."
+      ]
+    },
+    {
+      "id": "spacy-sm",
+      "kind": "official_model_card",
+      "title": "Explosion/spaCy en_core_web_sm 3.8.0 official release",
+      "url": "https://github.com/explosion/spacy-models/releases/tag/en_core_web_sm-3.8.0",
+      "version": "3.8.0",
+      "published_at_utc": "2024-09-30T10:00:50Z",
+      "license": "MIT (official versioned model release and metadata)",
+      "copyright_attribution": "Explosion",
+      "spacy_compatibility": ">=3.8.0,<3.9.0",
+      "wheel_size_bytes": 12806118,
+      "wheel_sha256": "1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85",
+      "wheel_url": "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
+      "evidence_urls": [
+        "https://api.github.com/repos/explosion/spacy-models/releases/tags/en_core_web_sm-3.8.0",
+        "https://raw.githubusercontent.com/explosion/spacy-models/master/meta/en_core_web_sm-3.8.0.json"
+      ],
+      "claims": [
+        "English CPU pipeline includes trained tok2vec and NER; zero static word-vector entries does not imply absence of learned representations or ML.",
+        "General English NER evaluation cannot establish mixed Korean/English clinical PHI performance.",
+        "Integration explicitly selects installed en_core_web_sm 3.8.0 instead of default en_core_web_lg.",
+        "Model metadata cites OntoNotes 5 (commercial corpus licensed by Explosion), ClearNLP conversion and WordNet; source corpus conditions are not replaced by model MIT conditions."
+      ],
+      "downloaded_weights_by_research_agent": false,
+      "downloaded_weights_in_integration_phase": true,
+      "inference_location": "local offline",
+      "downloaded_training_data": false
+    },
+    {
+      "id": "presidio-installed-release",
+      "kind": "official_package_release_and_provenance",
+      "title": "presidio-analyzer 2.2.360",
+      "url": "https://pypi.org/project/presidio-analyzer/2.2.360/",
+      "version": "2.2.360",
+      "release_date": "2025-09-09",
+      "publishing_commit": "af1c524460ad62e17313520a3cbb618b062b75cb",
+      "license": "MIT",
+      "copyright_attribution": "Microsoft Corporation at publishing commit",
+      "license_url": "https://github.com/data-privacy-stack/presidio/blob/af1c524460ad62e17313520a3cbb618b062b75cb/LICENSE",
+      "wheel_sha256": "aa6e83779b8f23587000ccfa3ef47aa34356a60b51284742e0d2a96b33205c4e",
+      "evidence_urls": [
+        "https://pypi.org/pypi/presidio-analyzer/2.2.360/json",
+        "https://raw.githubusercontent.com/data-privacy-stack/presidio/af1c524460ad62e17313520a3cbb618b062b75cb/LICENSE",
+        "https://raw.githubusercontent.com/data-privacy-stack/presidio/af1c524460ad62e17313520a3cbb618b062b75cb/presidio-analyzer/presidio_analyzer/conf/default.yaml"
+      ],
+      "claims": [
+        "Actual installed version is distinct from 2026-10-08 reviewed repository HEAD.",
+        "Release source default YAML uses en_core_web_lg and ignores ORGANIZATION; app selects en_core_web_sm and uses explicit organization rules.",
+        "Retain the installed release's actual copyright and permission notice."
+      ],
+      "selection": "Actually connected in default hybrid detector via local spaCy NLP engine."
+    },
+    {
+      "id": "spacy-installed-release",
+      "kind": "official_package_release",
+      "title": "spaCy 3.8.11",
+      "url": "https://pypi.org/project/spacy/3.8.11/",
+      "version": "3.8.11",
+      "license": "MIT",
+      "evidence_urls": [
+        "https://pypi.org/pypi/spacy/3.8.11/json"
+      ],
+      "claims": [
+        "Official package metadata labels MIT; actual local install version observed 3.8.11.",
+        "Version meets en_core_web_sm 3.8.0's >=3.8.0,<3.9.0 compatibility range."
+      ],
+      "selection": "Runtime NLP engine for integrated local English NER."
+    },
+    {
+      "id": "snubh-paper",
+      "kind": "primary_research_paper",
+      "title": "De-identification of clinical notes with pseudo-labeling using regular expression rules and pre-trained BERT",
+      "authors": [
+        "Jiyong An",
+        "Jiyun Kim",
+        "Leonard Sunwoo",
+        "Hyunyoung Baek",
+        "Sooyoung Yoo",
+        "Seunggeun Lee"
+      ],
+      "publication_date": "2025-02-17",
+      "doi": "10.1186/s12911-025-02913-z",
+      "url": "https://link.springer.com/article/10.1186/s12911-025-02913-z",
+      "claims": [
+        "51 regular expressions and pseudo-label fine-tuning of KoBERT-NER; six PHI categories.",
+        "Validation on 342 radiology and 12 non-radiology notes.",
+        "Paper reports regex P97.2/R93.7/F1 96.2 and fine-tuned KoBERT P96.5/R97.6/F1 97.1.",
+        "IRB policy prohibits sharing underlying data."
+      ],
+      "metric_warning": "Paper token/word evaluation is not current synthetic character-span evaluation; no direct score transfer or ranking.",
+      "downloaded_patient_data": false
+    },
+    {
+      "id": "snubh-code",
+      "kind": "public_unlicensed_repository",
+      "title": "leelabsg/SNUBH_deid",
+      "url": "https://github.com/leelabsg/SNUBH_deid",
+      "revision": "cc1e727750032cc2d4c69bc42acc857a30b17e99",
+      "commit_time_utc": "2026-06-15T03:30:42Z",
+      "license": null,
+      "license_status": "No LICENSE or explicit code redistribution permission located in the inspected README/tree; API license null.",
+      "evidence_urls": [
+        "https://api.github.com/repos/leelabsg/SNUBH_deid",
+        "https://api.github.com/repos/leelabsg/SNUBH_deid/git/trees/cc1e727750032cc2d4c69bc42acc857a30b17e99?recursive=1",
+        "https://raw.githubusercontent.com/leelabsg/SNUBH_deid/cc1e727750032cc2d4c69bc42acc857a30b17e99/tagging.py"
+      ],
+      "claims": [
+        "Default print_output writes idx, origin and transformed in plaintext CSV.",
+        "Repository lists model weights; existence is not a separately established redistribution permission."
+      ],
+      "selection": "Reference only; do not vendor, redistribute or download weights without permission.",
+      "downloaded_weights": false
+    },
+    {
+      "id": "github-license-guidance",
+      "kind": "official_documentation",
+      "title": "GitHub licensing a repository",
+      "url": "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository",
+      "claims": [
+        "Without a license default copyright applies; public viewing/forking does not create a general reuse/derivative redistribution license."
+      ]
+    },
+    {
+      "id": "midrc-code",
+      "kind": "code_repository",
+      "title": "Stanford/Penn MIDRC Deidentifier",
+      "url": "https://github.com/MIDRC/Stanford_Penn_MIDRC_Deidentifier",
+      "revision": "897fc0c0b9fcc3c0345228124a571a862cefa1d5",
+      "commit_time_utc": "2025-11-24T12:38:53Z",
+      "license": "Apache-2.0",
+      "license_url": "https://github.com/MIDRC/Stanford_Penn_MIDRC_Deidentifier/blob/897fc0c0b9fcc3c0345228124a571a862cefa1d5/LICENSE",
+      "evidence_urls": [
+        "https://api.github.com/repos/MIDRC/Stanford_Penn_MIDRC_Deidentifier/commits?per_page=1",
+        "https://github.com/MIDRC/Stanford_Penn_MIDRC_Deidentifier/blob/897fc0c0b9fcc3c0345228124a571a862cefa1d5/README.md",
+        "https://github.com/MIDRC/Stanford_Penn_MIDRC_Deidentifier/blob/897fc0c0b9fcc3c0345228124a571a862cefa1d5/deidentifier_model.py"
+      ],
+      "claims": [
+        "Transformer PHI detection plus hide-in-plain-sight replacement.",
+        "README states research purposes only and cites JAMIA DOI 10.1093/jamia/ocac219."
+      ],
+      "reuse_conditions": [
+        "Retain license and relevant attribution/NOTICE; label modified files."
+      ],
+      "selection": "Comparison only; no inference run."
+    },
+    {
+      "id": "midrc-model",
+      "kind": "official_model_card",
+      "title": "StanfordAIMI/stanford-deidentifier-base",
+      "url": "https://huggingface.co/StanfordAIMI/stanford-deidentifier-base",
+      "revision": "661b9c1c717d3165512d440abc3700c386aefab6",
+      "last_modified_utc": "2024-10-09T17:55:36Z",
+      "license": "MIT (model card)",
+      "evidence_urls": [
+        "https://huggingface.co/api/models/StanfordAIMI/stanford-deidentifier-base"
+      ],
+      "claims": [
+        "Official card labels English and MIT; model conditions differ from Apache-2.0 code.",
+        "No Korean/mixed clinical performance guarantee derived from card.",
+        "Source training data rights are distinct from card metadata."
+      ],
+      "downloaded_weights": false
+    },
+    {
+      "id": "clinideid",
+      "kind": "code_repository",
+      "title": "Clinacuity CliniDeID",
+      "url": "https://github.com/Clinacuity/CliniDeID",
+      "revision": "4eaaf3ca691ebcce1e5cb5f225b4679cd4db2097",
+      "commit_time_utc": "2023-08-09T12:21:53Z",
+      "license": "GPL-3.0-or-later (README and file header)",
+      "license_url": "https://github.com/Clinacuity/CliniDeID/blob/4eaaf3ca691ebcce1e5cb5f225b4679cd4db2097/LICENSE",
+      "evidence_urls": [
+        "https://api.github.com/repos/Clinacuity/CliniDeID/commits?per_page=1",
+        "https://raw.githubusercontent.com/Clinacuity/CliniDeID/4eaaf3ca691ebcce1e5cb5f225b4679cd4db2097/README.md"
+      ],
+      "model_conditions": "Pretrained machine-learning models may be used only for non-commercial applications.",
+      "claims": [
+        "Java JDK17+ and models required; README beta has RNN component disabled.",
+        "Tagging and patient-record-consistent surrogate replacement described."
+      ],
+      "selection": "Comparison only; no model download or code integration.",
+      "downloaded_weights": false
+    },
+    {
+      "id": "indirect-identifiers",
+      "kind": "primary_research_paper",
+      "title": "Beyond De-Identification: A Structured Approach for Defining and Detecting Indirect Identifiers in Medical Texts",
+      "authors": [
+        "Ibrahim Baroud",
+        "Lisa Raithel",
+        "Sebastian Möller",
+        "Roland Roller"
+      ],
+      "publication_date": "2025-04",
+      "doi": "10.18653/v1/2025.privatenlp-main.7",
+      "url": "https://aclanthology.org/2025.privatenlp-main.7/",
+      "claims": [
+        "Nine indirect identifier categories; 100 MIMIC-III discharge summaries and 6199 annotations; baseline detectors.",
+        "Considers adversaries such as acquaintances, family members and medical staff."
+      ],
+      "downloaded_patient_data": false
+    },
+    {
+      "id": "downstream-utility",
+      "kind": "primary_research_paper",
+      "title": "Clinical Text Anonymization, its Influence on Downstream NLP Tasks and the Risk of Re-Identification",
+      "authors": [
+        "Iyadh Ben Cheikh Larbi",
+        "Aljoscha Burchardt",
+        "Roland Roller"
+      ],
+      "publication_date": "2023-05",
+      "doi": "10.18653/v1/2023.eacl-srw.11",
+      "url": "https://aclanthology.org/2023.eacl-srw.11/",
+      "claims": [
+        "Analyzes anonymization effects across five downstream NLP tasks and a re-identification attack.",
+        "Supports separate utility/risk evaluation; does not establish this prototype's performance."
+      ]
+    }
+  ]
+}

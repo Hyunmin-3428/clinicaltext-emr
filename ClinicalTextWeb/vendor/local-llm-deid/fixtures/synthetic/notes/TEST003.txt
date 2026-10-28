@@ -1,0 +1,6 @@
+Emergency Department Note
+Facility: Northgate Medical Center
+Patient: Emily Sun, MRN: ZX-77410
+Date of service: 11/30/2047.
+Emily Sun is a 91-year-old woman evaluated for chest pain and discharged home.
+Portal message sent to emily.sun@example.net. Return precautions reviewed.

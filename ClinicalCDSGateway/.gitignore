@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+runtime/
+demo-runtime*/
+wheelhouse/
+research/*.pdf
+research/*.txt
+tests/.tmp/

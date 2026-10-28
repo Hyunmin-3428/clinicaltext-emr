@@ -1,0 +1,12 @@
+{
+  "developer": "Meta",
+  "family": "Llama-3.1",
+  "hf_gguf_repo": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
+  "is_medical": false,
+  "moe": false,
+  "params_active_B": null,
+  "params_total_B": 8.0,
+  "quant_target": "Q6_K",
+  "reasoning": false,
+  "size_gb": 6.6
+}

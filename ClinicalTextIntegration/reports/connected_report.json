@@ -1,0 +1,61 @@
+{
+  "scope": "Local synthetic boundary; installed ko-pii + Presidio/spaCy adapter; real local file egress",
+  "accepted_request": "server-registered connected-hybrid synthetic fixture",
+  "automatic_release_of_arbitrary_notes": false,
+  "checks": {
+    "real_public_hybrid_adapter_called": true,
+    "candidate_equals_actual_deid_output": true,
+    "task1_capsule_original_byte_restore": true,
+    "gateway_internal_original_byte_restore": true,
+    "no_egress_before_approval": true,
+    "concurrent_one_shot": true,
+    "one_actual_egress_file": true,
+    "public_allowlist_only": true,
+    "both_language_gold_names_removed": true,
+    "signed_exact_final_text": true,
+    "no_raw_or_internal_material_in_egress": true,
+    "no_egress_for_unregistered_mixed_note": true,
+    "audit_contains_export_and_no_phi_fields": true
+  },
+  "denials": {
+    "caller_approved_flag": "SCHEMA_DENIED",
+    "submitter_approves": "AUTH_DENIED",
+    "wrong_review_hash": "REVIEW_CONTENT_MISMATCH",
+    "unapproved_export": "NOT_APPROVED_OR_CONSUMED",
+    "replay": "NOT_APPROVED_OR_CONSUMED",
+    "external_text_tamper": "EXTERNAL_HASH_FAILED",
+    "external_purpose_tamper": "EXTERNAL_SCHEMA_FAILED",
+    "external_recipient_tamper": "EXTERNAL_SCOPE_FAILED",
+    "unregistered_mixed_note": "REAL_TEXT_RELEASE_DISABLED"
+  },
+  "concurrent_results": [
+    {
+      "release": "92e0726f0cb34001bdc57a5595bb4fd7",
+      "state": "EXPORTED"
+    },
+    {
+      "state": "DENIED",
+      "code": "NOT_APPROVED_OR_CONSUMED"
+    }
+  ],
+  "actual_egress_files": 1,
+  "public_payload_keys": [
+    "document",
+    "expires_at",
+    "policy_digest",
+    "policy_version",
+    "purpose",
+    "recipient",
+    "release",
+    "schema_version",
+    "text",
+    "text_sha256"
+  ],
+  "upstream_adapter": "clinical-text-deid/v1-hybrid-direct-8334be87c45ec280",
+  "not_measured": [
+    "OS or physical network isolation",
+    "real clinical privacy adequacy",
+    "population reidentification",
+    "audit suffix rollback"
+  ]
+}

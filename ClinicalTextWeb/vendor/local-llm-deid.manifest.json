@@ -1,0 +1,32 @@
+{
+  "upstream": "https://github.com/JamesWeatherhead/local-llm-deid",
+  "commit": "75582176aa3692240df50d035c97be9a3b15977f",
+  "license": "MIT",
+  "use": "Unmodified grounding, segmentation, coordinate mapping, redaction and extraction protocol; Ollama transport adapter is our code. Study results not reproduced.",
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "941e9a0a1714654d58eff7d074ed17ad74b2fd9c7d647fd46882dc3be14a7ca0"
+    },
+    {
+      "path": "src/deid/__init__.py",
+      "sha256": "a2adbfa3625c476de01057e0de6ce8e409c3d3c679499b5f42eb08b902aa4f25"
+    },
+    {
+      "path": "src/deid/pipeline.py",
+      "sha256": "de5dbd8ad6e8f48ce69cb9cd22c41faa0141d532f6329f358d34e8af4218c69f"
+    },
+    {
+      "path": "protocol/system_prompt.txt",
+      "sha256": "e47cf085f350ad159b2271790b182413b644c0bb53ac59316d4d850e6ae96797"
+    },
+    {
+      "path": "protocol/user_prompt_template.txt",
+      "sha256": "9b6553bd0d9a8cf9528ff4a4abcd5247dc009dcf2fd9eb829259ef9f0129114e"
+    },
+    {
+      "path": "protocol/model_output.schema.json",
+      "sha256": "2f0d12d6c24745166ff345886452260f39fcce9a91073bb8df8a4d3315e6774a"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+test_connected_public_detector_and_actual_egress (ClinicalTextIntegration.test_independent.IndependentContractTests.test_connected_public_detector_and_actual_egress) ... ok
+test_negation_uncertainty_does_not_become_positive_family_history (ClinicalTextIntegration.test_independent.IndependentContractTests.test_negation_uncertainty_does_not_become_positive_family_history) ... ok
+test_nfd_offsets_do_not_insert_zero_length_names (ClinicalTextIntegration.test_independent.IndependentContractTests.test_nfd_offsets_do_not_insert_zero_length_names) ... ok
+test_public_directory_cannot_contain_internal_capsule_or_key (ClinicalTextIntegration.test_independent.IndependentContractTests.test_public_directory_cannot_contain_internal_capsule_or_key) ... ok
+test_saved_capsule_restores_original_bytes_in_new_process (ClinicalTextIntegration.test_independent.IndependentContractTests.test_saved_capsule_restores_original_bytes_in_new_process) ... ok
+test_wrong_hint_cannot_report_insulin_unit_preserved (ClinicalTextIntegration.test_independent.IndependentContractTests.test_wrong_hint_cannot_report_insulin_unit_preserved) ... ok
+test_wrong_hint_cannot_report_korean_age_preserved (ClinicalTextIntegration.test_independent.IndependentContractTests.test_wrong_hint_cannot_report_korean_age_preserved) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 3.989s
+
+OK

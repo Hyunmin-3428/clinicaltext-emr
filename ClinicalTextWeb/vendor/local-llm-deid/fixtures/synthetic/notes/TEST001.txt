@@ -1,0 +1,11 @@
+Discharge Summary
+Patient: John Archer    MRN: AB-102938
+Facility: Lakeside General Hospital, Riverton
+Admitted: 03/14/2047    Discharged: 03/18/2047
+Attending: Maria Delgado, MD
+
+John Archer is a 94-year-old man admitted for community-acquired pneumonia.
+He was seen by Dr. Delgado on 03/15/2047 and improved with antibiotics.
+Callback number (555) 204-1188. Follow-up scheduled for 04/02/2047 at
+Lakeside General Hospital. Discharge instructions emailed to
+john.archer@example.org. Patient ambulating independently at discharge.
