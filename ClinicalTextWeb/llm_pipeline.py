@@ -69,7 +69,8 @@ def checked_age_generalization(quote, replacement):
     for lower, upper, label in AGE_BANDS:
         replacement = re.sub(rf"(?<!\d){lower}\s*[~–-]\s*{upper}\s*세", label, replacement)
         if label in replacement and label not in quote and not any(lower <= age <= upper for age in ages):
-            raise pipeline_issue("LLM_EDIT_INVALID", [{"field":"edits", "reason":"제시한 연령대가 이 원문 구절의 실제 나이를 포함하지 않습니다. 올바른 연령대로 수정하세요."}])
+            reason = ("이 원문 구절에는 나이가 없습니다. 연령대와 직업을 추측해 추가하지 마세요. 독립된 성명 필드는 이름만 PERSON 유형으로 처리하세요." if not ages else "제시한 연령대가 이 원문 구절의 실제 나이를 포함하지 않습니다. 올바른 연령대로 수정하세요.")
+            raise pipeline_issue("LLM_EDIT_INVALID", [{"field":"edits", "reason":reason}])
     return replacement
 
 

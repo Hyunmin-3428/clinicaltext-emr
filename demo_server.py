@@ -104,7 +104,8 @@ class PublicDemo:
                     or type(note["text"]) is not str or not 1<=len(note["text"].strip())<=4000 or len(note["text"].encode())>16000
                     or type(data["record_id"]) is not str or not data["record_id"].startswith("custom-")):
                 raise Denied("WEB_INPUT_INVALID")
-            plain_text(note["text"])
+            from ClinicalTextWeb.input_text import normalize_text
+            normalize_text(note["text"])
         if type(data["record_id"]) is not str or (not custom and data["record_id"] not in self.records) or data["purpose_id"] not in {p["id"] for p in PURPOSES}:
             raise Denied("WEB_INPUT_INVALID")
         if type(data["purpose"]) is not str or not 1 <= len(data["purpose"].strip()) <= 800:

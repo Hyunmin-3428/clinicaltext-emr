@@ -140,9 +140,21 @@ class DemoService:
                 or type(phrases) is not list or len(phrases) > 8
                 or any(type(item) is not str or not item.strip() or len(item) > 100 for item in phrases)):
             raise Denied("WEB_INPUT_INVALID")
-        plain_text(text)
+        from .input_text import normalize_text
+        original_text = text
+        text = normalize_text(text)
+        purpose = normalize_text(purpose)
+        phrases = [normalize_text(phrase) for phrase in phrases]
+        data = {**data, "text": text, "purpose": purpose, "required_phrases": phrases}
+        normalization = {"applied": original_text != text, "form": "NFKC", "original_sha256": digest(original_text), "processing_sha256": digest(text)}
         if data.get("engine") == "llm":
-            return self.llm.analyze(identifier, data)
+            result = self.llm.analyze(identifier, data)
+            with self.lock:
+                entry = self._entry(identifier, result["analysis_id"])
+                entry["original_input"] = original_text
+                entry["view"]["normalization"] = normalization
+                result["normalization"] = normalization
+            return result
         with self.lock:
             session = self.session(identifier)
             if len(session.analyses) >= 40:
@@ -174,6 +186,7 @@ class DemoService:
                                         "required_phrases": phrases, "source_sha256": digest(text),
                                         "text_sha256": review["text_sha256"], "validation": validation}))
             view = {"analysis_id": release, "review_digest": binding, "purpose": purpose,
+                    "normalization": normalization,
                     "source": text, "output": output, "validation": validation,
                     "phi_count": len(result["audit"]["processed_spans"]),
                     "source_spans": [{"start": span["start"], "end": span["end"], "type": span["type"]} for span in result["audit"]["processed_spans"]],
@@ -183,6 +196,7 @@ class DemoService:
                     "state": "REVIEW_READY" if eligible else "HELD", "reasons": reasons,
                     "events": [{"event": "가명처리 및 보존 검사 완료", "time": time.time()}]}
             session.analyses[release] = {"view": view, "digest": binding, "text_hash": review["text_sha256"],
+                                        "original_input": original_text,
                                         "input": copy.deepcopy(data), "artifact": None, "created": time.time()}
             return copy.deepcopy(view)
 
