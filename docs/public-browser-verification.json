@@ -1,0 +1,10 @@
+{
+  "signed_artifact_verified": true,
+  "xlsx_valid_zip_and_xml": true,
+  "clinical_dates_intervals_family_preserved": true,
+  "source_identifiers_absent": true,
+  "public_site": "https://clinicaltext-emr.alexchoi676.chatgpt.site",
+  "observed_processing_seconds": 17.0,
+  "observed_preservation_rows": "12/12",
+  "source_scope": "authored synthetic example only"
+}

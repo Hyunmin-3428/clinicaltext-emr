@@ -1,5 +1,9 @@
 # ClinicalText · EMR research export demo
 
+**[Try the live synthetic demo](https://clinicaltext-emr.alexchoi676.chatgpt.site)** · [QR code](dist/qr.png)
+
+The website and GPU worker run independently of the developer laptop. The shared GPU host is not rebooted or reconfigured by this project.
+
 An EMR-style prototype for **research-purpose-specific clinical information preservation** during free-text pseudonymization. Uses a pretrained Qwen3 model through Ollama; no fine-tuning or new training.
 
 > All public-demo notes are author-created synthetic examples. This prototype is not connected to a hospital EMR and does not certify anonymity, clinical correctness, or N2SF/CDS compliance.

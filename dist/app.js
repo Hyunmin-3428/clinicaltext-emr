@@ -59,7 +59,7 @@ function renderView(view,elapsed){
   $("validation-rows").replaceChildren();
   for(const r of v.rows){const tr=node("tr"),label=node("td",r.label),pair=node("td"),wrap=node("div",undefined,"evidence-pair");for(const [key,name] of [["source","원문"],["output","변환"]]){const line=node("div");line.append(node("span",name),document.createTextNode(r[key]||"근거 없음"));wrap.append(line);}pair.append(wrap);const verdict=node("td");verdict.append(node("span",labels[r.status]||r.status,"status-tag "+(r.status==="passed"?"success":r.status==="failed"?"error":"warning")));tr.append(label,pair,verdict);$("validation-rows").append(tr);}
   $("hold-reasons").replaceChildren(...view.reasons.map(reason=>node("p",reason)));$("hold-reasons").hidden=!view.reasons.length;
-  $("review").checked=false;actions();
+  $("review").checked=["APPROVED","EXPORTED"].includes(view.state);actions();
 }
 async function processRecord(){
   if(state.busy||!state.selected||!$("purpose").value.trim())return;

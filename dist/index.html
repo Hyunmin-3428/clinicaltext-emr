@@ -10,7 +10,7 @@
 <body>
   <header class="app-header">
     <a class="brand" href="/">ClinicalText</a>
-    <nav class="header-tabs"><span class="selected-tab">진료기록</span><span>연구 반출</span></nav>
+    <nav class="header-tabs"><a class="selected-tab" href="#source-section">진료기록</a><a href="#output-section">연구 반출</a></nav>
     <div class="header-actions"><span class="demo-tag">합성 EMR</span><span id="connection" class="connection"><i></i>연결 중</span><button id="share" class="header-button">QR 공유</button><a id="github" class="github-link" target="_blank" rel="noopener">GitHub ↗</a></div>
   </header>
   <main>
@@ -24,7 +24,7 @@
 
       </aside>
       <div class="document-column">
-        <section class="panel source-panel">
+        <section class="panel source-panel" id="source-section">
           <div class="panel-heading"><div class="heading-group"><h2 id="document-title">진료기록 원문</h2></div><button id="process-open" class="primary" disabled>연구용 가명처리</button></div>
           <div class="document-meta"><span id="doc-department">진료과 —</span><span id="doc-date">작성일 —</span></div>
           <div id="source" class="clinical-text source-text" tabindex="0">목록에서 기록을 선택해 주세요.</div>
