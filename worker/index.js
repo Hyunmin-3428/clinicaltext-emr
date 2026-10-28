@@ -69,7 +69,8 @@ async function handle(request,env){
         const counts=await env.DB.prepare('SELECT COUNT(*) AS total,SUM(CASE WHEN visitor=? AND created>? THEN 1 ELSE 0 END) AS recent FROM sessions').bind(visitor,stamp-600).first();
         if(counts.total>=EVENT_LIMITS.max_sessions||counts.recent>=EVENT_LIMITS.bootstrap_per_ip_10min)failure('현재 체험 접속이 많습니다. 잠시 후 다시 시도해 주세요.',429);
         const id=crypto.randomUUID(),token=crypto.randomUUID()+'.'+crypto.randomUUID();
-        await env.DB.prepare('INSERT INTO sessions(id,token_hash,visitor,created,expires) VALUES(?,?,?,?,?)').bind(id,await hash(token),visitor,stamp,stamp+7200).run();
+        const admitted=await env.DB.prepare('INSERT INTO sessions(id,token_hash,visitor,created,expires) SELECT ?,?,?,?,? WHERE (SELECT COUNT(*) FROM sessions)<? AND (SELECT COUNT(*) FROM sessions WHERE visitor=? AND created>?)<?').bind(id,await hash(token),visitor,stamp,stamp+7200,EVENT_LIMITS.max_sessions,visitor,stamp-600,EVENT_LIMITS.bootstrap_per_ip_10min).run();
+        if(!admitted.meta.changes)failure('현재 체험 접속이 많습니다. 잠시 후 다시 시도해 주세요.',429);
         return reply({...CATALOG,token,scope:'synthetic-only',server_online:await online(env),expires_in:7200,event_limits:EVENT_LIMITS,presentation:await capabilities(env)});
       }
       const owner=await session(request,env);

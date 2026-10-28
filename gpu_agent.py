@@ -36,6 +36,7 @@ def main():
     cases=cached_cases()
     with tempfile.TemporaryDirectory(prefix='sessions-',dir=runtime) as directory:
         app=PublicDemo(directory,args.model_url,args.model)
+        app.service.session_limit=LIMITS['max_sessions']
         local=threading.local();sessions={};session_lock=threading.Lock()
         def provider(source,purpose,checks,phrases,config):
             if getattr(local,'cached',False):return cache.get(source,purpose,checks,phrases,config)

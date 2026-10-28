@@ -1,7 +1,7 @@
 {
-  "version": "presentation-50-v1",
+  "version": "presentation-50-v2",
   "audience": 50,
-  "max_sessions": 128,
+  "max_sessions": 256,
   "bootstrap_per_ip_10min": 200,
   "fast_pending": 128,
   "live_pending": 2,

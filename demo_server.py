@@ -68,7 +68,7 @@ class VisitorService(DemoService):
             for key in expired:
                 self.sessions.pop(key, None)
                 self.llm.configs.pop(key, None)
-            if len(self.sessions) >= 128:
+            if len(self.sessions) >= getattr(self,'session_limit',128):
                 raise Denied("WEB_LIMIT")
             identifier = secrets.token_urlsafe(32)
             self.sessions[identifier] = Session()

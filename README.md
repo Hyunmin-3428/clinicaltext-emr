@@ -98,7 +98,7 @@ Compatible Unicode typography (full-width digits/letters, compatibility units an
 
 `event_limits.json` is the common public queue / GPU agent policy. Six authored example-purpose pairs are precomputed with the real model, version-bound and revalidated on every use. The UI explicitly labels **사전 실행 결과**. A cache miss never falls back to inference. Approvals and signed exports are generated separately for each visitor; cached approvals or expired signatures are not reused.
 
-- 128 visitor sessions and 128 lightweight pending jobs; shared venue Wi-Fi allowed (200 session starts per IP / 10 min, within the global cap).
+- 256 visitor sessions (headroom for refreshes) and 128 lightweight pending jobs; shared venue Wi-Fi allowed (200 session starts per IP / 10 min, within the global cap).
 - One live GPU inference at a time, at most 2 pending live jobs, minimum 120 seconds between admissions, 1 per visitor / 10 min, 12 total / hour.
 - At most 90 seconds of model-request time per document; a persistent rolling budget permits 600 seconds of model calls per hour. Calls stop when time/budget expires; uncertain unload pauses further live inference.
 - Live notes: 1,000 characters. Use only synthetic records. Live eligibility still does not authorize exporting unregistered custom sources.
