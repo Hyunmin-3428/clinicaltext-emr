@@ -8,6 +8,7 @@ from ClinicalTextWeb.llm_service import AUTHORED_SOURCES
 from ClinicalTextWeb.clinical import verify_relations
 from ClinicalTextDeid.detectors import detect
 from ClinicalCDSGateway.gateway.common import digest
+from ClinicalCDSGateway.gateway.detector import residual_check
 
 class SyntheticChartTests(unittest.TestCase):
     def test_public_catalog_and_agent_use_identical_authored_records(self):
@@ -41,5 +42,14 @@ class SyntheticChartTests(unittest.TestCase):
         result=verify_relations(r['text'],damaged,r['checks'],r['purpose'],[])
         self.assertFalse(result['eligible'])
         self.assertTrue(any(v['kind']=='clinical_sign' and v['status']=='failed' for v in result['rows']))
+
+    def test_generated_fallback_id_field_is_not_an_unmasked_identifier(self):
+        source='병록번호: SIM-N3401'
+        self.assertNotIn('RESIDUAL_ID',residual_check(source,'병록번호: <MRN_AUTO_2>'))
+        self.assertNotIn('RESIDUAL_ID',residual_check(source,'병록번호: <ID_1>'))
+        self.assertIn('RESIDUAL_ID',residual_check(source,'병록번호: SIM-N3401'))
+        self.assertIn('RESIDUAL_ID',residual_check(source,'병록번호: <MRN_AUTO_2_SIM-N3401>'))
+        self.assertIn('RESIDUAL_ID',residual_check('병록번호: <MRN_AUTO_2>','병록번호: <MRN_AUTO_2>'))
+        self.assertIn('RESIDUAL_ID',residual_check(source,'병록번호: <MRN_AUTO_2>\nMRN: OTHER-4321'))
 
 if __name__=='__main__':unittest.main()

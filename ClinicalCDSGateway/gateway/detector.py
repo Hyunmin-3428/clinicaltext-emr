@@ -54,7 +54,10 @@ def residual_check(source: str, candidate: str) -> tuple[str, ...]:
         if code == "RESIDUAL_ID":
             # A field label followed by a fully substituted typed ID token is
             # not an identifying value. Inspect everything else unchanged.
-            checked = re.sub(r"(?i)(?:\b(?:MRN|SSN|patient id|passport)\b|병록번호|병록|주민등록번호|주민등록|여권번호|여권)\s*[:：=]?\s*<ID_\d+>", "", candidate)
+            token_field = r"(?i)(?:\b(?:MRN|SSN|patient id|passport)\b|병록번호|병록|주민등록번호|주민등록|여권번호|여권)\s*[:：=]?\s*(?P<token><(?:ID_\d+|(?:MRN|RRN|FRN|US_SSN|PASSPORT|CARD|ACCOUNT)_AUTO_\d+)>)"
+            # Both explicit ID edits and deterministic fallback edits produce
+            # typed tokens. A source-supplied token is not proof of redaction.
+            checked = re.sub(token_field, lambda m: "" if m["token"] not in source else m.group(), candidate)
         if re.search(pattern, checked):
             reasons.add(code)
     _, fixture = find_fixture(source)
