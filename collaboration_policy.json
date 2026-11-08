@@ -1,0 +1,22 @@
+{
+  "version": "seamul-postop-collaboration-v1",
+  "simulation": true,
+  "project": {
+    "id": "POSTOP-COOP-001",
+    "title": "수술 후 발열·합병증 공동연구",
+    "provider": "병원 A",
+    "approval_id": "DEMO-DRB-001",
+    "approved": true,
+    "record_ids": ["surrogate", "surgery"],
+    "recipient_ids": ["university-b"]
+  },
+  "recipients": [
+    {"id": "university-b", "name": "외부 대학 공동연구팀 B", "environment": "사전 승인된 공동연구 분석환경", "approved": true},
+    {"id": "unregistered-cloud", "name": "미승인 개인 클라우드·외부 AI", "environment": "연구 승인정보에 등록되지 않은 환경", "approved": false}
+  ],
+  "actors": [
+    {"id": "data-officer-a", "name": "병원 데이터 담당자 A", "role": "requester"},
+    {"id": "reviewer-b", "name": "병원 검토자 B", "role": "reviewer"}
+  ],
+  "review_ttl_seconds": 600
+}

@@ -1,5 +1,7 @@
 # ClinicalText · EMR research export demo
 
+The first scenario is hospital A providing postoperative free-text notes to external university research team B. The demo checks the registered project and recipient, separates the simulated requester and reviewer roles, and generates signed files for the approved recipient. The public demo uses the GPU server. To try it locally, run `새물길_실행.cmd` and open **http://127.0.0.1:8773/**. The local mode uses bundled real Qwen results and discovers an installed `qwen3:4b-instruct` for new synthetic notes. `--offline` disables new inference. See [LOCAL_DEMO.md](LOCAL_DEMO.md) for the demonstration and its scope.
+
 **[Try the live synthetic demo](https://hyunmin-3428.github.io/clinicaltext-emr/)** · [QR code](dist/qr.png)
 
 The website and GPU worker run independently of the developer laptop. The shared GPU host is not rebooted or reconfigured by this project.
@@ -10,10 +12,10 @@ An EMR-style prototype for **research-purpose-specific clinical information pres
 
 ## Experience
 
-1. Select an outpatient, surgical, inpatient or progress note from the simulated chart, or use **새 문서** to type a new synthetic note or import a UTF-8 `.txt` file (presentation mode: 1,000 characters / 16 KB). No actual patient records should be entered into this public demo.
-2. Choose a research purpose and preservation conditions. For the main example, compare generalizing patient age with retaining exact age for age-stratified research.
-3. Use clearly labelled, pre-executed real model results for the six default examples, or bounded live server inference for a new synthetic note; examine the natural surrogate note and source-grounded preservation evidence.
-4. Review and approve an eligible result; download TXT, a real Excel `.xlsx`, or the gateway-signed JSON artifact. Held results cannot be exported.
+1. Select one of the two registered postoperative records, or use **새 문서** to add a synthetic note or import a UTF-8 `.txt` file (presentation mode: 1,000 characters / 16 KB).
+2. Confirm the fixed postoperative research purpose and preservation conditions.
+3. Compare the original and transformed notes and inspect the clinical evidence. The two default examples use labelled, pre-executed model results. New synthetic notes use bounded live inference when the server has capacity.
+4. Select the registered research recipient, request approval as the data officer, and switch to the simulated reviewer to approve or hold the request. The approved result can be downloaded as TXT, Excel, or signed JSON. Choosing the unapproved destination blocks file generation.
 
 Actual surgery dates, elapsed days, relevant history years, negation and family/patient roles are checked. Privacy protection can conflict with research utility; unresolved results are held. The same LLM is called separately for processing, clinical checking and privacy checking. Code checks add evidence grounding and selected clinical guards; these are not independent statistical validation models.
 
@@ -28,7 +30,7 @@ Mobile / desktop browser (hosted EMR interface)
   → Qwen3 purpose-directed source-anchored edits
   → separate clinical and candidate-only privacy LLM calls
   → code checks: evidence, diagnoses, dates/events, elapsed days, negation, family roles
-  → reviewer confirmation → signed gateway export → TXT / XLSX / JSON
+  → registered study/recipient check → request → simulated reviewer approval → file generation
 ```
 
 The public API exposes no model configuration, original restoration, administrative shutdown, raw Ollama proxy, or filesystem routes. Custom notes require an explicit synthetic-record confirmation and bounded plain text. Unregistered custom notes can be processed and inspected; their export remains held for institutional review. This confirmation does not establish that a note is truly synthetic or safe. Visitor tokens are kept only in browser memory. Notes and approval records are temporary; restart discards session access. Queue, visitor rate and session limits bound GPU usage. A public demo approval simulates the workflow; real institutional identity and role separation remain future work.
@@ -96,7 +98,7 @@ Compatible Unicode typography (full-width digits/letters, compatibility units an
 
 ## Presentation mode: 50 visitors
 
-`event_limits.json` is the common public queue / GPU agent policy. Eight authored example-purpose pairs (seven notes and an alternative purpose for the figure example) are precomputed with the real model, version-bound and revalidated on every use. The UI explicitly labels **사전 실행 결과**. A cache miss never falls back to inference. Approvals and signed exports are generated separately for each visitor; cached approvals or expired signatures are not reused.
+`event_limits.json` is the common public queue / GPU agent policy. The two registered examples use precomputed real model results that are version-bound and revalidated on each use. The UI labels them **사전 실행 결과**. A cache miss never falls back to inference. Approvals and signed exports are generated separately for each visitor.
 
 - 256 visitor sessions (headroom for refreshes) and 128 lightweight pending jobs; shared venue Wi-Fi allowed (200 session starts per IP / 10 min, within the global cap).
 - One live GPU inference at a time, at most 2 pending live jobs, minimum 120 seconds between admissions, 1 per visitor / 10 min, 12 total / hour.

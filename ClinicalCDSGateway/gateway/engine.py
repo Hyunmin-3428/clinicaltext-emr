@@ -105,7 +105,7 @@ class Gateway:
             raise Denied("KEY_STATE_FAILED") from None
 
     @classmethod
-    def initialize(cls, root):
+    def initialize(cls, root, *, policy=None):
         root = Path(root).absolute()
         _secure_directory(root)
         if any(root.iterdir()):
@@ -130,7 +130,8 @@ class Gateway:
             CREATE TABLE documents (id TEXT PRIMARY KEY, current_release TEXT);
             CREATE TABLE audit (sequence INTEGER PRIMARY KEY, body BLOB, mac TEXT);
         """)
-        body = canonical(POLICY)
+        # Only the trusted server bootstrap supplies this policy, never a web request.
+        body = canonical(POLICY if policy is None else policy)
         conn.execute("INSERT INTO policy VALUES (1,?,?)", (body, hmac.digest(auth_key, b"policy\0" + body, "sha256").hex()))
         for role in ["submitter", "reviewer", "exporter"]:
             token = secrets.token_urlsafe(32)

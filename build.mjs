@@ -8,7 +8,8 @@ for(const [name,type] of Object.entries({'index.html':'text/html; charset=utf-8'
 assets['/config.js'].text=`window.CLINICAL_DEMO = ${JSON.stringify({apiBase:'',publicUrl:'https://hyunmin-3428.github.io/clinicaltext-emr/',githubUrl:'https://github.com/Hyunmin-3428/clinicaltext-emr'})};`;
 const catalog=JSON.parse(fs.readFileSync(path.join(base,'catalog.json'),'utf8'));
 const limits=JSON.parse(fs.readFileSync(path.join(base,'event_limits.json'),'utf8'));
-const source='const ASSETS='+JSON.stringify(assets)+';\nconst CATALOG='+JSON.stringify(catalog)+';\nconst EVENT_LIMITS='+JSON.stringify(limits)+';\n'+fs.readFileSync(path.join(base,'worker/index.js'),'utf8');
+const collaboration=JSON.parse(fs.readFileSync(path.join(base,'collaboration_policy.json'),'utf8'));
+const source='const ASSETS='+JSON.stringify(assets)+';\nconst CATALOG='+JSON.stringify(catalog)+';\nconst EVENT_LIMITS='+JSON.stringify(limits)+';\nconst COLLABORATION='+JSON.stringify(collaboration)+';\n'+fs.readFileSync(path.join(base,'worker/index.js'),'utf8');
 fs.writeFileSync(path.join(output,'index.js'),source);
 fs.mkdirSync(path.join(base,'dist/.openai'),{recursive:true});fs.copyFileSync(path.join(base,'.openai/hosting.json'),path.join(base,'dist/.openai/hosting.json'));
 const module=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));

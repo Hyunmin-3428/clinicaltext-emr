@@ -24,6 +24,8 @@ from ClinicalCDSGateway.gateway.common import Denied, canonical, strict_json, ex
 from ClinicalTextWeb.service import DemoService, Session, examples, MESSAGES
 from ClinicalTextWeb.llm_service import SURROGATE_PURPOSE
 from ClinicalTextWeb.synthetic_notes import neonatal_examples
+from collaboration import Collaboration,public_policy,MESSAGES as COOP_MESSAGES
+MESSAGES.update(COOP_MESSAGES)
 
 ROOT = Path(__file__).resolve().parent
 RECORD_INFO = {
@@ -79,7 +81,7 @@ class VisitorService(DemoService):
 
 
 class PublicDemo:
-    def __init__(self, root, model_url="http://127.0.0.1:11435", model="qwen3:30b", service=None):
+    def __init__(self, root, model_url="http://127.0.0.1:11435", model="qwen3:30b", service=None,*,audit_directory=None):
         self.service = service or VisitorService(root, local_model_config={"provider": "ollama", "base_url": model_url, "model": model, "verifier_model": model, "api_key": ""})
         self.model = model
         self.records = {item["id"]: item for item in examples()}
@@ -89,10 +91,11 @@ class PublicDemo:
         self.sequence = 0
         self.rate = defaultdict(deque)
         self.global_rate = deque()
+        self.collaboration = Collaboration(Path(root)/'collaboration',self.service,self.records,audit_directory=audit_directory)
 
     def bootstrap(self):
         identifier, session = self.service.new_session()
-        return {"token": identifier, "model": self.model, "records": [{**item, "category": RECORD_INFO[item["id"]][0], "department": RECORD_INFO[item["id"]][1], "date": RECORD_INFO[item["id"]][2], "title": RECORD_INFO[item["id"]][3]} for item in self.records.values()], "purposes": PURPOSES, "scope": "synthetic-only", "expires_in": 7200}
+        return {"token": identifier, "model": self.model, "records": [{**item, "category": RECORD_INFO[item["id"]][0], "department": RECORD_INFO[item["id"]][1], "date": RECORD_INFO[item["id"]][2], "title": RECORD_INFO[item["id"]][3]} for item in self.records.values()], "purposes": PURPOSES, "scope": "synthetic-only", "expires_in": 7200,"collaboration":public_policy(),"local_mode":getattr(self,'local_mode',False),'live_inference_ready':getattr(self,'live_inference_ready',True)}
 
     def submit(self, token, data, visitor):
         self.service.session(token)
@@ -146,7 +149,9 @@ class PublicDemo:
         record = ({"text":data["custom_note"]["text"], "checks":["treatment","measurements","time","negation","family"]}
                   if "custom_note" in data else self.records[data["record_id"]])
         try:
+            if hasattr(self,'prepare_analysis'):self.prepare_analysis(job['owner'],data)
             view = self.service.analyze(job["owner"], {"engine": "llm", "purpose": data["purpose"].strip(), "text": record["text"], "checks": record["checks"], "required_phrases": [], "synthetic_consent": True})
+            view = self.collaboration.register(job['owner'],view,data['record_id'])
             with self.lock:
                 job.update(state="done", view=view, elapsed=round(time.time()-job["created"], 2))
         except Exception as error:
@@ -165,11 +170,16 @@ class PublicDemo:
             return result
 
     def approve(self, token, data):
-        return self.service.approve(token, data)
+        return self.collaboration.approve(token,data)
+
+    def select_destination(self,token,data):return self.collaboration.select(token,data)
+    def request_release(self,token,data):return self.collaboration.request(token,data)
+    def hold_release(self,token,data):return self.collaboration.hold(token,data)
+    def release_status(self,token,data):return self.collaboration.status(token,data)
 
     def export(self, token, data):
         # Gateway rechecks approval and evidence, and emits its signed artifact first.
-        result = self.service.export(token, data)
+        result = self.collaboration.export(token, data)
         view = result["view"]
         return {**result, "text_b64": base64.b64encode(view["output"].encode("utf-8-sig")).decode(), "xlsx_b64": base64.b64encode(spreadsheet_bytes(view["output"], view["purpose"], "가명처리 임상기록")).decode()}
 
@@ -179,8 +189,9 @@ ERRORS = {"DEMO_QUEUE_FULL": "현재 체험 요청이 많습니다. 앞선 처�
 
 class Server(ThreadingHTTPServer):
     daemon_threads = True
-    def __init__(self, app, origin, port):
+    def __init__(self, app, origin, port,*,local_config=None):
         self.app, self.origin = app, origin.rstrip("/")
+        self.local_config=local_config
         self.bootstrap_rate = defaultdict(deque)
         super().__init__(("127.0.0.1", port), Handler)
 
@@ -245,6 +256,9 @@ class Handler(BaseHTTPRequestHandler):
             if path == "/api/health":
                 self.send(200, {"status": "ok", "scope": "authored-synthetic-only", "model": self.server.app.model})
             elif path in {"/", "/styles.css", "/app.js", "/config.js", "/favicon.svg", "/qr.svg", "/qr.png"}:
+                if path=='/config.js' and self.server.local_config is not None:
+                    self.send(200,b'window.CLINICAL_DEMO = '+canonical(self.server.local_config)+b';','text/javascript; charset=utf-8')
+                    return
                 filename = "index.html" if path == "/" else path[1:]
                 kinds = {".html":"text/html; charset=utf-8", ".css":"text/css; charset=utf-8", ".js":"text/javascript; charset=utf-8", ".svg":"image/svg+xml", ".png":"image/png"}
                 asset = ROOT / "dist" / filename
@@ -278,7 +292,9 @@ class Handler(BaseHTTPRequestHandler):
                 raise Denied("WEB_INPUT_INVALID")
             data, token = strict_json(raw), self.token()
             path = urlsplit(self.path).path
-            actions = {"/api/approve": self.server.app.approve, "/api/export": self.server.app.export}
+            actions = {"/api/approve": self.server.app.approve, "/api/export": self.server.app.export,
+                       '/api/release/select':self.server.app.select_destination,'/api/release/request':self.server.app.request_release,
+                       '/api/release/hold':self.server.app.hold_release,'/api/release/status':self.server.app.release_status}
             if path == "/api/analyze":
                 self.send(202, self.server.app.submit(token, data, self.visitor()))
             elif path in actions:

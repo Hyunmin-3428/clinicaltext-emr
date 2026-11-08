@@ -71,7 +71,7 @@ async function handle(request,env){
         const id=crypto.randomUUID(),token=crypto.randomUUID()+'.'+crypto.randomUUID();
         const admitted=await env.DB.prepare('INSERT INTO sessions(id,token_hash,visitor,created,expires) SELECT ?,?,?,?,? WHERE (SELECT COUNT(*) FROM sessions)<? AND (SELECT COUNT(*) FROM sessions WHERE visitor=? AND created>?)<?').bind(id,await hash(token),visitor,stamp,stamp+7200,EVENT_LIMITS.max_sessions,visitor,stamp-600,EVENT_LIMITS.bootstrap_per_ip_10min).run();
         if(!admitted.meta.changes)failure('현재 체험 접속이 많습니다. 잠시 후 다시 시도해 주세요.',429);
-        return reply({...CATALOG,token,scope:'synthetic-only',server_online:await online(env),expires_in:7200,event_limits:EVENT_LIMITS,presentation:await capabilities(env)});
+        return reply({...CATALOG,token,scope:'synthetic-only',server_online:await online(env),expires_in:7200,event_limits:EVENT_LIMITS,presentation:await capabilities(env),collaboration:COLLABORATION});
       }
       const owner=await session(request,env);
       if(request.method==='GET'&&/^\/api\/jobs\/[a-f0-9-]{36}$/.test(path)){
@@ -90,11 +90,15 @@ async function handle(request,env){
         if(!CATALOG.purposes.some(p=>p.id===data.purpose_id)||typeof data.purpose!=='string'||!data.purpose.trim()||data.purpose.length>800)failure('연구 목적을 확인해 주세요.');
         return await enqueue(env,owner,'analyze',data);
       }
-      if(request.method==='POST'&&['/api/approve','/api/export'].includes(path)){
+      const releaseRoutes={'/api/approve':'approve','/api/export':'export','/api/release/select':'select_destination','/api/release/request':'request_release','/api/release/hold':'hold_release','/api/release/status':'release_status'};
+      if(request.method==='POST'&&releaseRoutes[path]){
         if(!await online(env))failure('GPU 체험 서버 연결을 확인해 주세요.',503);
-        const data=await body(request);exact(data,['analysis_id','review_digest','confirmed']);
-        if(data.confirmed!==true||typeof data.analysis_id!=='string'||typeof data.review_digest!=='string'||data.analysis_id.length>100||data.review_digest.length>100)failure('검토 결과를 확인해 주세요.');
-        return await enqueue(env,owner,path.slice(5),data);
+        const data=await body(request),fields=path==='/api/release/status'?['analysis_id','review_digest']:['analysis_id','review_digest','project_id','recipient_id','actor_id'];
+        if(['/api/approve','/api/export','/api/release/hold'].includes(path))fields.push('request_id','confirmed');
+        exact(data,fields);
+        if(fields.some(k=>k==='confirmed'?data[k]!==true:typeof data[k]!=='string'||data[k].length>150))failure('반출 요청 정보를 확인해 주세요.');
+        if(data.actor_id&&!COLLABORATION.actors.some(a=>a.id===data.actor_id))failure('시연 역할을 확인해 주세요.',403);
+        return await enqueue(env,owner,releaseRoutes[path],data);
       }
       return reply({error:'NOT_FOUND'},404);
     }

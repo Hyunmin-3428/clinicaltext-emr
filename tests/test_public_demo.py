@@ -36,6 +36,10 @@ class FakeService:
         view = {"analysis_id": token, "review_digest": "bound", "state": "REVIEW_READY", "source": data["text"], "output": "합성 가명처리 결과", "purpose": data["purpose"]}
         self.release[token] = view
         return view
+    def _entry(self,token,analysis_id):
+        self.session(token)
+        if analysis_id!=token:raise Denied('WEB_NOT_FOUND')
+        return {'view':self.release[token]}
     def approve(self, token, data):
         self.session(token)
         if data.get("analysis_id") != token or data.get("review_digest") != "bound" or data.get("confirmed") is not True:
@@ -111,18 +115,13 @@ class PublicTests(unittest.TestCase):
             self.app.submit(token, self.data, str(index))
         with self.assertRaisesRegex(Denied, "DEMO_QUEUE_FULL"):
             self.app.submit(self.token, self.data, "ip")
-    def test_approval_then_multiple_format_export(self):
+    def test_old_approval_api_cannot_bypass_collaboration_checks(self):
         self.wait(self.app.submit(self.token, self.data, "ip"))
         data = {"analysis_id":self.token, "review_digest":"bound", "confirmed":True}
         with self.assertRaises(Denied):
             self.app.export(self.token, data)
-        self.app.approve(self.token, data)
-        exported = self.app.export(self.token, data)
-        self.assertEqual(base64.b64decode(exported["text_b64"]).decode("utf-8-sig"), "합성 가명처리 결과")
-        with zipfile.ZipFile(io.BytesIO(base64.b64decode(exported["xlsx_b64"]))) as z:
-            self.assertIn("xl/worksheets/sheet1.xml", z.namelist())
         with self.assertRaises(Denied):
-            self.app.export(self.token, data)
+            self.app.approve(self.token, data)
     def test_real_xlsx_escapes_xml_and_cannot_create_formula(self):
         raw = spreadsheet_bytes("=HYPERLINK(\"x\") < & >", "목적", "문서")
         with zipfile.ZipFile(io.BytesIO(raw)) as archive:

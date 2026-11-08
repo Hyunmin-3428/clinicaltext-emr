@@ -35,7 +35,7 @@ def main():
     cache=PreparedCache(runtime/'prepared-cache',model_digest(args.model_url,args.model))
     cases=cached_cases()
     with tempfile.TemporaryDirectory(prefix='sessions-',dir=runtime) as directory:
-        app=PublicDemo(directory,args.model_url,args.model)
+        app=PublicDemo(directory,args.model_url,args.model,audit_directory=runtime/'collaboration-audit')
         app.service.session_limit=LIMITS['max_sessions']
         local=threading.local();sessions={};session_lock=threading.Lock()
         def provider(source,purpose,checks,phrases,config):
@@ -84,8 +84,13 @@ def main():
                             if local.cached:result=app.service.analyze(identifier,inputs)
                             else:
                                 with guard.lease():result=app.service.analyze(identifier,inputs)
+                            result=app.collaboration.register(identifier,result,data['record_id'])
                         elif job['kind']=='approve':result=app.approve(identifier,data)
                         elif job['kind']=='export':result=app.export(identifier,data)
+                        elif job['kind']=='select_destination':result=app.select_destination(identifier,data)
+                        elif job['kind']=='request_release':result=app.request_release(identifier,data)
+                        elif job['kind']=='hold_release':result=app.hold_release(identifier,data)
+                        elif job['kind']=='release_status':result=app.release_status(identifier,data)
                         else:raise Denied('WEB_INPUT_INVALID')
                         pending={'id':job['id'],'ok':True,'result':result}
                     except Exception as error:
