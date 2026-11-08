@@ -12,10 +12,10 @@ An EMR-style prototype for **research-purpose-specific clinical information pres
 
 ## Experience
 
-1. Select one of the two registered postoperative records, or use **새 문서** to add a synthetic note or import a UTF-8 `.txt` file (presentation mode: 1,000 characters / 16 KB).
-2. Confirm the fixed postoperative research purpose and preservation conditions.
-3. Compare the original and transformed notes and inspect the clinical evidence. The two default examples use labelled, pre-executed model results. New synthetic notes use bounded live inference when the server has capacity.
-4. Select the registered research recipient, request approval as the data officer, and switch to the simulated reviewer to approve or hold the request. The approved result can be downloaded as TXT, Excel, or signed JSON. Choosing the unapproved destination blocks file generation.
+1. Select a synthetic example, or use **새 문서** to add a synthetic note or import a UTF-8 `.txt` file (presentation mode: 1,000 characters / 16 KB).
+2. Confirm the selected example's research purpose, preservation conditions, and re-identification warning.
+3. Compare the original and transformed notes, the clinical evidence, and the recommended release grade. The public examples use labelled, pre-executed model results. New synthetic notes use bounded live inference when the server has capacity.
+4. The registered surgical note demonstrates direct O-grade file generation for the approved recipient. The registered progress note demonstrates S-grade reviewer approval. The other examples are available for analysis within the same display. File generation requires the registered study, record, purpose, and recipient.
 
 Actual surgery dates, elapsed days, relevant history years, negation and family/patient roles are checked. Privacy protection can conflict with research utility; unresolved results are held. The same LLM is called separately for processing, clinical checking and privacy checking. Code checks add evidence grounding and selected clinical guards; these are not independent statistical validation models.
 
@@ -98,7 +98,7 @@ Compatible Unicode typography (full-width digits/letters, compatibility units an
 
 ## Presentation mode: 50 visitors
 
-`event_limits.json` is the common public queue / GPU agent policy. The two registered examples use precomputed real model results that are version-bound and revalidated on each use. The UI labels them **사전 실행 결과**. A cache miss never falls back to inference. Approvals and signed exports are generated separately for each visitor.
+`event_limits.json` is the common public queue / GPU agent policy. The seven public examples use precomputed real model results that are version-bound and revalidated on each use. Their grade recommendations were computed separately by Qwen3:30b and bound to the transformed text and purpose. The UI labels prepared results **사전 실행 결과**. A cache miss never falls back to inference. O-grade file generation additionally requires an exact result in the server's preapproved list. S-grade file generation requires reviewer approval. Approvals and signed exports are generated separately for each visitor.
 
 - 256 visitor sessions (headroom for refreshes) and 128 lightweight pending jobs; shared venue Wi-Fi allowed (200 session starts per IP / 10 min, within the global cap).
 - One live GPU inference at a time, at most 2 pending live jobs, minimum 120 seconds between admissions, 1 per visitor / 10 min, 12 total / hour.

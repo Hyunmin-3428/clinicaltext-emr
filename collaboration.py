@@ -16,10 +16,12 @@ from contextlib import closing
 
 from ClinicalCDSGateway.gateway.common import Denied,canonical,digest,exact_schema,strict_json
 from ClinicalCDSGateway.gateway.engine import Gateway,POLICY,verify_external
+from release_grading import REASONS
 
 ROOT=Path(__file__).resolve().parent
 CONTEXT_KEYS={'analysis_id','review_digest','project_id','recipient_id','actor_id'}
 APPROVAL_KEYS=CONTEXT_KEYS|{'request_id','confirmed'}
+OPEN_POLICY_ACTOR = "preapproved-o-policy"
 MESSAGES={
     'COOP_ACTOR_DENIED':'현재 시연 역할로는 이 작업을 수행할 수 없습니다.',
     'COOP_SELF_APPROVAL':'처리·신청자가 자신의 요청을 승인할 수 없습니다.',
@@ -84,6 +86,7 @@ class Collaboration:
               'document_hash':digest(entry['view']['output']),'project_id':entry['project_id'],
               'recipient_id':entry['recipient_id'],'request_id':entry.get('request_id'),
               'actor_id':actor,'validation':self._validated(entry['view']),'reason':code,
+              'release_grade':self._grade(entry)["grade"],
               'policy_version':self.policy['version'],'purpose_hash':digest(entry['view']['purpose']),
               'checks':{'privacy_residual':entry['view'].get('privacy',{}).get('residual_count'),
                         'clinical_passed':entry['view'].get('validation',{}).get('passed'),
@@ -105,10 +108,32 @@ class Collaboration:
     def _binding(view):
         return digest(canonical({k:view.get(k) for k in ['analysis_id','review_digest','source','output','purpose','validation','privacy','can_approve','state']}))
 
-    def register(self,owner,view,record_id):
+    def _grade(self, entry):
+        assessment = entry["assessment"]
+        model_grade = assessment["model_grade"]
+        approved_hash = self.policy["project"].get("open_outputs", {}).get(entry["record_id"])
+        open_allowed = (
+            model_grade == "O"
+            and self._validated(entry["view"])
+            and approved_hash == digest(entry["view"]["output"])
+        )
+        reason = REASONS[assessment["reason"]]
+        if model_grade == "O" and not open_allowed:
+            reason = "LLM은 O를 제안했지만 간소 반출 승인 범위에 해당하지 않아 S를 적용했습니다."
+        return {
+            "grade": "O" if open_allowed else "S",
+            "model_grade": model_grade,
+            "source": assessment["source"],
+            "reason": reason,
+        }
+
+    def register(self,owner,view,record_id,*,assessment=None):
         with self.lock:
             self.entries[(owner,view['analysis_id'])]={'view':copy.deepcopy(view),'binding':self._binding(view),'record_id':record_id,
                 'project_id':self.policy['project']['id'],'recipient_id':'university-b','status':'DRAFT',
+                'assessment': copy.deepcopy(assessment) if assessment else {
+                    "model_grade": None, "reason": "unavailable", "source": "fallback"
+                },
                 'request_id':None,'requested_by':None,'approved_by':None,'gateway_release':None,'artifact':None}
             return self._view(owner,self.entries[(owner,view['analysis_id'])])
 
@@ -148,6 +173,7 @@ class Collaboration:
         view['collaboration']={k:entry[k] for k in ['project_id','recipient_id','status','request_id','requested_by','approved_by']}
         view['collaboration'].update(simulation=True,policy_version=self.policy['version'],condition=code,
             message=MESSAGES.get(code,'승인된 공동연구 환경입니다. 검토자 승인 후 파일을 생성할 수 있습니다.'))
+        view['collaboration']['release_grade'] = self._grade(entry)
         if code:view['collaboration']['status']='HELD' if code=='COOP_VALIDATION_HELD' else 'BLOCKED'
         view['release_history']=self.history(owner)
         return view
@@ -179,7 +205,12 @@ class Collaboration:
             if code:
                 entry['status']='HELD' if code=='COOP_VALIDATION_HELD' else 'BLOCKED'
                 raise Denied(code)
-            if entry['status']=='REQUESTED':return self._view(owner,entry)
+            if (entry["status"] == "REQUESTED"
+                and entry["policy_hash"] == digest(canonical(self.policy))
+                and self.clock() <= entry["requested_at"] + self.policy["review_ttl_seconds"]):
+                if self._grade(entry)["grade"] == "O":
+                    self._approve_entry(owner, entry, OPEN_POLICY_ACTOR, "policy_approved")
+                return self._view(owner,entry)
             self._invalidate(entry)
             gateway=self._gateway()
             from ClinicalCDSGateway.gateway.fixtures import request
@@ -193,6 +224,8 @@ class Collaboration:
             entry.update(status='REQUESTED',request_id=secrets.token_urlsafe(18),requested_by=actor,
                          gateway_release=result['release'],policy_hash=digest(canonical(self.policy)),requested_at=self.clock())
             self._audit(owner,'requested',entry,actor)
+            if self._grade(entry)["grade"] == "O":
+                self._approve_entry(owner, entry, OPEN_POLICY_ACTOR, "policy_approved")
             return self._view(owner,entry)
 
     def _review(self,owner,data,required_status):
@@ -206,15 +239,18 @@ class Collaboration:
             self._invalidate(entry);self._audit(owner,'invalidated',entry,data['actor_id'],'COOP_REVIEW_CHANGED');raise Denied('COOP_REVIEW_CHANGED')
         return entry
 
+    def _approve_entry(self, owner, entry, actor, event):
+        self.gateway.approve(entry["gateway_release"], self.tokens["reviewer"], digest(entry["view"]["output"]))
+        entry.update(status="APPROVED", approved_by=actor)
+        self._audit(owner, event, entry, actor)
+
     @audited
     def approve(self,owner,data):
         exact_schema(data,APPROVAL_KEYS)
         with self.lock:
             actor=self._actor(data,'reviewer');entry=self._review(owner,data,{'REQUESTED'})
             if actor==entry['requested_by']:raise Denied('COOP_SELF_APPROVAL')
-            self.gateway.approve(entry['gateway_release'],self.tokens['reviewer'],digest(entry['view']['output']))
-            entry.update(status='APPROVED',approved_by=actor)
-            self._audit(owner,'approved',entry,actor)
+            self._approve_entry(owner, entry, actor, "approved")
             return self._view(owner,entry)
 
     @audited
@@ -239,5 +275,6 @@ class Collaboration:
             entry['status']='EXPORTED';self._audit(owner,'file_generated',entry,actor)
             receipt={'simulation':True,'transfer_performed':False,'project':self.policy['project'],'recipient_id':entry['recipient_id'],
                 'requested_by':entry['requested_by'],'approved_by':entry['approved_by'],'request_id':entry['request_id'],
-                'document_hash':digest(entry['view']['output']),'policy_version':self.policy['version'],'validation_passed':True}
+                'document_hash':digest(entry['view']['output']),'policy_version':self.policy['version'],'validation_passed':True,
+                'release_grade':self._grade(entry)["grade"]}
             return {**artifact,'view':self._view(owner,entry),'receipt_b64':base64.b64encode(canonical(receipt)).decode()}

@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from ClinicalCDSGateway.gateway.common import Denied,strict_json
+from ClinicalCDSGateway.gateway.common import Denied,digest,strict_json
 from ClinicalCDSGateway.gateway.engine import verify_external
 from ClinicalTextWeb.service import DemoService
 from ClinicalTextWeb.tests.test_llm import SimulatedClient
@@ -46,6 +46,31 @@ class CollaborationTests(unittest.TestCase):
         self.assertEqual(receipt['requested_by'],'data-officer-a');self.assertEqual(receipt['approved_by'],'reviewer-b')
         self.assertFalse(receipt['transfer_performed']);self.assertIn('3월 10일',base64.b64decode(result['text_b64']).decode('utf-8-sig'))
         self.assertIn('수술 3일 후에도 발열 없음',result['view']['output'])
+
+    def test_open_grade_releases_under_policy_and_still_blocks_other_destinations(self):
+        self.app.collaboration.policy["project"]["open_outputs"] = {"surgery": digest(self.view["output"])}
+        self.app.collaboration.register(self.token, self.view, "surgery", assessment={
+            "model_grade": "O", "reason": "limited_context", "source": "prepared"
+        })
+        requested = self.request()
+        self.assertEqual(requested["collaboration"]["status"], "APPROVED")
+        data = self.review_data(requested, actor_id="data-officer-a")
+        result = self.app.export(self.token, data)
+        receipt = strict_json(base64.b64decode(result["receipt_b64"]))
+        self.assertEqual(receipt["release_grade"], "O")
+        self.assertEqual(receipt["approved_by"], "preapproved-o-policy")
+        blocked = self.app.select_destination(self.token, {**self.data, "recipient_id": "unregistered-cloud"})
+        self.assertEqual(blocked["collaboration"]["status"], "BLOCKED")
+        with self.assertRaises(Denied):
+            self.app.export(self.token, data)
+
+    def test_model_open_recommendation_requires_the_preapproved_output(self):
+        self.app.collaboration.policy["project"]["open_outputs"] = {"surgery": "wrong-document-hash"}
+        view = self.app.collaboration.register(self.token, self.view, "surgery", assessment={
+            "model_grade": "O", "reason": "limited_context", "source": "live"
+        })
+        self.assertEqual(view["collaboration"]["release_grade"]["grade"], "S")
+        self.assertEqual(self.request()["collaboration"]["status"], "REQUESTED")
 
     def test_direct_old_approve_or_export_cannot_skip_selection(self):
         old={k:self.data[k] for k in ['analysis_id','review_digest']}|{'confirmed':True}

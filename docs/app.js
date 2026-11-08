@@ -24,14 +24,19 @@ function actions(){
   $("new-record").disabled=!state.ready||state.busy||role==='reviewer';
   $("run").disabled=state.busy||!$("purpose").value.trim();
   const eligible=c&&!c.condition&&v.can_approve;
+  const openGrade=c?.release_grade?.grade==='O';
+  const direct=eligible&&openGrade&&role==='requester'&&c.status==='DRAFT';
+  for(const id of ["request-release","review-confirmation","approve","hold-release"]) $(id).hidden=openGrade;
   $("actor").disabled=state.busy;$("recipient").disabled=state.busy||role!=='requester';
   $("request-release").disabled=state.busy||!eligible||role!=='requester'||['REQUESTED','APPROVED','EXPORTED'].includes(c?.status);
   $("review").disabled=state.busy||!eligible||role!=='reviewer'||c?.status!=='REQUESTED';
   $("approve").disabled=$("review").disabled||!$("review").checked;
   $("hold-release").disabled=state.busy||!eligible||role!=='reviewer'||!['REQUESTED','APPROVED'].includes(c?.status);
   const approved=eligible&&['APPROVED','EXPORTED'].includes(c?.status);
-  $("copy").disabled=state.busy||!approved;$("format").disabled=state.busy||!approved;$("download").disabled=state.busy||!approved;
-  $("download").textContent=approved?"↓ 승인된 파일 생성":"↓ 승인 후 파일 생성";
+  $("copy").disabled=state.busy||!approved;
+  $("format").disabled=state.busy||!(approved||direct);
+  $("download").disabled=state.busy||!(approved||direct);
+  $("download").textContent=openGrade?"↓ O 등급 파일 생성":approved?"↓ 승인된 파일 생성":"↓ 승인 후 파일 생성";
   document.querySelectorAll(".record").forEach(x=>x.disabled=state.busy);
 }
 function renderList(){
@@ -68,20 +73,30 @@ function renderView(view,elapsed){
   $("hold-reasons").replaceChildren(...view.reasons.map(reason=>node("p",reason)));$("hold-reasons").hidden=!view.reasons.length;
   $("review").checked=false;renderRelease(view);actions();
 }
-function actorName(id){return state.policy?.actors.find(a=>a.id===id)?.name||'—';}
+function actorName(id){return id==='preapproved-o-policy'?'O 등급 사전 승인 정책':state.policy?.actors.find(a=>a.id===id)?.name||'—';}
 function recipientName(id){return state.policy?.recipients.find(r=>r.id===id)?.name||id||'—';}
 function renderRelease(view){
   const c=view.collaboration;
   $('privacy-check').textContent='잔여 식별정보 검사 '+(view.privacy?.residual_count===0&&!view.privacy?.independent_codes?.length?'통과':'추가 검토');
   $('clinical-check').textContent='임상정보 보존 검사 '+(view.validation?.eligible?'통과':'보류');
   if(!c){status('release-status','서버 연결 확인','warning');$('release-policy').textContent='공동연구 반출 기능을 준비하고 있습니다.';return;}
+  const grade=c.release_grade;
+  const openGrade=grade?.grade==='O';
+  status('release-grade',openGrade?'O · 공개':'S · 민감',openGrade?'success':'warning');
+  const gradeSource={prepared:'LLM 사전 판정',live:'LLM 실시간 판정',fallback:'검토 우선 적용'}[grade?.source];
+  $('grade-reason').textContent=[gradeSource,grade?.reason].filter(Boolean).join(' · ');
   $('recipient').value=c.recipient_id;
   $('release-people').textContent=actorName(c.requested_by)+' / '+actorName(c.approved_by);
   const states={DRAFT:'신청 전',REQUESTED:'검토자 승인 대기',APPROVED:'승인 완료',EXPORTED:'파일 생성 완료',BLOCKED:'반출 차단',HELD:'반출 보류'};
   status('release-status',states[c.status]||c.status,['APPROVED','EXPORTED'].includes(c.status)?'success':['HELD','BLOCKED'].includes(c.status)?'warning':'neutral');
-  const text=c.condition?c.message:c.status==='REQUESTED'?'검토자가 검증 근거와 수신기관을 확인한 뒤 승인합니다.':c.status==='APPROVED'||c.status==='EXPORTED'?'승인된 외부 공동연구기관 B에 제공할 시연 파일을 생성할 수 있습니다.':c.status==='HELD'?'검토자가 보류한 요청입니다. 내용을 확인한 뒤 다시 신청하세요.':'사전 승인된 공동연구 환경입니다. 검토자에게 승인을 요청하세요.';
+  const text=c.condition?c.message
+    :c.status==='HELD'?'검토자가 보류한 요청입니다. 기록을 다시 확인하세요.'
+    :openGrade?'O 등급의 사전 승인 범위에서 파일을 바로 생성할 수 있습니다.'
+    :c.status==='REQUESTED'?'검토자가 검증 근거와 수신기관을 확인한 뒤 승인합니다.'
+    :c.status==='APPROVED'||c.status==='EXPORTED'?'검토자가 승인한 파일을 생성할 수 있습니다.'
+    :'S 등급입니다. 내부 검토자에게 승인을 요청하세요.';
   $('release-policy').textContent=text;$('release-policy').className='release-policy'+(c.condition?' blocked':c.status==='REQUESTED'||c.status==='HELD'?' waiting':'');
-  const events={destination_checked:'목적지 확인',requested:'반출 신청',request_denied:'신청 차단',action_denied:'작업 차단',approved:'검토자 승인',reviewer_held:'검토자 보류',invalidated:'이전 승인 무효',file_generated:'파일 생성'};
+  const events={destination_checked:'목적지 확인',requested:'반출 신청',request_denied:'신청 차단',action_denied:'작업 차단',approved:'검토자 승인',policy_approved:'O 등급 정책 승인',reviewer_held:'검토자 보류',invalidated:'이전 승인 무효',file_generated:'파일 생성'};
   $('release-history').replaceChildren(...(view.release_history||[]).map(e=>{const tr=node('tr');for(const value of [events[e.event]||e.event,actorName(e.actor_id),recipientName(e.recipient_id),e.reason?'차단·보류':'확인'])tr.append(node('td',value));return tr;}));
 }
 async function processRecord(){
@@ -96,7 +111,12 @@ async function processRecord(){
     const deadline=Date.now()+15*60*1000;
     while(generation===state.generation){
       const job=await api(`/api/jobs/${submitted.job_id}`);
-      if(job.state==="done"){renderView(job.view,job.elapsed);message(job.view.can_approve?"가명처리와 검증이 완료됐습니다. 수신기관을 확인하고 승인을 요청하세요.":"검토가 필요한 항목이 남아 반출을 보류했습니다.",!job.view.can_approve);break;}
+      if(job.state==="done"){
+        renderView(job.view,job.elapsed);
+        const release=job.view.collaboration;
+        message(release?.condition?release.message:"가명처리와 검증이 완료됐습니다. 반출 등급과 수신기관을 확인하세요.",!!release?.condition);
+        break;
+      }
       if(job.state==="error")throw new Error(job.message);
       if(Date.now()>deadline)throw new Error("처리가 오래 걸리고 있습니다. 서버 상황을 확인한 뒤 다시 시도해 주세요.");
       $("progress-title").textContent=job.execution==='cached'?'사전 실행 예제의 검증 결과를 불러오고 있습니다':job.state==="queued"?`서버 처리 대기 중 · 앞에 ${job.position}건`:"가명처리·검증 결과를 확인하고 있습니다";
@@ -117,6 +137,10 @@ function save(bytes,name,type){const url=URL.createObjectURL(new Blob([bytes],{t
 async function download(){
   if(state.busy||!state.current)return;state.busy=true;actions();
   try{
+    const release=state.current.collaboration;
+    if(release?.release_grade?.grade==='O'&&release.status==='DRAFT'){
+      renderView(await command('/api/release/request',contextPayload()));
+    }
     state.artifact=await command("/api/export",reviewPayload());renderView(state.artifact.view);
     const a=state.artifact,id=state.selected.id,format=$("format").value;
     if(format==="txt")save(decode(a.text_b64),`clinicaltext-${id}.txt`,"text/plain;charset=utf-8");
@@ -125,7 +149,7 @@ async function download(){
     else if(format==="receipt")save(decode(a.receipt_b64),`seamul-${id}-release.json`,"application/json");
     else save(decode(a.verification_key_b64),"clinicaltext-verification.key","application/octet-stream");
     message("공동연구 제공용 파일을 생성했습니다. 외부기관으로 전송하지는 않았습니다.");
-  }catch(e){message(e.message,true);}finally{state.busy=false;actions();}
+  }catch(e){await refreshRelease();message(e.message,true);}finally{state.busy=false;actions();}
 }
 async function copyText(text,success){try{await navigator.clipboard.writeText(text);message(success);}catch{message("복사할 수 없습니다. 기록을 선택해 직접 복사하거나 파일로 다운로드해 주세요.",true);}}
 document.querySelectorAll(".close-dialog").forEach(b=>b.onclick=()=>b.closest("dialog").close());
@@ -149,7 +173,7 @@ $("copy-url").onclick=()=>copyText(cfg.publicUrl||location.origin,"체험 주소
 async function init(){
   if(cfg.githubUrl)$("github").href=cfg.githubUrl;
   $("share-url").textContent=cfg.publicUrl||location.origin;$("share-url").href=cfg.publicUrl||location.origin;
-  try{const result=await api("/api/bootstrap");state.token=result.token;state.localMode=!!result.local_mode;state.liveReady=result.live_inference_ready!==false;$("share").hidden=state.localMode;state.limits=result.event_limits||null;state.policy=result.collaboration;if(!state.policy)throw new Error('공동연구 반출 기능을 업데이트하고 있습니다. 잠시 후 다시 연결하세요.');$('study-name').textContent=state.policy.project.title;$('study-approval').textContent=state.policy.project.approval_id+' · 시연용 사전 승인';$('actor').replaceChildren(...state.policy.actors.map(a=>{const o=node('option',a.name+' (시연)');o.value=a.id;return o;}));$('recipient').replaceChildren(...state.policy.recipients.map(r=>{const o=node('option',r.name);o.value=r.id;return o;}));$("new-source").maxLength=state.limits?.live_max_chars||4000;state.records=result.records.filter(r=>state.policy.project.record_ids.includes(r.id));state.purposes=result.purposes;state.ready=true;$("purpose-preset").replaceChildren(...result.purposes.map(p=>{const option=node("option",p.label);option.value=p.id;return option;}));const online=result.server_online!==false;$("connection").className="connection "+(online?"online":"offline");$("connection").replaceChildren(node("i"),document.createTextNode(online?"서버 연결됨":"서버 연결 대기"));selectRecord(state.records[0]);if(!online)message("GPU 서버에 연결 중입니다. 잠시 후 새로고침해 주세요.");}
+  try{const result=await api("/api/bootstrap");state.token=result.token;state.localMode=!!result.local_mode;state.liveReady=result.live_inference_ready!==false;$("share").hidden=state.localMode;state.limits=result.event_limits||null;state.policy=result.collaboration;if(!state.policy)throw new Error('공동연구 반출 기능을 업데이트하고 있습니다. 잠시 후 다시 연결하세요.');$('study-name').textContent=state.policy.project.title;$('study-approval').textContent=state.policy.project.approval_id+' · 시연용 사전 승인';$('actor').replaceChildren(...state.policy.actors.map(a=>{const o=node('option',a.name+' (시연)');o.value=a.id;return o;}));$('recipient').replaceChildren(...state.policy.recipients.map(r=>{const o=node('option',r.name);o.value=r.id;return o;}));$("new-source").maxLength=state.limits?.live_max_chars||4000;state.records=state.localMode?result.records.filter(r=>state.policy.project.record_ids.includes(r.id)):result.records;state.purposes=result.purposes;state.ready=true;$("purpose-preset").replaceChildren(...result.purposes.map(p=>{const option=node("option",p.label);option.value=p.id;return option;}));const online=result.server_online!==false;$("connection").className="connection "+(online?"online":"offline");$("connection").replaceChildren(node("i"),document.createTextNode(online?"서버 연결됨":"서버 연결 대기"));selectRecord(state.records[0]);if(!online)message("GPU 서버에 연결 중입니다. 잠시 후 새로고침해 주세요.");}
   catch(e){$("connection").className="connection offline";$("connection").replaceChildren(node("i"),document.createTextNode("서버 연결 확인 필요"));$("records").replaceChildren(node("p","기록을 불러오지 못했습니다. 새로고침해 다시 연결해 주세요.","loading-text"));message(e.message,true);}
 }
 init();

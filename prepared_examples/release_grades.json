@@ -1,0 +1,49 @@
+{
+  "prompt_version": "synthetic-release-grade-v1",
+  "model": "qwen3:30b",
+  "model_digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226",
+  "records": {
+    "surrogate": {
+      "output_sha256": "5708c7b6a0d48a4bee680d3f1197d9cd67c84c9361cd8d0fd312576dd7de4cee",
+      "purpose_sha256": "532fb30bcc93c59da2cb4bfb36c7a41905b30b860ae217619bf256f2197f604a",
+      "grade": "S",
+      "reason": "identifying_context"
+    },
+    "bilingual": {
+      "output_sha256": "49a17e02e94c3128699dc129a81372058c454f210f46be1054fcdcfbf802f106",
+      "purpose_sha256": "36874896404bd68c8bc285aa1f4b11a36e0cf522d6845186f16448f29001cbbe",
+      "grade": "O",
+      "reason": "limited_context"
+    },
+    "surgery": {
+      "output_sha256": "f7893a42a443bad0423a2c12f51bf25acf6623cbab188e4ecfc1198ec30437e7",
+      "purpose_sha256": "dcc2cfba38716008d9a5954f63383a4ac374a1373014774dfe43a3fd1414bcbb",
+      "grade": "O",
+      "reason": "limited_context"
+    },
+    "neonatal": {
+      "output_sha256": "8ef7620330f6f34c9ad622537f7ef53d97783ded55ffc4de6483d56f498521fa",
+      "purpose_sha256": "b4fd4b9f1d19d51c9ed242e8ca97d463cf08766bb6e479c4cfcdde6f6f4369b7",
+      "grade": "O",
+      "reason": "limited_context"
+    },
+    "neonatal-course": {
+      "output_sha256": "e4b9d2756bb4f7792ff085bbce1af7f4dd753788988e8ad526ee8cf8522c82ac",
+      "purpose_sha256": "b4fd4b9f1d19d51c9ed242e8ca97d463cf08766bb6e479c4cfcdde6f6f4369b7",
+      "grade": "O",
+      "reason": "limited_context"
+    },
+    "neonatal-discharge": {
+      "output_sha256": "595f704ad3af4a86ee86a7c59e88a41b21ebed32f9b0212ae0a32613a6d8244a",
+      "purpose_sha256": "b4fd4b9f1d19d51c9ed242e8ca97d463cf08766bb6e479c4cfcdde6f6f4369b7",
+      "grade": "O",
+      "reason": "limited_context"
+    },
+    "medication": {
+      "output_sha256": "4a93b9333ba586c5ed197dfadec5ac8640cb1c7662abcd47c30fe5e3aee732a5",
+      "purpose_sha256": "3f0364135d3a300b0fe0dc33d1cd3c6b4fc3b2518769d0d7d98a2c185f0db656",
+      "grade": "O",
+      "reason": "limited_context"
+    }
+  }
+}

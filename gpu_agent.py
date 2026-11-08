@@ -10,6 +10,7 @@ from pathlib import Path
 import tempfile
 import threading
 import time
+from contextlib import nullcontext
 from urllib.request import Request,urlopen
 from ClinicalCDSGateway.gateway.common import Denied
 from ClinicalTextWeb.service import MESSAGES
@@ -81,10 +82,9 @@ def main():
                                 record={'text':custom['text'],'checks':['treatment','measurements','time','negation','family']}
                             else:record=app.records[data['record_id']]
                             inputs={'engine':'llm','purpose':data['purpose'],'text':record['text'],'checks':record['checks'],'required_phrases':[],'synthetic_consent':True}
-                            if local.cached:result=app.service.analyze(identifier,inputs)
-                            else:
-                                with guard.lease():result=app.service.analyze(identifier,inputs)
-                            result=app.collaboration.register(identifier,result,data['record_id'])
+                            with nullcontext() if local.cached else guard.lease():
+                                view = app.service.analyze(identifier, inputs)
+                                result = app.register_analysis(identifier, view, data["record_id"])
                         elif job['kind']=='approve':result=app.approve(identifier,data)
                         elif job['kind']=='export':result=app.export(identifier,data)
                         elif job['kind']=='select_destination':result=app.select_destination(identifier,data)

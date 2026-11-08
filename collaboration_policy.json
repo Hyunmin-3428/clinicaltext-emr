@@ -1,5 +1,5 @@
 {
-  "version": "seamul-postop-collaboration-v1",
+  "version": "seamul-postop-collaboration-v2",
   "simulation": true,
   "project": {
     "id": "POSTOP-COOP-001",
@@ -8,7 +8,10 @@
     "approval_id": "DEMO-DRB-001",
     "approved": true,
     "record_ids": ["surrogate", "surgery"],
-    "recipient_ids": ["university-b"]
+    "recipient_ids": ["university-b"],
+    "open_outputs": {
+      "surgery": "f7893a42a443bad0423a2c12f51bf25acf6623cbab188e4ecfc1198ec30437e7"
+    }
   },
   "recipients": [
     {"id": "university-b", "name": "외부 대학 공동연구팀 B", "environment": "사전 승인된 공동연구 분석환경", "approved": true},

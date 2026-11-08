@@ -39,16 +39,24 @@ def validate(origin='http://127.0.0.1:8773'):
         check(record_id+'_actual_surgery_date_preserved',('2023년 3월 10일' if record_id=='surrogate' else '3월 10일') in view['output'])
         data={'analysis_id':view['analysis_id'],'review_digest':view['review_digest'],'project_id':boot['collaboration']['project']['id'],'recipient_id':'university-b','actor_id':'data-officer-a'}
         requested=call('/api/release/request',data)
-        review={**data,'actor_id':'reviewer-b','request_id':requested['collaboration']['request_id'],'confirmed':True}
-        try:call('/api/approve',{**review,'actor_id':'data-officer-a'})
-        except RuntimeError as e:check(record_id+'_self_approval_blocked',str(e)=='COOP_ACTOR_DENIED')
-        else:check(record_id+'_self_approval_blocked',False)
-        approved=call('/api/approve',review);check(record_id+'_reviewer_approved',approved['collaboration']['status']=='APPROVED')
+        grade = view['collaboration']['release_grade']['grade']
+        review={**data,'request_id':requested['collaboration']['request_id'],'confirmed':True}
+        if record_id == 'surgery':
+            check(record_id+'_open_policy_approved', grade == 'O' and requested['collaboration']['status'] == 'APPROVED'
+                  and requested['collaboration']['approved_by'] == 'preapproved-o-policy')
+        else:
+            check(record_id+'_sensitive_requires_review', grade == 'S' and requested['collaboration']['status'] == 'REQUESTED')
+            try:call('/api/approve',review)
+            except RuntimeError as e:check(record_id+'_self_approval_blocked',str(e)=='COOP_ACTOR_DENIED')
+            else:check(record_id+'_self_approval_blocked',False)
+            review['actor_id'] = 'reviewer-b'
+            approved=call('/api/approve',review);check(record_id+'_reviewer_approved',approved['collaboration']['status']=='APPROVED')
         artifact=call('/api/export',review)
         manifest=verify_external(strict_json(base64.b64decode(artifact['artifact_b64'])),base64.b64decode(artifact['verification_key_b64']),expected_recipient='university-b')
         check(record_id+'_signed_correct_recipient',manifest['recipient']=='university-b')
         receipt=strict_json(base64.b64decode(artifact['receipt_b64']))
-        check(record_id+'_file_only_no_external_transfer',receipt['transfer_performed'] is False and receipt['requested_by']!=receipt['approved_by'])
+        check(record_id+'_file_only_no_external_transfer',receipt['transfer_performed'] is False and receipt['requested_by']!=receipt['approved_by']
+              and receipt['release_grade']==grade)
         blocked=call('/api/release/select',{**data,'recipient_id':'unregistered-cloud'})
         check(record_id+'_unapproved_destination_blocked',blocked['collaboration']['status']=='BLOCKED')
         try:call('/api/export',review)

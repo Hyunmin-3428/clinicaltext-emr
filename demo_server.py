@@ -25,6 +25,7 @@ from ClinicalTextWeb.service import DemoService, Session, examples, MESSAGES
 from ClinicalTextWeb.llm_service import SURROGATE_PURPOSE
 from ClinicalTextWeb.synthetic_notes import neonatal_examples
 from collaboration import Collaboration,public_policy,MESSAGES as COOP_MESSAGES
+from release_grading import assess_release
 MESSAGES.update(COOP_MESSAGES)
 
 ROOT = Path(__file__).resolve().parent
@@ -151,13 +152,21 @@ class PublicDemo:
         try:
             if hasattr(self,'prepare_analysis'):self.prepare_analysis(job['owner'],data)
             view = self.service.analyze(job["owner"], {"engine": "llm", "purpose": data["purpose"].strip(), "text": record["text"], "checks": record["checks"], "required_phrases": [], "synthetic_consent": True})
-            view = self.collaboration.register(job['owner'],view,data['record_id'])
+            view = self.register_analysis(job["owner"], view, data["record_id"])
             with self.lock:
                 job.update(state="done", view=view, elapsed=round(time.time()-job["created"], 2))
         except Exception as error:
             code = error.code if isinstance(error, Denied) else "WEB_INTERNAL_ERROR"
             with self.lock:
                 job.update(state="error", error=code, message=MESSAGES.get(code, "처리를 완료하지 못했습니다. 잠시 후 다시 시도해 주세요."))
+
+    def register_analysis(self, owner, view, record_id):
+        def make_client():
+            llm = self.service.llm
+            return llm.client_factory(llm.configs[owner])
+
+        assessment = assess_release(view, record_id, make_client)
+        return self.collaboration.register(owner, view, record_id, assessment=assessment)
 
     def job(self, token, job_id):
         self.service.session(token)
